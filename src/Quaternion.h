@@ -66,7 +66,7 @@ public:
 
 	//arma::Col<double>
 	inline Quaternion operator* (arma::vec &) const;
-	inline friend Quaternion<Real> operator* (arma::vec &, Quaternion &);
+	inline friend Quaternion<Real> operator*(arma::vec &, Quaternion &);
 
 
 	//*********friend Quaternion<Real> operator* (Real scalar,	const Quaternion<Real>& q)
@@ -387,7 +387,6 @@ Quaternion<Real> Quaternion<Real>::operator* (arma::vec & v) const
 	Quaternion<Real> tmp( 0.0,v(0),v(1), v(2));
 
 	return (*this)*tmp;
-
 }
 
 template <typename Real>
@@ -403,7 +402,7 @@ inline Quaternion<Real> Quaternion<Real>::operator+ (const Quaternion& q)
 }
 
 template <class Real>
-inline Quaternion<Real> operator* (arma::vec & v, Quaternion<Real> & q)
+inline Quaternion<Real> operator*(arma::vec & v, Quaternion<Real> & q)
 {
 	//Create a q of the vector set w = 0;
 	Quaternion<Real> tmp( 0.0,v(0),v(1), v(2));
