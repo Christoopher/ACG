@@ -8,5 +8,5 @@ HEADERS += \
 SOURCES += \
     ../../../src/main.cpp
 
-LIBS += -L/usr/include \
-	-lGL -lGLU -lglut -lglfw -lGLEW -llapack -lblas -larmadillo
+LIBS += -lGL -lGLU -lglut -lglfw -lGLEW -llapack -lblas -larmadillo
+	

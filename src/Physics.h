@@ -36,14 +36,14 @@ void physics_set_state()
 	rigidBodyArray[0].mass = 120;
 	
 
-	double val = 1.0/sqrt(2.0);
+//	double val = 1.0/sqrt(2.0);
 	rigidBodyArray[0].R(0,0) = 0.891006524188368; rigidBodyArray[0].R(0,1) = 0.0; rigidBodyArray[0].R(0,2) = -0.453990499739547;
 	rigidBodyArray[0].R(1,0) = 0.226995249869773; rigidBodyArray[0].R(1,1) = 0.866025403784439; rigidBodyArray[0].R(1,2) = 0.445503262094184;
 	rigidBodyArray[0].R(2,0) =0.39316730585124; rigidBodyArray[0].R(2,1) = -0.5; rigidBodyArray[0].R(2,2) = 0.771634284884801;
 	
 
 	rigidBodyArray[0].Q.FromRotationMatrix(rigidBodyArray[0].R);
-	
+
 
 	rigidBodyArray[0].force_fun = &Force;
 	rigidBodyArray[0].torque_fun = &Torque;
@@ -69,6 +69,7 @@ void physics_init()
 
 	create_cube_list(1.0,cube);
 	rigidBodyArray = new RigidBody[nrOfRigidBodies];
+
 	physics_set_state();
 }
 
@@ -96,10 +97,9 @@ void resolve_collision(RigidBody &A, RigidBody &B, arma::vec & P, arma::vec & N)
 
 	arma::vec rA,rB,kA,kB,uA,uB,impulse;
 	rA = rB = kA= kB = uA = uB= impulse = arma::zeros<arma::vec>(3,1);
-	
+
 
 	//Both the point P and X is in world coordinates
-	
 	rA = P - A.X;
 	rB = P - B.X;
 	kA = arma::cross(rA,N);
@@ -142,7 +142,7 @@ void collision_detection()
 	arma::vec WP = arma::zeros<arma::vec>(3,1);
 	N(1) = 1.0;
 	
-	for (int i = 0; i < cube.size(); ++i)
+        for (unsigned int i = 0; i < cube.size(); ++i)
 	{
 		WP = cube[i];
 
@@ -153,7 +153,7 @@ void collision_detection()
 		if(WP(1) <= 0.0) 
 		{
 			//nu ligger WP under eller på
-			double move = abs(WP(1));
+                        double move = fabs(WP(1));
 			rigidBodyArray[0].X(1) += move;
 			WP(1) += move;
 			resolve_collision(rigidBodyArray[0],rigidBodyArray[1], WP ,N);
