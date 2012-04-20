@@ -4,7 +4,7 @@
 //3rd party
 #ifdef _WIN32
 #include "armadillo.h"
-#elif 
+#else
 #include <armadillo>
 #endif
 

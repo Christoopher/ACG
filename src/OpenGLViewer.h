@@ -9,18 +9,25 @@
 #include <vector>
 
 //Opengl and glew headers
-#include "glew.h"
+
 #ifdef _WIN32
+#include "glew.h"
 #include "wglew.h"
+#else
+#include "GL/glew.h"
+#include "GL/gl.h"
 #endif
-#include "glfw.h"
-#include "glut.h"
+
 
 //3rd party
 #ifdef _WIN32
 #include "armadillo.h"
-#elif 
+#include "glfw.h"
+#include "glut.h"
+#else
 #include <armadillo>
+#include "GL/glfw.h"
+#include "GL/glut.h"
 #endif
 
 #include "RigidBody.h"
