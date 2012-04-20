@@ -55,5 +55,9 @@ packages/
 /win32
 
 
+#NO temp linux files ~
+*.*~
+
+
 
 
