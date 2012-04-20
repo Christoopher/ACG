@@ -280,8 +280,7 @@ void OpenGl_drawAndUpdate(bool &running, RigidBody * rb,const int NBodies)
 
 	
 	// Render the scene
-
-	glPointSize(2.0);
+	glPointSize(2.1);
 	glDisable(GL_LIGHTING);
 	glBegin(GL_POINTS);
 	//glVertex3f(-1,-1,-1);
