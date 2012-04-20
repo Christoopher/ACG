@@ -1,0 +1,9 @@
+#Dont include OS specific src files
+/win32Includes
+
+#No make files or object files
+Makefile
+*.o
+
+#QT creator project files
+*.pro*
