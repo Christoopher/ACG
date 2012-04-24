@@ -1,6 +1,10 @@
 #include <vector>
 #include <cmath>
 
+#include "Contact.h"
+#include "CollisionDetection.h"
+#include "CollisionResponse.h"
+
 //3rd party
 #ifdef _WIN32
 #include "armadillo.h"
@@ -84,78 +88,6 @@ void physics_reset()
 void physics_terminate()
 {
 	//delete [] rigidBodyArray;
-}
-
-void resolve_collision(RigidBody &A, RigidBody &B, arma::vec & P, arma::vec & N)
-{
-	const double e = 0.6;  //energy loss;
-
-
-	arma::vec rA,rB,kA,kB,uA,uB,impulse;
-	rA = rB = kA= kB = uA = uB= impulse = arma::zeros<arma::vec>(3,1);
-
-
-	//Both the point P and X is in world coordinates
-	rA = P - A.X;
-	rB = P - B.X;
-	kA = arma::cross(rA,N);
-	kB = arma::cross(rB,N);
-
-	uA = A.inv_inertia * kA;
-	uB = B.inv_inertia * kB;
-
-	using arma::dot;
-	double numer = -(1.0+e) * (dot(N,A.V - B.V) + dot(A.W,kA) - dot(B.W, kB));
-	double denom = A.inv_mass + B.inv_mass + dot(kA,uA) + dot(kB,uB);
-	double f = numer / denom;
-		
-	impulse = f * N;
-
-	//Apply impulse	
-	A.P += impulse;
-	B.P -= impulse;
-	A.L += f*kA;
-	B.L -= f*kB;
-
-	//update vel/ang
-
-	A.V = A.P*A.inv_mass;
-	//B.V = A.P*B.inv_mass; this is what it says in the book but probably wrong!!
-	B.V = B.P*B.inv_mass;
-
-	A.W = A.inv_inertia.submat(0,0,2,2) * A.L;
-	B.W = B.inv_inertia.submat(0,0,2,2) * B.L;
-
-	//A.W += f * uA;
-	//B.W = f * uB; //could be a minus sign
-
-}
-
-void collision_detection()
-{
-	arma::vec N = arma::zeros<arma::vec>(3,1);
-	arma::vec WP = arma::zeros<arma::vec>(3,1);
-	N(1) = 1.0;
-	
-		for (unsigned int i = 0; i < cube.size(); ++i)
-	{
-		WP = cube[i];
-
-		WP = rigidBodyArray[0].R.submat(0,0,2,2) * WP;
-		WP += rigidBodyArray[0].X;
-
-		//Vertex i värld
-		if(WP(1) <= 0.0) 
-		{
-			//nu ligger WP under eller på
-						double move = fabs(WP(1));
-			rigidBodyArray[0].X(1) += move;
-			WP(1) += move;
-			resolve_collision(rigidBodyArray[0],rigidBodyArray[1], WP ,N);
-		}
-	}
-
-
 }
 
 void physics_tick(double t, double dt)

@@ -30,13 +30,13 @@
     <ClInclude Include="..\src\Quaternion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Contact.h">
+    <ClInclude Include="..\src\CollisionDetection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionResponse.h">
+    <ClInclude Include="..\src\CollisionResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionDetection.h">
+    <ClInclude Include="..\src\Contact.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
