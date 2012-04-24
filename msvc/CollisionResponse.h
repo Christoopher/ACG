@@ -1,0 +1,6 @@
+#ifndef COLLISION_RESPONSE_H
+#define COLLISION_RESPONSE_H
+
+
+
+#endif

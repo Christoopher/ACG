@@ -8,7 +8,6 @@
 #include <armadillo>
 #endif
 
-
 const int nrOfRigidBodies = 2;
 RigidBody * rigidBodyArray;
 std::vector<arma::vec> cube;
@@ -27,7 +26,6 @@ arma::vec Torque(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, a
 	arma::vec F = arma::zeros<arma::vec>(3,1);
 	return F;
 }
-
 
 void physics_set_state()
 {
@@ -63,7 +61,6 @@ void physics_set_state()
 	rigidBodyArray[1].torque_fun = &Torque;
 }
 
-
 void physics_init()
 {
 
@@ -83,12 +80,10 @@ void physics_reset()
 	physics_set_state();
 }
 
-
 void physics_terminate()
 {
 	delete [] rigidBodyArray;
 }
-
 
 void resolve_collision(RigidBody &A, RigidBody &B, arma::vec & P, arma::vec & N)
 {
@@ -135,14 +130,13 @@ void resolve_collision(RigidBody &A, RigidBody &B, arma::vec & P, arma::vec & N)
 
 }
 
-
 void collision_detection()
 {
 	arma::vec N = arma::zeros<arma::vec>(3,1);
 	arma::vec WP = arma::zeros<arma::vec>(3,1);
 	N(1) = 1.0;
 	
-        for (unsigned int i = 0; i < cube.size(); ++i)
+		for (unsigned int i = 0; i < cube.size(); ++i)
 	{
 		WP = cube[i];
 
@@ -153,7 +147,7 @@ void collision_detection()
 		if(WP(1) <= 0.0) 
 		{
 			//nu ligger WP under eller på
-                        double move = fabs(WP(1));
+						double move = fabs(WP(1));
 			rigidBodyArray[0].X(1) += move;
 			WP(1) += move;
 			resolve_collision(rigidBodyArray[0],rigidBodyArray[1], WP ,N);
@@ -162,7 +156,6 @@ void collision_detection()
 
 
 }
-
 
 void physics_tick(double t, double dt)
 {
