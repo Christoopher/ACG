@@ -9,8 +9,9 @@
 #endif
 
 const int nrOfRigidBodies = 2;
-RigidBody * rigidBodyArray;
+std::vector<RigidBody> rigidBodyArray;
 std::vector<arma::vec> cube;
+std::vector<Contact> contacts;
 
 bool first_frame = true;
 arma::vec Force	(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, arma::mat R,arma::vec V,arma::vec W)
@@ -65,14 +66,14 @@ void physics_init()
 {
 
 	create_cube_list(1.0,cube);
-	rigidBodyArray = new RigidBody[nrOfRigidBodies];
+	rigidBodyArray.resize(nrOfRigidBodies);
 
 	physics_set_state();
 }
 
 void physics_reset()
 {
-	for (int i = 0; i < nrOfRigidBodies; ++i)
+	for (int i = 0; i < rigidBodyArray.size(); ++i)
 	{
 		rigidBodyArray[i].reset();
 	}
@@ -82,7 +83,7 @@ void physics_reset()
 
 void physics_terminate()
 {
-	delete [] rigidBodyArray;
+	//delete [] rigidBodyArray;
 }
 
 void resolve_collision(RigidBody &A, RigidBody &B, arma::vec & P, arma::vec & N)
@@ -159,10 +160,10 @@ void collision_detection()
 
 void physics_tick(double t, double dt)
 {
-	for (int i = 0; i < nrOfRigidBodies; ++i)
+	for (int i = 0; i < rigidBodyArray.size(); ++i)
 	{
 		//std::cout << rigidBodyArray[0].X(1) << "\n";
-		collision_detection();
+		collision_detection(rigidBodyArray, t, dt, contacts);
 		rigidBodyArray[i].update(t,dt);
 	}
 }

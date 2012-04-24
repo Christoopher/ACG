@@ -34,7 +34,7 @@ int main(void)
 		}
 			
 		//Draw
-		OpenGl_drawAndUpdate(running, rigidBodyArray, nrOfRigidBodies);
+		OpenGl_drawAndUpdate(running, rigidBodyArray);
 		t += dt;
 	}
 	

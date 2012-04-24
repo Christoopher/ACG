@@ -247,7 +247,7 @@ void draw_axis(int size)
 // Draws all content
 //----------------------------------------------------------------------------//
 static float g_lightPos[4] = { 10, 10, +100, 1 };  // Position of light
-void OpenGl_drawAndUpdate(bool &running, RigidBody * rb,const int NBodies)
+void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 {
 	running = !glfwGetKey( GLFW_KEY_ESC ) && glfwGetWindowParam( GLFW_OPENED );
 
@@ -295,7 +295,7 @@ void OpenGl_drawAndUpdate(bool &running, RigidBody * rb,const int NBodies)
 
 
 	 
-	for (int i = 0; i < NBodies-1; ++i)
+	for (int i = 0; i < rb.size()-1; ++i)
 	{
 		
 

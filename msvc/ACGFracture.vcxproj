@@ -89,6 +89,9 @@
     <ClInclude Include="..\src\Physics.h" />
     <ClInclude Include="..\src\Quaternion.h" />
     <ClInclude Include="..\src\RigidBody.h" />
+    <ClInclude Include="CollisionDetection.h" />
+    <ClInclude Include="CollisionResponse.h" />
+    <ClInclude Include="Contact.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
