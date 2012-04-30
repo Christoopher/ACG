@@ -12,10 +12,21 @@
 
 #include "RigidBody.h"
 
+
+
 struct Contact
 {
-	RigidBody A; //body containing vertex
-	RigidBody B; //body containing face
+	Contact()
+	{
+		P.zeros(3,1);
+		N.zeros(3,1);
+		EA.zeros(3,1);
+		EB.zeros(3,1);
+		isVFContact = true;
+	}
+
+	int A; //body containing vertex
+	int B; //body containing face
 	arma::vec P; //contact point
 	arma::vec N; //outward normal of face
 	arma::vec EA; //edge from A
