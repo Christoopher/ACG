@@ -92,10 +92,11 @@ void physics_terminate()
 
 void physics_tick(double t, double dt)
 {
-	for (int i = 0; i < rigidBodyArray.size(); ++i)
+    collision_detection(rigidBodyArray, t, dt, contacts);
+    collisionResponse(rigidBodyArray,contacts);
+        for (int i = 0; i < rigidBodyArray.size(); ++i)
 	{
 		//std::cout << rigidBodyArray[0].X(1) << "\n";
-		collision_detection(rigidBodyArray, t, dt, contacts);
 		rigidBodyArray[i].update(t,dt);
 	}
 }
