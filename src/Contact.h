@@ -25,8 +25,8 @@ struct Contact
 		isVFContact = true;
 	}
 
-	int A; //body containing vertex
-	int B; //body containing face
+	RigidBody * A; //body containing vertex
+	RigidBody * B; //body containing face
 	arma::vec P; //contact point
 	arma::vec N; //outward normal of face
 	arma::vec EA; //edge from A

@@ -89,6 +89,7 @@
     <ClInclude Include="..\src\Contact.h" />
     <ClInclude Include="..\src\ObjLoader.h" />
     <ClInclude Include="..\src\OpenGLViewer.h" />
+    <ClInclude Include="..\src\OpenMPDefines.h" />
     <ClInclude Include="..\src\Physics.h" />
     <ClInclude Include="..\src\Quaternion.h" />
     <ClInclude Include="..\src\RigidBody.h" />

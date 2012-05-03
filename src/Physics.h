@@ -18,7 +18,8 @@ std::vector<arma::vec> cube;
 std::vector<Contact> contacts;
 
 bool first_frame = true;
-arma::vec Force	(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, arma::mat R,arma::vec V,arma::vec W)
+arma::vec
+Force(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, arma::mat R,arma::vec V,arma::vec W)
 {
 	arma::vec F = arma::zeros<arma::vec>(3,1);
 	F(1) = -120*9.82;
@@ -26,13 +27,15 @@ arma::vec Force	(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, a
 	return F;
 }
 
-arma::vec Torque(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, arma::mat R,arma::vec V,arma::vec W)
+arma::vec 
+Torque(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, arma::mat R,arma::vec V,arma::vec W)
 {
 	arma::vec F = arma::zeros<arma::vec>(3,1);
 	return F;
 }
 
-void physics_set_state()
+void
+physicsSetState()
 {
 	rigidBodyArray[0].X(0) = rigidBodyArray[0].X(2) = 0;
 	rigidBodyArray[0].X(1) = 10.0;
@@ -50,7 +53,7 @@ void physics_set_state()
 
 	rigidBodyArray[0].force_fun = &Force;
 	rigidBodyArray[0].torque_fun = &Torque;
-
+	rigidBodyArray[0].init();
 	
 	/*
 	val = -1.0/sqrt(2.0);
@@ -64,39 +67,45 @@ void physics_set_state()
 	rigidBodyArray[1].inv_inertia = arma::zeros<arma::mat>(3,3);
 	rigidBodyArray[1].force_fun = &Force;
 	rigidBodyArray[1].torque_fun = &Torque;
+	rigidBodyArray[1].init();
 }
 
-void physics_init()
+void
+physicsInit()
 {
 
-	create_cube_list(1.0,cube);
+	createCubeList(1.0,cube);
 	rigidBodyArray.resize(nrOfRigidBodies);
 
-	physics_set_state();
+	physicsSetState();
 }
 
-void physics_reset()
+void 
+physicsReset()
 {
 	for (int i = 0; i < rigidBodyArray.size(); ++i)
 	{
 		rigidBodyArray[i].reset();
 	}
 
-	physics_set_state();
+	physicsSetState();
 }
 
-void physics_terminate()
+void
+physicsTerminate()
 {
 	//delete [] rigidBodyArray;
 }
 
-void physics_tick(double t, double dt)
+void 
+physicsTick(double t, double dt)
 {
-    collision_detection(rigidBodyArray, t, dt, contacts);
-    collisionResponse(rigidBodyArray,contacts);
-        for (int i = 0; i < rigidBodyArray.size(); ++i)
-	{
-		//std::cout << rigidBodyArray[0].X(1) << "\n";
-		rigidBodyArray[i].update(t,dt);
-	}
+	collision_detection(rigidBodyArray, t, dt, contacts);
+	//collisionResponse(rigidBodyArray,contacts);
+	if(play)
+		for (int i = 0; i < rigidBodyArray.size(); ++i)
+		{
+			//std::cout << rigidBodyArray[0].X(1) << "\n";
+			rigidBodyArray[i].update(t,dt);
+		}
 }

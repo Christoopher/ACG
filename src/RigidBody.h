@@ -15,7 +15,7 @@ typedef Quaternion<double> Quaterniond;
 class RigidBody
 {
 public:
-	RigidBody() : mass(120.0), inv_mass(1.0/120.0)
+	RigidBody() : mass(120.0), inv_mass(1.0/120.0), isColliding(false)
 	{
 		inertia.eye(3,3); inertia *= mass/12.0;
 		inv_inertia = arma::inv(inertia);
@@ -26,7 +26,30 @@ public:
 		R.eye(4,4);
 		L.zeros(3,1);	
 		P.zeros(3,1);
+		
+		float r = 1.0;
+		arma::vec v = arma::zeros<arma::vec>(3,1);
+		v(0) = -r; v(1) = -r; v(2) = -r; _vertices.push_back(v);
+		v(0) = r; v(1) = -r; v(2) = -r; _vertices.push_back(v);
+		v(0) = r; v(1) = -r; v(2) = r; _vertices.push_back(v);
+		v(0) = -r; v(1) = -r; v(2) = r; _vertices.push_back(v);
+		v(0) = -r; v(1) = r; v(2) = -r; _vertices.push_back(v);	
+		v(0) = r; v(1) = r; v(2) = -r; _vertices.push_back(v);
+		v(0) = r; v(1) = r; v(2) = r; _vertices.push_back(v);
+		v(0) = -r; v(1) = r; v(2) = r; _vertices.push_back(v);
 	}
+
+	void
+	init()
+	{
+		for (int i = 0; i < _vertices.size(); ++i)
+		{
+			arma::vec p = R.submat(0,0,2,2)*_vertices[i];
+			p += X;
+			_verticesWorldCache.push_back(p);
+		}
+	}
+
 
 
 	void reset()
@@ -47,6 +70,8 @@ public:
 	arma::mat R; // Orientiation
 	arma::vec V, W; //lin vel, ang vel
 
+	bool isColliding;
+
 	typedef arma::vec (*Function)
 	(
 		double,
@@ -62,7 +87,8 @@ public:
 	Function torque_fun;
 	Function force_fun;
 
-	void update(double t, double dt)
+	void 
+	update(double t, double dt)
 	{
 		double halfdt = 0.5 * dt, sixthdt = dt / 6.0;
 		double tphalfdt = t + halfdt, tpdt = t + dt;
@@ -123,19 +149,45 @@ public:
 		Convert(Q,P,L,R,V,W);
 
 
+		
+
+		//Recalc world transform
+		_calcWorldTransform();
 	}
 
-	void Convert(const Quaterniond & Q,const arma::vec & P,const arma::vec &L, arma::mat &R, arma::vec &V, arma::vec &W) const
+	void 
+	Convert(const Quaterniond & Q,const arma::vec & P,const arma::vec &L, arma::mat &R, arma::vec &V, arma::vec &W) const
 	{
 		Q.ToRotationMatrix(R);
 		V = inv_mass * P;
 		W = R.submat(0,0,2,2)*inv_inertia*arma::trans(R.submat(0,0,2,2))*L;
 	}
 
+	std::vector<arma::vec> &
+	getWorldVerts()	{ return _verticesWorldCache; }
+
+	int
+	getNumVrts() { return _vertices.size(); }
+
 protected:
 
 private:
+
+	void
+	_calcWorldTransform()
+	{
+		for (int i = 0; i < _vertices.size(); ++i)
+		{
+			arma::vec p = R.submat(0,0,2,2)*_vertices[i];
+			p += X;
+			_verticesWorldCache[i] = p;
+		}
+	}
+
+	std::vector<arma::vec> _vertices;
+	std::vector<arma::vec> _verticesWorldCache;
 };
+
 
 
 #endif

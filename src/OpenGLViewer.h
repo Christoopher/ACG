@@ -1,8 +1,6 @@
 #ifndef _OPENGL_VIEWER_
 #define _OPENGL_VIEWER_
 
-
-
 //C/C++ headers
 #include <stdlib.h>
 #include <stdio.h>
@@ -50,6 +48,7 @@ GLfloat edge = 3.0f;
 bool step = false, reset = false, showgrid = false, play = false;
 bool up_is_down;
 bool down_is_down;
+bool shiftdown = false;
 
 //----------------------------------------------------------------------------//
 // Unit wireframe cube: vertices indices
@@ -127,14 +126,14 @@ void Resize()
 	glMatrixMode(GL_PROJECTION);
 	
 	glLoadIdentity();
-	gluPerspective(65.0, (float)winw / winh, 1, 1000);
+	gluPerspective(65.0, (float)winw / winh, 0.1, 100);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 }
 
-void create_cube_list(float r, std::vector<arma::vec> &cube) {
+void createCubeList(float r, std::vector<arma::vec> &cube) {
 	
 	arma::vec v = arma::zeros<arma::vec>(3,1);
 	v(0) = -r; v(1) = -r; v(2) = -r; cube.push_back(v);
@@ -147,45 +146,47 @@ void create_cube_list(float r, std::vector<arma::vec> &cube) {
 	v(0) = -r; v(1) = r; v(2) = r; cube.push_back(v);
 }
 
-void drawColorCube(float r) {
+void drawColorCube(float r,float R, float G, float B) {
+	
+	glColor3f(R,G,B);
 	glBegin(GL_QUADS);
 	// +X face
-	glColor3f(1,1,0);
+	//glColor3f(1,0,0);
 	glNormal3f(1,0,0);
 	glVertex3f(r,r,-r);
 	glVertex3f(r,r,r);
 	glVertex3f(r,-r,r);
 	glVertex3f(r,-r,-r);
 	// -X face
-	glColor3f(0,0,1);
+	//glColor3f(1,0,0);
 	glNormal3f(-1,0,0);
 	glVertex3f(-r,r,r);
 	glVertex3f(-r,r,-r);
 	glVertex3f(-r,-r,-r);
 	glVertex3f(-r,-r,r);
 	// +Y face
-	glColor3f(1,0,1);
+	//glColor3f(1,0,0);
 	glNormal3f(0,1,0);
 	glVertex3f(-r,r,r);
 	glVertex3f(r,r,r);
 	glVertex3f(r,r,-r);
 	glVertex3f(-r,r,-r);
 	// -Y face
-	glColor3f(0,1,0);
+	//glColor3f(1,0,0);
 	glNormal3f(0,-1,0);
 	glVertex3f(-r,-r,r);
 	glVertex3f(-r,-r,-r);
 	glVertex3f(r,-r,-r);
 	glVertex3f(r,-r,r);
 	// +Z face
-	glColor3f(0,1,1);
+	//glColor3f(1,0,0);
 	glNormal3f(0,0,1);
 	glVertex3f(-r,r,r);
 	glVertex3f(-r,-r,r);
 	glVertex3f(r,-r,r);
 	glVertex3f(r,r,r);
 	// -Z face
-	glColor3f(1,0,0);
+	//glColor3f(1,0,0);
 	glNormal3f(0,0,-1);
 	glVertex3f(-r,r,-r);
 	glVertex3f(r,r,-r);
@@ -259,6 +260,7 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 
 	//Clear the buffer color and depth
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	
@@ -295,7 +297,7 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 
 
 	 
-	for (int i = 0; i < rb.size()-1; ++i)
+	for (int i = rb.size()-1; i >= 0; --i)
 	{
 		
 
@@ -307,8 +309,11 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 
 
 
+		if(rb[i].isColliding)
+			drawColorCube(1.0,1.0,0.0,0.0);
+		else
+			drawColorCube(1.0,0.25,0.25,0.25);
 
-		drawColorCube(1.0);
 		glPopMatrix();
 
 		glDisable(GL_DEPTH_TEST);
@@ -318,6 +323,7 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 		glVertex3f(rb[i].X(0),rb[i].X(1), rb[i].X(2));
 		glEnd();
 		glEnable(GL_LIGHTING);
+		glEnable(GL_DEPTH_TEST);
 		
 		//Translation
 
@@ -334,7 +340,6 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 	glfwSwapBuffers();
 
 }
-
 
 
 //----------------------------------------------------------------------------//
@@ -388,6 +393,12 @@ void GLFWCALL KeyboardFunc( int key, int action )
 	if(key == GLFW_KEY_DOWN  && action == GLFW_RELEASE)
 		down_is_down = false;
 
+
+	if (key == GLFW_KEY_LSHIFT && action == GLFW_PRESS)
+		shiftdown = true;
+	if(key == GLFW_KEY_LSHIFT && action == GLFW_RELEASE)
+		shiftdown = false;
+
 	
 
 }
@@ -406,7 +417,10 @@ void GLFWCALL MouseButtonFunc( int button, int action )
 //----------------------------------------------------------------------------//
 void GLFWCALL MouseWheelFunc( int pos )
 {
-	zoom += (pos - lastwheelpos) *1.2;
+	if(shiftdown)
+		zoom += (pos - lastwheelpos) *0.2;
+	else
+		zoom += (pos - lastwheelpos) *1.2;
 
 	lastwheelpos = pos;
 }
@@ -430,7 +444,6 @@ void GLFWCALL MousePosFunc( int x, int y )
 	lastmousey = y;
 }
 
-
 //----------------------------------------------------------------------------//
 // Creates and sets up a window
 //----------------------------------------------------------------------------//
@@ -448,7 +461,7 @@ void OpenGl_initViewer(int width_, int height_)
 	
 
 	// Open an OpenGL window using glfw
-	if( !glfwOpenWindow( winw,winh, 8,8,8,8,32,0, GLFW_WINDOW ) )
+	if( !glfwOpenWindow( winw,winh, 8,8,8,8,24,0, GLFW_WINDOW ) )
 	{
 		glfwTerminate();
 		exit( EXIT_FAILURE );
@@ -472,12 +485,20 @@ void OpenGl_initViewer(int width_, int height_)
 	glfwGetMousePos(&lastmousex, &lastmousey);
 	lastwheelpos = glfwGetMouseWheel();
 
-	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glShadeModel(GL_SMOOTH);
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	glEnable(GL_COLOR_MATERIAL);
+	glHint(GL_CLIP_VOLUME_CLIPPING_HINT_EXT,GL_FASTEST);
+
+
+
+	int depth;
+	glGetIntegerv(GL_DEPTH_BITS, &depth);
+	std::cout << "GL_DEPTH_BITS: " << depth << "\n";
 	
 }
 

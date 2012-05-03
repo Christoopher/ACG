@@ -10,7 +10,6 @@
 	#include <armadillo>
 #endif
 
-
 #include "OpenGLViewer.h"
 #include "Physics.h"
 #include "RigidBody.h"
@@ -18,19 +17,19 @@
 
 int main(void)
 {
-	physics_init();
+	physicsInit();
 
 	OpenGl_initViewer(600, 600);
-	double t = 0, dt = 1.0/60.0;
+	double t = 0, dt = 1.0/300.0;
 	while(running) {
 		if(reset)
-			physics_reset();
+			physicsReset();
 		reset = false;
 		
 
 		if(step || play)
 		{
-			physics_tick(t,dt);			
+			physicsTick(t,dt);			
 		}
 			
 		//Draw
@@ -40,7 +39,7 @@ int main(void)
 	
 
 	TerminateViewer();
-	physics_terminate();
+	physicsTerminate();
 
 	return 0;
 }
