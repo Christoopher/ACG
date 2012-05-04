@@ -161,11 +161,14 @@ class Simplex
 public:
 	Simplex() : _rank(0) { _points.resize(4); }
 	/* convenience method to fetch an MPoint */
-	const MinkowskiSet::MPoint &
+	MinkowskiSet::MPoint &
 	operator[](int i) { return *_points[i]; }
 
+	std::vector<MinkowskiSet::MPoint *> &
+	getImpl() { return _points; }
+
 	/* convenience method tp fetch the last inserted point */
-	const MinkowskiSet::MPoint &
+	MinkowskiSet::MPoint &
 	last() { return *_points[_rank-1]; }
 
 	int
@@ -225,6 +228,8 @@ private:
 class GJK
 {
 public:
+	friend class EPA;
+
 	GJK(RigidBody & a, RigidBody & b) 
 		: _bodyA(a) , _bodyB(b), _mk(a,b), _intersects(false), THRESHOLD(10e-9)
 	{
@@ -403,18 +408,203 @@ private:
 	const float THRESHOLD;
 };
 
-class EPA
+struct Plane
 {
-public:
-	EPA(Simplex * s) : _s(s) 
+	Plane(MinkowskiSet::MPoint * A, MinkowskiSet::MPoint * B, MinkowskiSet::MPoint * C)
 	{
+		isPoint[0] = A;
+		isPoint[1] = B;
+		isPoint[2] = C;
+
+		// create the normal to the current simplex face
+		arma::vec n = arma::cross(C->p - A->p, B->p - A->p);
+
+		//Check so that it is pointing away from the origin
+		if(arma::dot(n, A->p) < 0) //A could also be B or C (just one point on the plane)
+			n = -n;
+
+		// calculate the distance from the origin to the this plane
+		n = n/arma::norm(n,2);
+		p = dot(A->p, n) * n;
+		dist = arma::norm(p,2);
 
 	}
 
+	arma::vec p;
+	double dist;
+	MinkowskiSet::MPoint * isPoint[3];
+};
+
+class EPA
+{
+public:
+	EPA(GJK & gjk) : _gjk(gjk)  
+	{
+		_run();
+	}
+
+	Plane &
+	plane() { return _planes[_cpi]; }
+
 private:
-	Simplex * _s;
+	void
+	_run()
+	{
+		MinkowskiSet::MPoint * A;
+
+		//create planes for the starting simplex and insert to planes
+		Plane abc(&_gjk._s[0], &_gjk._s[1], &_gjk._s[2]);
+		Plane abd(&_gjk._s[0], &_gjk._s[1], &_gjk._s[3]);
+		Plane acd(&_gjk._s[0], &_gjk._s[2], &_gjk._s[3]);
+		Plane bcd(&_gjk._s[1], &_gjk._s[2], &_gjk._s[3]);
+		_planes.push_back(abc);
+		_planes.push_back(abd);
+		_planes.push_back(acd);
+		_planes.push_back(bcd);
+
+		while (true) 
+		{
+			//Find the closest face
+			_findClosestPlane();   //Sets _cpi (closestPlaneIndex) and _closestDist
+
+
+			A = _gjk._mk.support(_planes[_cpi].p);
+			double d = arma::dot(A->p, _planes[_cpi].p);
+			if (d - _closestDist < 0.00001) 
+			{
+				//Finished!
+				return; 
+			} 
+			else //We now have the closest plane, which is the plane from where a new tetrahedron will be "extruded" by 					inserting a new point on the non-origin-side of this plane and adding the 3 new planes. A is the new point.
+			{ 
+				Plane abc(A, _planes[_cpi].isPoint[0], _planes[_cpi].isPoint[1]);
+				Plane abd(A, _planes[_cpi].isPoint[0], _planes[_cpi].isPoint[2]);
+				Plane acd(A, _planes[_cpi].isPoint[1], _planes[_cpi].isPoint[2]);
+				_planes.erase(_planes.begin() + _cpi);
+				_planes.push_back(abc);
+				_planes.push_back(abd);
+				_planes.push_back(acd);
+			}
+		}
+	}
+
+	void
+	_findClosestPlane()
+	{
+		_closestDist = 10000000.0;
+
+		for (int i = 0; i < _planes.size(); ++i) 
+		{
+			// check the distance against the other distances
+			if (_planes[i].dist < _closestDist) 
+			{
+				// if this face is closer than previous faces we use it
+				_closestDist = _planes[i].dist;
+				_cpi = i;
+				_csNormal = _planes[i].p;
+			}
+		}
+	}
+
+	
+	
+	double _closestDist;
+	int _cpi; //closestPlaneIndex
+	GJK & _gjk;
+	arma::vec _csNormal;
+	std::vector<Plane> _planes;
 
 };
+
+void
+makeContact(Plane & plane,RigidBody & a,RigidBody & b, Contact & c)
+{
+	/* 
+	The simplex is ordered  [ A B C P0 ] 
+	Where P0 is the vector from the origin in the minkowski difference to the closest
+	point on the hull. ABC is the triangle/plane on which the point exists.
+	Also ABC and P0 are orthogonal
+	dot(ABC,P0) = 0;
+
+	C
+	| \  
+	|   \ 
+	|     \
+	|   P   \
+	|         \
+	A_ _ _ _ _ _B
+
+	*/
+
+	/* Begin with calculating the barycentric coordinates */
+
+	MinkowskiSet::MPoint *A,*B,*C;
+	A = plane.isPoint[0];
+	B = plane.isPoint[1];
+	C = plane.isPoint[2];
+
+	arma::vec n,na,nb,nc;
+	n = na = nb = nc = arma::zeros<arma::vec>(3,1);
+
+	/* N = AB x AC = ABC */
+	n = arma::cross(B->p - A->p, C->p - A->p);
+
+	/* na = BC x BP = BCP */
+	na = arma::cross(C->p - B->p, plane.p - B->p);
+
+	/* nb = CA x CP = CAP */
+	nb = arma::cross(A->p - C->p, plane.p - C->p);
+
+	/* nc = AB x AP = ABP */
+	nc = arma::cross(B->p - A->p, plane.p - A->p);
+
+	double nnormsq = n(0)*n(0)+n(1)*n(1)+n(2)*n(2);
+	double lA = arma::dot(n,na) / nnormsq;
+	double lB = arma::dot(n,nb) / nnormsq;
+	double lC = arma::dot(n,nc) / nnormsq;
+
+	/* Calculate world coordinates */
+	arma::vec aWorld = lA*a.getWorldVerts()[A->Ai] + lB*a.getWorldVerts()[B->Ai] + lC*a.getWorldVerts()[C->Ai];
+	arma::vec bWorld = lA*a.getWorldVerts()[A->Bj] + lB*a.getWorldVerts()[B->Bj] + lC*a.getWorldVerts()[C->Bj];
+	arma::vec pWorld = aWorld - bWorld; /* The translation vector */
+	c.P = bWorld;
+	
+	/* Determine vertex-face or edge-edge */
+
+	/*	
+		VERTEX-FACE CASE
+
+		(1)
+		IF A_vertex <-> B_face
+
+		-> A->Ai == B->Ai == C->Ai
+
+		-> lA == lB == lC == 1/3
+
+		(2)
+		IF B_vertex <-> A_face
+
+		-> A->Bi == B->Bi == C->Bi
+
+		-> lA == lB == lC == 1/3
+
+	*/
+
+	std::cout << plane.p(0) << "," << plane.p(1) << "," << plane.p(2) << "\n";
+
+	/* A_vertex <-> B_face */
+	if(A->Ai == B->Ai && B->Ai == C->Ai) // ===> A->Ai == B->Ai == C->Ai
+	{
+	
+	
+	}
+	/* B_vertex <-> A_face */
+	else if(A->Ai == B->Ai && B->Ai == C->Ai) // ===> A->Bi == B->Bi == C->Bi
+	{
+	
+	
+	}
+}
 
 void
 narrowPhase(RigidBody & bodyA,RigidBody & bodyB, std::vector<Contact> & contacts)
@@ -423,19 +613,20 @@ narrowPhase(RigidBody & bodyA,RigidBody & bodyB, std::vector<Contact> & contacts
 
 	if(gjk.intersects())
 	{
-		EPA epa(gjk.simplex());				
-		//ContactSet cs(epa);
-		//cs.copyTo(contacts);
-		//Contact c;
-		//c.A = &bodyA;
-		//c.A = &bodyB;
-		//contacts.push_back(c);
+		EPA epa(gjk);				
+		Contact c;
+		
+		makeContact(epa.plane(),bodyA,bodyB, c);
+
 		bodyA.isColliding = true;
 		bodyB.isColliding = true;
 		play = false;
 	}
 
 }
+
+
+
 
 /***********************************************************************************************/
 //									  BROAD PHASE

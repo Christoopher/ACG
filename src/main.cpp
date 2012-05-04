@@ -15,6 +15,28 @@
 #include "RigidBody.h"
 #include "Quaternion.h"
 
+class Foo
+{
+public:
+	void
+	init(int size)
+	{
+		buf = new double[size];
+
+	}
+
+	~Foo()
+	{
+		delete [] buf;
+	} 
+
+
+private:
+	double * buf;
+};
+
+
+
 int main(void)
 {
 	physicsInit();

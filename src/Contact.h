@@ -12,11 +12,9 @@
 
 #include "RigidBody.h"
 
-
-
 struct Contact
 {
-	Contact()
+	Contact() : isVFContact(true), A(NULL), B(NULL)
 	{
 		P.zeros(3,1);
 		N.zeros(3,1);
@@ -32,6 +30,8 @@ struct Contact
 	arma::vec EA; //edge from A
 	arma::vec EB; //edge from B
 	bool isVFContact; //true if vertex-face, false if edge-edge
+	
+
 };
 
 
