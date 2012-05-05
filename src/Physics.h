@@ -100,12 +100,13 @@ physicsTerminate()
 void 
 physicsTick(double t, double dt)
 {
+	contacts.clear();
 	collision_detection(rigidBodyArray, t, dt, contacts);
+	setContacts(contacts);
 	//collisionResponse(rigidBodyArray,contacts);
-	if(play)
-		for (int i = 0; i < rigidBodyArray.size(); ++i)
-		{
-			//std::cout << rigidBodyArray[0].X(1) << "\n";
-			rigidBodyArray[i].update(t,dt);
-		}
+	for (int i = 0; i < rigidBodyArray.size(); ++i)
+	{
+		//std::cout << rigidBodyArray[0].X(1) << "\n";
+		rigidBodyArray[i].update(t,dt);
+	}
 }

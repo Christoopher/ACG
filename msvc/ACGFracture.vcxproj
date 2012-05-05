@@ -68,11 +68,12 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>Full</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ARMA)/include/;../src/win32Includes/OpenGLRelated/include/glut/;../src/win32Includes/OpenGLRelated/include/GLTools/include/;../src/win32Includes/OpenGLRelated/include/glew/;../src/win32Includes/OpenGLRelated/include/glfw/;../src/win32Includes/OpenGLRelated/include/GLTools/src/;</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -29,7 +29,10 @@
 #endif
 
 #include "RigidBody.h"
+#include "Contact.h"
 
+//FUL VARRE
+std::vector<Contact> * conts;
 
 
 
@@ -50,6 +53,12 @@ bool up_is_down;
 bool down_is_down;
 bool shiftdown = false;
 
+void setContacts(std::vector<Contact> & c)
+{
+	conts = &c;
+
+}
+
 //----------------------------------------------------------------------------//
 // Unit wireframe cube: vertices indices
 //----------------------------------------------------------------------------//
@@ -67,6 +76,7 @@ GLuint unitWFCubeindices[] = { 0,1, 1,2, 2,3, 0,3, 3,4, 4,7, 2,7, 4,5, 5,6, 7,6,
 //----------------------------------------------------------------------------//
 void getOpenGLError() 
 {
+	
 	GLenum errCode; 
 	const GLubyte *errString;
 
@@ -250,6 +260,11 @@ void draw_axis(int size)
 static float g_lightPos[4] = { 10, 10, +100, 1 };  // Position of light
 void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 {
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	
+
 	running = !glfwGetKey( GLFW_KEY_ESC ) && glfwGetWindowParam( GLFW_OPENED );
 
 	if(!running)
@@ -274,7 +289,7 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 	gluLookAt(0, 5, 10, 0, 0, 1, 0, 1, 0);
 	
 	// Set up the stationary light
-	glLightfv(GL_LIGHT0, GL_POSITION, g_lightPos);
+	//glLightfv(GL_LIGHT0, GL_POSITION, g_lightPos);
 	
 	glTranslatef(posDx,posDy,0);
 	glRotatef(-rotDx, 1,0,0);
@@ -282,18 +297,38 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 
 	
 	// Render the scene
-	glPointSize(2.1);
+	glPointSize(4);
 	glDisable(GL_LIGHTING);
 	glBegin(GL_POINTS);
 	//glVertex3f(-1,-1,-1);
 	glVertex3f(0,0,0);
+
+	if(conts != NULL)
+		for(int i = 0; i < conts->size(); ++i)
+		{
+			glColor3f(1.0,1.0,0.0);  
+			glVertex3f(conts->at(i).P(0),conts->at(i).P(1), conts->at(i).P(2));
+			glColor3f(1.0,1.0,1.0);
+			glVertex3f(conts->at(i).N(0),conts->at(i).N(1), conts->at(i).N(2));
+		}
+
+	glEnd();
+
+	glBegin(GL_LINES);
+		if(conts != NULL)
+		for(int i = 0; i < conts->size(); ++i)
+		{
+			glColor3f(1.0,1.0,1.0);  
+			glVertex3f(conts->at(i).P(0),conts->at(i).P(1), conts->at(i).P(2));
+			glVertex3f(conts->at(i).N(0),conts->at(i).N(1), conts->at(i).N(2));
+		}
 	glEnd();
 
 	draw_grid(10.0);
 
 	draw_axis(3.0);
 
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 
 
 	 

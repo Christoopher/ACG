@@ -15,34 +15,12 @@
 #include "RigidBody.h"
 #include "Quaternion.h"
 
-class Foo
-{
-public:
-	void
-	init(int size)
-	{
-		buf = new double[size];
-
-	}
-
-	~Foo()
-	{
-		delete [] buf;
-	} 
-
-
-private:
-	double * buf;
-};
-
-
-
 int main(void)
 {
 	physicsInit();
 
 	OpenGl_initViewer(600, 600);
-	double t = 0, dt = 1.0/300.0;
+	double t = 0, dt = 1.0/1200.0;
 	while(running) {
 		if(reset)
 			physicsReset();
@@ -51,7 +29,7 @@ int main(void)
 
 		if(step || play)
 		{
-			physicsTick(t,dt);			
+			physicsTick(t,dt);	
 		}
 			
 		//Draw

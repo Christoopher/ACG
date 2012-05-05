@@ -563,11 +563,14 @@ makeContact(Plane & plane,RigidBody & a,RigidBody & b, Contact & c)
 	double lB = arma::dot(n,nb) / nnormsq;
 	double lC = arma::dot(n,nc) / nnormsq;
 
+	double sumL = lA+lB+lC;
+
 	/* Calculate world coordinates */
 	arma::vec aWorld = lA*a.getWorldVerts()[A->Ai] + lB*a.getWorldVerts()[B->Ai] + lC*a.getWorldVerts()[C->Ai];
-	arma::vec bWorld = lA*a.getWorldVerts()[A->Bj] + lB*a.getWorldVerts()[B->Bj] + lC*a.getWorldVerts()[C->Bj];
+	arma::vec bWorld = lA*b.getWorldVerts()[A->Bj] + lB*b.getWorldVerts()[B->Bj] + lC*b.getWorldVerts()[C->Bj];
 	arma::vec pWorld = aWorld - bWorld; /* The translation vector */
-	c.P = bWorld;
+	c.P = aWorld;
+	c.N = bWorld;
 	
 	/* Determine vertex-face or edge-edge */
 
@@ -588,21 +591,21 @@ makeContact(Plane & plane,RigidBody & a,RigidBody & b, Contact & c)
 
 		-> lA == lB == lC == 1/3
 
-	*/
-
-	std::cout << plane.p(0) << "," << plane.p(1) << "," << plane.p(2) << "\n";
+	*/	
 
 	/* A_vertex <-> B_face */
 	if(A->Ai == B->Ai && B->Ai == C->Ai) // ===> A->Ai == B->Ai == C->Ai
 	{
-	
-	
+		std::cout << "A_vertex - B_face\n";	
 	}
 	/* B_vertex <-> A_face */
 	else if(A->Ai == B->Ai && B->Ai == C->Ai) // ===> A->Bi == B->Bi == C->Bi
+	{	
+		std::cout << "B_vertex - A_face\n";
+	}
+	else
 	{
-	
-	
+		std::cout << "edge-edge\n";
 	}
 }
 
@@ -617,6 +620,7 @@ narrowPhase(RigidBody & bodyA,RigidBody & bodyB, std::vector<Contact> & contacts
 		Contact c;
 		
 		makeContact(epa.plane(),bodyA,bodyB, c);
+		contacts.push_back(c);
 
 		bodyA.isColliding = true;
 		bodyB.isColliding = true;
