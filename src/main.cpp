@@ -14,13 +14,15 @@
 #include "Physics.h"
 #include "RigidBody.h"
 #include "Quaternion.h"
+#include "UTLog.h"
+
 
 int main(void)
 {
 	physicsInit();
 
 	OpenGl_initViewer(600, 600);
-	double t = 0, dt = 1.0/1200.0;
+	double t = 0, dt = 1.0/500.0;
 	while(running) {
 		if(reset)
 			physicsReset();

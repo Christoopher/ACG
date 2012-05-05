@@ -38,7 +38,7 @@ void
 physicsSetState()
 {
 	rigidBodyArray[0].X(0) = rigidBodyArray[0].X(2) = 0;
-	rigidBodyArray[0].X(1) = 10.0;
+	rigidBodyArray[0].X(1) = 5.0;
 	rigidBodyArray[0].mass = 120;
 	
 

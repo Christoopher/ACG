@@ -9,6 +9,7 @@
 #include "RigidBody.h"
 #include "Contact.h"
 #include "OpenMPDefines.h"
+#include "UTLog.h"
 
 
 //3rd party
@@ -250,8 +251,14 @@ private:
 		MinkowskiSet::MPoint * A = _mk.getStartingPoint();
 		_s.insert(A);
 		arma::vec d(-A->p);
+		int iterations = 0;
 		while(true)
 		{
+			if(iterations > 200)
+			{
+				LOG("Reached 200 iterations in GJK algorithm. aborting...");
+				return;
+			}
 			A = _mk.support(d);
 			if(arma::dot(A->p,d) < THRESHOLD)
 				return;
@@ -268,6 +275,8 @@ private:
 					return;
 				}
 			}
+
+			++iterations;
 		}
 
 	}
@@ -443,6 +452,7 @@ public:
 		_run();
 	}
 
+
 	Plane &
 	plane() { return _planes[_cpi]; }
 
@@ -467,15 +477,21 @@ private:
 			//Find the closest face
 			_findClosestPlane();   //Sets _cpi (closestPlaneIndex) and _closestDist
 
+			if(_planes.size() > 300)
+			{
+				LOG("Added: " <<  _planes.size() << "planes in EPA algorithm. aborting...");
+				return;
+			}
+
 
 			A = _gjk._mk.support(_planes[_cpi].p);
-			double d = arma::dot(A->p, _planes[_cpi].p);
-			if (d - _closestDist < 0.00001) 
+			double d = arma::dot(A->p, _planes[_cpi].p/arma::norm(_planes[_cpi].p,2));
+			if (abs(d - _closestDist) < 0.00001) 
 			{
 				//Finished!
 				return; 
 			} 
-			else //We now have the closest plane, which is the plane from where a new tetrahedron will be "extruded" by 					inserting a new point on the non-origin-side of this plane and adding the 3 new planes. A is the new point.
+			else //We now have the closest plane, which is the plane from where a new tetrahedron will be "extruded" by	inserting a new point on the non-origin-side of this plane and adding the 3 new planes. A is the new point.
 			{ 
 				Plane abc(A, _planes[_cpi].isPoint[0], _planes[_cpi].isPoint[1]);
 				Plane abd(A, _planes[_cpi].isPoint[0], _planes[_cpi].isPoint[2]);
@@ -738,7 +754,7 @@ collision_detection(std::vector<RigidBody> & bodies, float t, float dt, std::vec
 	std::vector<std::vector<Contact> > contactsVector;
 	contactsVector.resize(MAX_THREADS);
 	int chunksize = colPairs.size() - (colPairs.size() % MAX_THREADS) / MAX_THREADS;
-#pragma omp parallel for shedule(dynamic, chunksize)
+#pragma omp parallel for schedule(dynamic, chunksize)
 	for (int i = 0; i < colPairs.size(); ++i)
 	{
 		narrowPhase(bodies[ colPairs[i].first ], bodies[ colPairs[i].second ], contactsVector[omp_get_thread_num()]);
