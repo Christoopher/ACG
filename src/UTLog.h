@@ -5,8 +5,7 @@
 #include <fstream>
 
 #define LOG(msg) Logger::getInstance().file << msg << "\n"; \
-	std::cout << msg << "\n"
-	
+	std::cout << msg << "\n"	
 
 
 using namespace std;
