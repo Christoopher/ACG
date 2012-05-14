@@ -5,5 +5,4 @@
 
 static const int MAX_THREADS = omp_get_max_threads();
 
-
 #endif

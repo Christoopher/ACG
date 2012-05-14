@@ -17,22 +17,6 @@ std::vector<RigidBody> rigidBodyArray;
 std::vector<arma::vec> cube;
 std::vector<Contact> contacts;
 
-bool first_frame = true;
-arma::vec
-Force(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, arma::mat R,arma::vec V,arma::vec W)
-{
-	arma::vec F = arma::zeros<arma::vec>(3,1);
-	F(1) = -120*9.82;
-
-	return F;
-}
-
-arma::vec 
-Torque(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, arma::mat R,arma::vec V,arma::vec W)
-{
-	arma::vec F = arma::zeros<arma::vec>(3,1);
-	return F;
-}
 
 void
 physicsSetState()
@@ -103,7 +87,9 @@ physicsTick(double t, double dt)
 	contacts.clear();
 	collision_detection(rigidBodyArray, t, dt, contacts);
 	setContacts(contacts);
-	//collisionResponse(rigidBodyArray,contacts);
+
+    if(contacts.size()>0)
+      collisionResponse(contacts);
 	for (int i = 0; i < rigidBodyArray.size(); ++i)
 	{
 		//std::cout << rigidBodyArray[0].X(1) << "\n";

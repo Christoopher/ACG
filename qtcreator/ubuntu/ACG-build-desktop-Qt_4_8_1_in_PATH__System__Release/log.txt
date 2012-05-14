@@ -1,0 +1,124 @@
+vertex-face collision
+A:    0.0716
+
+ddot:   -6.9722
+
+f:    1.9468e+02
+
+b:    3.5597e+02
+
+g:   -4.9698e+03
+
+vertex-face collision
+A:    0.0784
+
+ddot:    7.4697
+
+f:         0
+
+b:    3.4724e+02
+
+g:   -4.4268e+03
+
+edge-edge collision
+A:    0.1657
+
+ddot:   -24.1681
+
+f:    2.9163e+02
+
+b:   -3.0702e+03
+
+g:    1.8524e+04
+
+edge-edge collision
+A:    0.1552
+
+ddot:   -8.2721
+
+f:    1.0660e+02
+
+b:    4.0661e+03
+
+g:   -2.6200e+04
+
+edge-edge collision
+A:    0.1433
+
+ddot:    7.2463
+
+f:         0
+
+b:    3.7549e+03
+
+g:   -2.6197e+04
+
+edge-edge collision
+A:    0.1325
+
+ddot:    6.4572
+
+f:         0
+
+b:    3.4506e+03
+
+g:   -2.6042e+04
+
+Added: 302planes in EPA algorithm. aborting...
+edge-edge collision
+A:    0.1126
+
+ddot:   -26.5940
+
+f:    4.7252e+02
+
+b:   -3.7337e+03
+
+g:    3.3171e+04
+
+edge-edge collision
+A:    0.1308
+
+ddot:   -1.8834
+
+f:    28.8075
+
+b:    1.7982e+03
+
+g:   -1.3752e+04
+
+edge-edge collision
+A:    0.1383
+
+ddot:    2.7841
+
+f:         0
+
+b:    1.9205e+03
+
+g:   -1.3884e+04
+
+Reached 200 iterations in GJK algorithm. aborting...
+edge-edge collision
+A:    0.1616
+
+ddot:   -31.1012
+
+f:    3.8484e+02
+
+b:    2.8527e+03
+
+g:   -1.7650e+04
+
+Reached 200 iterations in GJK algorithm. aborting...
+vertex-face collision
+A:    0.1304
+
+ddot:   -18.6987
+
+f:    2.8687e+02
+
+b:    1.5894e+02
+
+g:   -1.2192e+03
+

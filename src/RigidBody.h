@@ -1,6 +1,7 @@
 #ifndef RIGIDBODY_H
 #define RIGIDBODY_H
-
+#include "UTLog.h"
+#include <assert.h>
 //3rd party
 #ifdef _WIN32
 #include "armadillo.h"
@@ -12,6 +13,23 @@
 
 typedef Quaternion<double> Quaterniond;
 
+arma::vec
+Force(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, arma::mat R,arma::vec V,arma::vec W)
+{
+    arma::vec F = arma::zeros<arma::vec>(3,1);
+    F(1) = -120*9.82;
+
+    return F;
+}
+
+arma::vec
+Torque(double dt, arma::vec X,Quaterniond Q,arma::vec P,arma::vec L, arma::mat R,arma::vec V,arma::vec W)
+{
+    arma::vec F = arma::zeros<arma::vec>(3,1);
+    return F;
+}
+
+
 class RigidBody
 {
 public:
@@ -19,15 +37,27 @@ public:
 	{
 		inertia.eye(3,3); inertia *= mass/12.0;
 		inv_inertia = arma::inv(inertia);
-
+        force_fun = &Force;
+        torque_fun = &Torque;
 		X.zeros(3,1);
 		V.zeros(3,1);
 		W.zeros(3,1);
 		R.eye(4,4);
 		L.zeros(3,1);	
 		P.zeros(3,1);
-		
-		float r = 1.0;
+     /*   if(force_fun==NULL)
+        {
+            LOG("force_fun is null!");
+            assert(force_fun==NULL);
+        }
+        else if(torque_fun==NULL)
+        {
+            LOG("torque_fun is null!");
+            assert("torque_fun==NULL");
+        }*/
+        m_externalForce = force_fun(0.0,X,Q,P,L,R,V,W);
+        m_externalTorque = torque_fun(0.0,X,Q,P,L,R,V,W);
+        float r = 1.0;
 		arma::vec v = arma::zeros<arma::vec>(3,1);
 		v(0) = -r; v(1) = -r; v(2) = -r; _vertices.push_back(v);
 		v(0) = r; v(1) = -r; v(2) = -r; _vertices.push_back(v);
@@ -38,6 +68,18 @@ public:
 		v(0) = r; v(1) = r; v(2) = r; _vertices.push_back(v);
 		v(0) = -r; v(1) = r; v(2) = r; _vertices.push_back(v);
 	}
+	
+	void
+        AppendInternalForce (arma::vec& intForce)
+        {
+        m_internalForce += intForce;
+        }
+
+        void
+        AppendInternalTorque (arma::vec& intTorque)
+        {
+        m_internalTorque += intTorque;
+        }
 
 	void
 	init()
@@ -69,7 +111,13 @@ public:
 	//Derived State VAriables
 	arma::mat R; // Orientiation
 	arma::vec V, W; //lin vel, ang vel
-
+	
+	// external force/torque at current time of simulation
+    arma::vec3 m_externalForce, m_externalTorque;
+    // motion of bodies, then reset to zero for next pass.
+    arma::vec3 m_internalForce, m_internalTorque;
+ 	
+	
 	bool isColliding;
 
 	typedef arma::vec (*Function)
@@ -103,14 +151,23 @@ public:
 		//STEp1
 		arma::vec A1DXDT(V);
 		arma::vec tmp = (0.5 * W);
-		Quaterniond A1DQDT = Q*tmp;//tmp;
-		arma::vec A1DPDT = force_fun(t,X,Q,P,L,R,V,W);	
-		arma::vec A1DLDT = torque_fun(t,X,Q,P,L,R,V,W);
+        Quaterniond A1DQDT = Q*tmp;//tmp;
+        //arma::vec A1DPDT = force_fun(t,X,Q,P,L,R,V,W);
+        //arma::vec A1DLDT = torque_fun(t,X,Q,P,L,R,V,W);
+
+        arma::vec A1DPDT = m_externalForce  + m_internalForce;
+        arma::vec A1DLDT = m_externalTorque + m_internalTorque;
 		XN = X + A1DXDT * halfdt;
 		QN = Q + A1DQDT * halfdt;
 		PN = P + A1DPDT * halfdt;
 		LN = L + A1DLDT * halfdt;
 		Convert(QN,PN,LN,RN,VN,WN);
+
+		//new stuff------------------------
+
+        m_internalForce  = arma::zeros<arma::vec>(3);
+        m_internalTorque = arma::zeros<arma::vec>(3);
+                //----------------------------------
 
 		//Step 2
 		arma::vec A2DXDT(VN);
@@ -143,12 +200,10 @@ public:
 		arma::vec A4DPDT = force_fun(tpdt,XN,QN,PN,LN,RN,VN,WN);
 		arma::vec A4DLDT = torque_fun(tpdt,XN,QN,PN,LN,RN,VN,WN);
 		X = X + (A1DXDT + (A2DXDT + A3DXDT)*2.0 + A4DXDT) * sixthdt;
-		Q = Q + (A1DQDT + (A2DQDT + A3DQDT)*2.0 + A4DQDT) * sixthdt;
+        Q = Q + (A1DQDT + (A2DQDT + A3DQDT)*2.0 + A4DQDT) * sixthdt;
 		P = P + (A1DPDT + (A2DPDT + A3DPDT)*2.0 + A4DPDT) * sixthdt;
 		L = L + (A1DLDT + (A2DLDT + A3DLDT)*2.0 + A4DLDT) * sixthdt;
 		Convert(Q,P,L,R,V,W);
-
-
 		
 
 		//Recalc world transform

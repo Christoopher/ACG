@@ -1,0 +1,18 @@
+runnin gjk
+check if outside ADC
+D1: -2.58558, D2: -0.0546197, D3: -0.639474, D4: -0.284354
+vertex-face collision
+A:    0.0716
+
+ddot:   -6.9722
+
+f:    1.9468e+02
+
+b:    3.5597e+02
+
+g:         0
+
+A*relA+b:    3.5597e+02
+
+relA:         0
+
