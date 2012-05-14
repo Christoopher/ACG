@@ -30,8 +30,6 @@ struct Contact
 	arma::vec EA; //edge from A
 	arma::vec EB; //edge from B
 	bool isVFContact; //true if vertex-face, false if edge-edge
-	
-
 };
 
 

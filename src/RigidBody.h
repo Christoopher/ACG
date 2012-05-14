@@ -45,6 +45,8 @@ public:
 		R.eye(4,4);
 		L.zeros(3,1);	
 		P.zeros(3,1);
+        m_internalForce.zeros(3,1);
+        m_internalTorque.zeros(3,1);
      /*   if(force_fun==NULL)
         {
             LOG("force_fun is null!");
@@ -113,9 +115,9 @@ public:
 	arma::vec V, W; //lin vel, ang vel
 	
 	// external force/torque at current time of simulation
-    arma::vec3 m_externalForce, m_externalTorque;
+    arma::vec m_externalForce, m_externalTorque;
     // motion of bodies, then reset to zero for next pass.
-    arma::vec3 m_internalForce, m_internalTorque;
+    arma::vec m_internalForce, m_internalTorque;
  	
 	
 	bool isColliding;

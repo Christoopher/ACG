@@ -3,7 +3,7 @@
 
 //#define VISGJK
 //#define VISEPA
-//#define FIX_COLLISION
+#define FIX_COLLISION
 
 #include <vector>
 #include <cmath>
@@ -841,87 +841,204 @@ private:
 
 struct Plane
 {
-    Plane(MinkowskiSet::MPoint * A, MinkowskiSet::MPoint * B, MinkowskiSet::MPoint * C)
-    {
-        points[0] = A;
-        points[1] = B;
-        points[2] = C;
-
-        // create the normal to the current simplex face
-        arma::vec n = arma::cross(C->p - A->p, B->p - A->p);
-
-        //Check so that it is pointing away from the origin
-        if(arma::dot(n, A->p) < 0) //A could also be B or C (just one point on the plane)
-            n = -n;
-
-        // calculate the distance from the origin to the this plane
-        n = n/arma::norm(n,2);
-        p = dot(A->p, n) * n;
-        dist = arma::norm(p,2);
-
-    }
-
-    arma::vec p;
-    double dist;
+    arma::vec p; //closest point to plane
+    arma::vec n; //closest point to plane
+    double dist; //mag(p) i.e distance to plane
     MinkowskiSet::MPoint * points[3];
 };
 
 class EPA
 {
 public:
-    EPA(GJK & gjk) : _gjk(gjk)
+    EPA(GJK & gjk) : _gjk(gjk) , A(NULL), _currplane(-1)
     {
         _run();
     }
-
 
     Plane &
     plane() { return _planes[_cpi]; }
 
 private:
+
+    class _PlaneMgr
+    {
+    public:
+        _PlaneMgr() : _size(0)
+        {
+            _planes.resize(6); //Should not need more than 6 planes
+        }
+
+        Plane &
+        operator[](int i) {return _planes[i];}
+
+        int
+        size() { return _size; }
+
+        void
+        insert(MinkowskiSet::MPoint * A, MinkowskiSet::MPoint * B, MinkowskiSet::MPoint * C)
+        {
+            if(_size >= _planes.size())
+            {
+                Plane p;
+                _planes.push_back(p);
+            }
+
+            _planes[_size].points[0] = A;
+            _planes[_size].points[1] = B;
+            _planes[_size].points[2] = C;
+
+            // create the normal to the current simplex face ABC = cross(AB,AC) = cross(B-A,C-A)
+            arma::vec n = arma::cross(B->p - A->p, C->p- A->p);
+
+            float dotprod = dot(A->p, n);
+            if(dotprod <= 10e-7)
+            {
+                LOG("DOTPROD IS ZERO");
+            }
+            // calculate the distance from the origin to the this plane
+            _planes[_size].n = n/arma::norm(n,2);
+            _planes[_size].p = dot(A->p, n) * n; //Can be zero
+            _planes[_size].dist = abs(dotprod); //NOT SO GOOD TO ABS HERE
+
+            //Dont forget to increment the size
+            ++_size;
+        }
+
+        void
+        insertPointsOnly(MinkowskiSet::MPoint * A, MinkowskiSet::MPoint * B, MinkowskiSet::MPoint * C)
+        {
+            if(_size >= _planes.size())
+            {
+                Plane p;
+                _planes.push_back(p);
+            }
+
+            _planes[_size].points[0] = A;
+            _planes[_size].points[1] = B;
+            _planes[_size].points[2] = C;
+
+            // create the normal to the current simplex face ABC = cross(AB,AC) = cross(B-A,C-A)
+            _planes[_size].n = arma::cross(B->p - A->p, C->p - A->p);
+            _planes[_size].n /= arma::norm(_planes[_size].n,2);
+            float dotprod = dot(A->p, _planes[_size].n);
+            _planes[_size].p = dotprod * _planes[_size].n; //WHAT HAPPEN IF A->p and n are very close to orthogonal
+            _planes[_size].dist = abs(dotprod);
+
+            //Dont forget to increment the size
+            ++_size;
+        }
+
+        std::vector<Plane> &
+        getPlanes() { return _planes; }
+
+        void
+        remove(int i)
+        {
+            //Lazy deletion -> swap i to end & decrease size
+            std::swap(_planes[i],_planes.back());
+            --_size;
+        }
+
+    private:
+
+        std::vector<Plane> _planes;
+        int _size;
+    };
+
     void
     _run()
     {
-        MinkowskiSet::MPoint * A;
-
         //create planes for the starting simplex and insert to planes
-        Plane abc(&_gjk._s[0], &_gjk._s[1], &_gjk._s[2]);
-        Plane abd(&_gjk._s[0], &_gjk._s[1], &_gjk._s[3]);
-        Plane acd(&_gjk._s[0], &_gjk._s[2], &_gjk._s[3]);
-        Plane bcd(&_gjk._s[1], &_gjk._s[2], &_gjk._s[3]);
-        _planes.push_back(abc);
-        _planes.push_back(abd);
-        _planes.push_back(acd);
-        _planes.push_back(bcd);
+        // S = [ A(0) B(1) C(2) D(3) ]
+        _planes.insertPointsOnly(&_gjk._s[0], &_gjk._s[2], &_gjk._s[1]); //ACB
+        _planes.insertPointsOnly(&_gjk._s[0], &_gjk._s[1], &_gjk._s[3]); //ABD
+        _planes.insertPointsOnly(&_gjk._s[0], &_gjk._s[3], &_gjk._s[2]); //ADC
+        _planes.insertPointsOnly(&_gjk._s[1], &_gjk._s[2], &_gjk._s[3]); //BCD
 
+        //CHECK PLANE ACB
+        float dotprod = 0.0;
+        if((dotprod = dot(_planes[0].n,_gjk._s[3].p)) > 0) //dot(N,D)
+            _planes[0].n *= -1;
+
+
+        //CHECK PLANE ABD
+        if((dotprod = dot(_planes[1].n,_gjk._s[2].p)) > 0) //dot(N,C)
+            _planes[1].n *= -1;
+
+        //CHECK PLANE ADC
+        if((dotprod = dot(_planes[2].n,_gjk._s[1].p)) > 0) //dot(N,B)
+            _planes[2].n *= -1;
+
+        //CHECK PLANE BCD
+        if((dotprod = dot(_planes[3].n,_gjk._s[0].p)) > 0) //dot(N,A)
+            _planes[3].n *= -1;
+
+
+
+#ifdef VISEPA
+        gjkdraw = true;
+        while(gjkdraw)
+        {
+            drawEPA(gjkdraw);
+        }
+#endif
+        double d = 0.0;
         while (true)
         {
             //Find the closest face
             _findClosestPlane();   //Sets _cpi (closestPlaneIndex) and _closestDist
 
-            if(_planes.size() > 300)
+            if(_planes.size() > 20)
             {
-                LOG("Added: " <<  _planes.size() << "planes in EPA algorithm. aborting...");
+                gjkdraw = true;
+                while(gjkdraw)
+                {
+                    drawEPA(gjkdraw);
+                }
                 return;
             }
 
+            A = _gjk._mk.support(_planes[_cpi].n);
 
-            A = _gjk._mk.support(_planes[_cpi].p);
-            double d = arma::dot(A->p, _planes[_cpi].p/arma::norm(_planes[_cpi].p,2));
-            if (abs(d - _closestDist) < 0.00001)
+#ifdef VISEPA
+            gjkdraw = true;
+            while(gjkdraw)
+            {
+                drawEPA(gjkdraw);
+            }
+#endif
+            d = arma::dot(A->p, _planes[_cpi].n);
+
+#ifdef VISEPA
+            gjkdraw = true;
+            while(gjkdraw)
+            {
+                drawEPA(gjkdraw);
+            }
+#endif
+
+            if (d - _closestDist < 0.00001)
             {
                 //Finished!
                 return;
             }
             else //We now have the closest plane, which is the plane from where a new tetrahedron will be "extruded" by	inserting a new point on the non-origin-side of this plane and adding the 3 new planes. A is the new point.
             {
-                Plane abc(A, _planes[_cpi].points[0], _planes[_cpi].points[1]);
-                Plane abd(A, _planes[_cpi].points[0], _planes[_cpi].points[2]);
-                Plane acd(A, _planes[_cpi].points[1], _planes[_cpi].points[2]);
-                _planes.erase(_planes.begin() + _cpi);
-                _planes.push_back(abc);
-                _planes.push_back(abd);
-                _planes.push_back(acd);
+                //VERY important not to delete _cpi BEFORE inserting the new planes
+                //OLD PLANE IS: [B(0) D(1) C(2)]
+                _planes.insert(A, _planes[_cpi].points[2], _planes[_cpi].points[0]); //ACB
+                if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[1]->p)) > 0) //dot(N,D)
+                        _planes[_planes.size()-1].n *= -1;
+
+                _planes.insert(A, _planes[_cpi].points[0], _planes[_cpi].points[1]); //ABD
+                if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[2]->p)) > 0) //dot(N,C)
+                        _planes[_planes.size()-1].n *= -1;
+
+                _planes.insert(A, _planes[_cpi].points[1], _planes[_cpi].points[2]); //ADC
+                if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[0]->p)) > 0) //dot(N,B)
+                        _planes[_planes.size()-1].n *= -1;
+
+                _planes.remove(_cpi);
             }
         }
     }
@@ -934,29 +1051,183 @@ private:
         for (int i = 0; i < _planes.size(); ++i)
         {
             // check the distance against the other distances
+            LOG("plane(" << i << ").dist : " << _planes[i].dist);
+            _currplane = i;
+#ifdef VISEPA
+                gjkdraw = true;
+                while(gjkdraw)
+                {
+                    drawEPA(gjkdraw);
+                }
+#endif
             if (_planes[i].dist < _closestDist)
             {
                 // if this face is closer than previous faces we use it
                 _closestDist = _planes[i].dist;
                 _cpi = i;
-                _csNormal = _planes[i].p;
+                _currplane = i;
+                LOG("New closest plane: " << _cpi);
+
+#ifdef VISEPA
+                gjkdraw = true;
+                while(gjkdraw)
+                {
+                    drawEPA(gjkdraw);
+                }
+#endif
+
             }
         }
+
     }
 
 
+    void
+    drawEPA(bool &running)
+    {
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 
+
+        running = !glfwGetKey( GLFW_KEY_ESC ) && glfwGetWindowParam( GLFW_OPENED );
+
+        if(!running)
+            return;
+
+        showFPS(winw, winh, zoom);
+        Resize(); //Update viewport and projection matrix
+
+        //Clear the buffer color and depth
+        glClearColor(0.25f,0.25f,0.25f,1.0f);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
+        //Disables vsync
+        //wglSwapIntervalEXT(0);
+
+        // Set up viewing transformation, looking down -Z axis
+        glLoadIdentity();
+        glTranslatef(0,0,zoom);
+        gluLookAt(0, 5, 10, 0, 0, 1, 0, 1, 0);
+
+        // Set up the stationary light
+        //glLightfv(GL_LIGHT0, GL_POSITION, g_lightPos);
+
+        glTranslatef(posDx,posDy,0);
+        glRotatef(-rotDx, 1,0,0);
+        glRotatef(-rotDy, 0,1,0);
+
+
+        // Render the scene
+        glPointSize(4);
+        glDisable(GL_LIGHTING);
+        glBegin(GL_POINTS);
+        glColor3f(0.0,0.0,0.0);
+        glPointSize(8);
+        glVertex3f(0,0,0);
+        glPointSize(4);
+        // Draw contact points and contact vector
+        glColor3f(0.5,0.5,0.5);
+        for(int i = 0; i < _gjk._mk._points.size(); ++i)
+        {
+            glVertex3f( _gjk._mk._points[i].p(0), _gjk._mk._points[i].p(1), _gjk._mk._points[i].p(2));
+        }
+        glEnd();
+
+        if(A != NULL)
+        {
+            glBegin(GL_LINES);
+            glColor3f(0.0,0.0,1.0);
+            glVertex3f(0,0,0);
+            glVertex3f(A->p(0),A->p(1),A->p(2));
+            glEnd();
+        }
+
+        glEnable(GL_BLEND);
+
+
+        glBegin(GL_TRIANGLES);
+            for(int i = 0; i < _planes.size(); ++i)
+            {
+                if(i == _cpi)
+                    glColor4f(0.0,0.6,0.0,0.2);
+                else
+                    glColor4f(0.6,0.6,0.6,0.2);
+
+                glVertex3f(_planes[i].points[0]->p(0),_planes[i].points[0]->p(1),_planes[i].points[0]->p(2));
+                glVertex3f(_planes[i].points[1]->p(0),_planes[i].points[1]->p(1),_planes[i].points[1]->p(2));
+                glVertex3f(_planes[i].points[2]->p(0),_planes[i].points[2]->p(1),_planes[i].points[2]->p(2));
+            }
+        glEnd();
+
+        if(_currplane > 0)
+        {
+            glBegin(GL_TRIANGLES);
+                glColor4f(0.6,0.0,0.0,0.2);
+                    glVertex3f(_planes[_currplane].points[0]->p(0),_planes[_currplane].points[0]->p(1),_planes[_currplane].points[0]->p(2));
+                    glVertex3f(_planes[_currplane].points[1]->p(0),_planes[_currplane].points[1]->p(1),_planes[_currplane].points[1]->p(2));
+                    glVertex3f(_planes[_currplane].points[2]->p(0),_planes[_currplane].points[2]->p(1),_planes[_currplane].points[2]->p(2));
+            glEnd();
+        }
+
+        //CLosest points on planes
+        glBegin(GL_LINES);
+            for(int i = 0; i < _planes.size(); ++i)
+            {
+                if(i == _cpi)
+                    glColor4f(1.0,1.0,0.0,1.0);
+                else if (i == _currplane)
+                    glColor4f(0.0,1.0,1.0,1.0);
+                else
+                    glColor4f(1.0,0.0,0.0,1.0);
+
+
+                glVertex3f(0,0,0);
+                glVertex3f(_planes[i].n(0),_planes[i].n(1),_planes[i].n(2));
+            }
+        glEnd();
+
+        /*glBegin(GL_POINTS);
+            for(int i = 0; i < _planes.size(); ++i)
+            {
+                glColor4f(0.0,0.0,1.0,1.0);
+                glVertex3f(_planes[i].p(0),_planes[i].p(1),_planes[i].p(2));
+            }
+        glEnd();*/
+
+        glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+        glBegin(GL_TRIANGLES);
+            for(int i = 0; i < _planes.size(); ++i)
+            {
+                glColor4f(0.2,0.2,0.2,0.5);
+                glVertex3f(_planes[i].points[0]->p(0),_planes[i].points[0]->p(1),_planes[i].points[0]->p(2));
+                glVertex3f(_planes[i].points[1]->p(0),_planes[i].points[1]->p(1),_planes[i].points[1]->p(2));
+                glVertex3f(_planes[i].points[2]->p(0),_planes[i].points[2]->p(1),_planes[i].points[2]->p(2));
+            }
+        glEnd();
+
+
+
+        glfwSwapBuffers();
+        glDisable(GL_BLEND);
+    }
+
+    int _currplane;
     double _closestDist;
     int _cpi; //closestPlaneIndex
     GJK & _gjk;
     arma::vec _csNormal;
-    std::vector<Plane> _planes;
+    MinkowskiSet::MPoint * A;
+    _PlaneMgr _planes;
 
 };
 
-
 void
-makeContact(Plane & plane,RigidBody & a,RigidBody & b, Contact & c)
+makeContact(const Plane & plane,RigidBody & a,RigidBody & b, Contact & c, float * dist)
 {
 
     //Set the bodies;
@@ -1020,6 +1291,7 @@ makeContact(Plane & plane,RigidBody & a,RigidBody & b, Contact & c)
     arma::vec aWorld = lA*a.getWorldVerts()[A->Ai] + lB*a.getWorldVerts()[B->Ai] + lC*a.getWorldVerts()[C->Ai];
     arma::vec bWorld = lA*b.getWorldVerts()[A->Bj] + lB*b.getWorldVerts()[B->Bj] + lC*b.getWorldVerts()[C->Bj];
     arma::vec pWorld = aWorld - bWorld; /* The translation vector */
+    *dist = plane.dist;
     c.P = bWorld;
     c.N = aWorld;
 
@@ -1048,10 +1320,21 @@ makeContact(Plane & plane,RigidBody & a,RigidBody & b, Contact & c)
 
 
     //All points in A are the same
-    if(A->Ai == B->Ai && B->Ai == C->Ai) // ===> A->Ai == B->Ai == C->Ai
+    if(A->Ai == B->Ai && B->Ai == C->Ai) // ===> A->Ai == B->Ai == C->Ai //VERTEX ON A
     {
-        //Can be vertex-face / vertex-edge / vertex-vertex
-        LOG("vertex-face collision");
+        if(A->Bj == B->Bj && B->Bj == C->Bj)
+        {
+            LOG("A_VERTEX-B_VERTEX collision");
+        }
+        else if(A->Bj != B->Bj && A->Bj != C->Ai  && B->Bj != C->Bj)
+        {
+            LOG("A_VERTEX-B_FACE collision");
+        }
+        else
+        {
+            LOG("A_VERTEX-B_EDGE collision");
+        }
+
         c.isVFContact = true;
         //ACB plane i.e N = AC x AB
         c.N = arma::cross(b.getWorldVerts()[C->Bj] - b.getWorldVerts()[A->Bj], b.getWorldVerts()[B->Bj] - b.getWorldVerts()[A->Bj]);
@@ -1061,21 +1344,51 @@ makeContact(Plane & plane,RigidBody & a,RigidBody & b, Contact & c)
             c.N = -c.N;
     }
     //All points are different in a
-    else if(A->Ai != B->Ai && A->Ai != C->Ai  && B->Ai != C->Ai)
+    else if(A->Ai != B->Ai && A->Ai != C->Ai  && B->Ai != C->Ai) //FACE ON A
     {
+        if(A->Bj == B->Bj && B->Bj == C->Bj)
+        {
+            LOG("A_FACE-B_VERTEX collision");
+        }
+        else if(A->Bj != B->Bj && A->Bj != C->Ai  && B->Bj != C->Bj)
+        {
+            LOG("A_FACE-B_FACE collision");
+        }
+        else
+        {
+            LOG("A_FACE-B_EDGE collision");
+        }
+
         //can be face-face / face-vertex / face-edge
-        LOG("face-face collision. NOT SUPPORTED YET. treating it as vertex face");
+
         c.isVFContact = true;
 
-        //ACB plane i.e N = AC x AB
-        c.N = arma::cross(b.getWorldVerts()[C->Bj] - b.getWorldVerts()[A->Bj], b.getWorldVerts()[B->Bj] - b.getWorldVerts()[A->Bj]);
+        //ACB plane i.e N = AC x AB //Plane on A so flip -> N = AB x AC
+        c.N = arma::cross(a.getWorldVerts()[B->Ai] - a.getWorldVerts()[A->Ai], a.getWorldVerts()[C->Ai] - a.getWorldVerts()[A->Ai]);
         c.N /= arma::norm(c.N,2);
+
+        if(arma::dot(c.N,c.P-b.X) < 0.0)
+            c.N = -c.N;
     }
     //Two points in object A are the same
     else
     {
+        if(A->Bj == B->Bj && B->Bj == C->Bj)
+        {
+            LOG("A_EDGE-B_VERTEX collision");
+        }
+        else if(A->Bj != B->Bj && A->Bj != C->Ai  && B->Bj != C->Bj)
+        {
+            LOG("A_EDGE-B_FACE collision");
+        }
+        else
+        {
+            LOG("A_EDGE-B_EDGE collision");
+        }
+
+
         //can be edge-vertex / edge-face / edge-vertex
-        LOG("edge-edge collision");
+
         //c.N = pWorld/norm(pWorld,2);
         c.isVFContact = false;
 
@@ -1108,28 +1421,28 @@ narrowPhase(RigidBody & bodyA,RigidBody & bodyB, std::vector<Contact> & contacts
 {
     LOG("runnin gjk");
     GJK gjk(bodyA,bodyB);
-
+    float dist = 0.0;
     if(gjk.intersects())
     {
         EPA epa(gjk);
         Contact c;
 
-        makeContact(epa.plane(),bodyA,bodyB, c);
+        makeContact(epa.plane(),bodyA,bodyB, c, &dist);
         contacts.push_back(c);
-
+        dist *= 1.0009;
 #ifdef FIX_COLLISION
         //Ugly way to separate objects
-        if(bodyA.inv_mass == 0)
+        if(bodyA.inv_mass <= 10e-8) // == 0
         {
-            bodyB.X(0) += c.N(0);
-            bodyB.X(1) += c.N(1);
-            bodyB.X(2) += c.N(2);
+            bodyB.X(0) -= dist*c.N(0);
+            bodyB.X(1) -= dist*c.N(1);
+            bodyB.X(2) -= dist*c.N(2);
         }
         else //Every other cases we only move bodyA
         {
-            bodyA.X(0) -= c.N(0);
-            bodyA.X(1) -= c.N(1);
-            bodyA.X(2) -= c.N(2);
+            bodyA.X(0) += dist*c.N(0);
+            bodyA.X(1) += dist*c.N(1);
+            bodyA.X(2) += dist*c.N(2);
         }
 #endif
 

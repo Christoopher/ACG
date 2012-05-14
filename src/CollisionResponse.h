@@ -1,8 +1,13 @@
 #ifndef COLLISION_RESPONSE_H
 #define COLLISION_RESPONSE_H
-#include "stdlib.h"
-#include "math.h"
-
+#include <cstdlib>
+#include <cmath>
+//3rd party
+#ifdef _WIN32
+#include "armadillo.h"
+#else
+#include <armadillo>
+#endif
 void
 createA(std::vector<Contact>& contactArray,arma::mat& A)
 {
@@ -92,7 +97,7 @@ arma::vec& ddot)
         ddot(i) = arma::dot(ci.N,(ci.A->V + arma::cross(ci.A->W,rAi)) - (ci.B->V + arma::cross(ci.B->W,rBi)));
     }
 
-    /*
+
     std::cout << "ci.N: " << ci.N << std::endl;
     std::cout << "ci.A->V: " << ci.A->V << std::endl;
     std::cout << "ci.A->W: " << ci.A->W << std::endl;
@@ -102,7 +107,7 @@ arma::vec& ddot)
     std::cout << "ci.A->V + + arma::cross(ci.A->W,rAi): " << ci.A->V + arma::cross(ci.A->W,rAi) << std::endl;
     std::cout << "(ci.B->V + arma::cross(ci.B->W,rBi)): " << (ci.B->V + arma::cross(ci.B->W,rBi)) << std::endl;
     std::cout << "ddot: " << ddot << std::endl;
-    */
+   /* */
 }
 
 void
@@ -247,6 +252,7 @@ lemke(arma::mat& M,arma::vec& q, arma::vec& z)
             err=2;
             break;
         }
+
         double theta = arma::min((x.elem(j)+zErrorTol)/d.elem(j)); //double + vector samma som matlab?
         //std::cout << "x.elem(j)" << x.elem(j) << std::endl;
         //std::cout << "x.elem(j)+zErrorTol: " << x.elem(j)+zErrorTol << std::endl;
@@ -561,6 +567,7 @@ collisionResponse(std::vector<Contact>& contactArray)
     lemke(A,b,relA);
     //g = A*b + relA;
     g = relA.rows(0,contactArray.size()-1);
+    LOG("g: " << g);
     //---------------------------
 
     updateInternalValues(contactArray,g);
