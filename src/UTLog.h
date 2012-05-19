@@ -7,6 +7,7 @@
 #define LOG(msg) Logger::getInstance().file << msg << "\n"; Logger::getInstance().file.flush(); \
 	std::cout << msg << "\n"	
 
+//#define LOG(msg) 
 
 using namespace std;
 class Logger

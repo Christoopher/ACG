@@ -22,7 +22,7 @@ int main(void)
 	physicsInit();
 
 	OpenGl_initViewer(600, 600);
-    double t = 0, dt = 1.0/500.0;
+	double t = 0, dt = 1.0/60.0;
 	while(running) {
 		if(reset)
 			physicsReset();
@@ -32,19 +32,15 @@ int main(void)
 		if(step || play)
 		{
 			physicsTick(t,dt);	
+			t += dt;
 		}
 			
 		//Draw
 		OpenGl_drawAndUpdate(running, rigidBodyArray);
-		t += dt;
 	}
-	
 
 	TerminateViewer();
 	physicsTerminate();
 
 	return 0;
 }
-
-
-
