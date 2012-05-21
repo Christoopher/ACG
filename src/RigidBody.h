@@ -1,4 +1,4 @@
-#ifndef RIGIDBODY_H
+	#ifndef RIGIDBODY_H
 #define RIGIDBODY_H
 #include "UTLog.h"
 #include <assert.h>

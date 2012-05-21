@@ -31,7 +31,7 @@
 typedef std::pair<int, int> RigidBodyIndexPair;
 
 
-#if !NDEBUG
+#ifdef DEBUG_CR
 std::vector<RigidBody>  *bodiesPtr;
 #endif
 
@@ -1677,10 +1677,11 @@ void
 		contacts.push_back(c);
 		dist *= 1.0009;
 		
-#if DEBUG_CR
+#ifdef DEBUG_CR
 		LOG("Displaying contact before move");
 		if(contacts.size() > 0)
 		{
+			setContacts(contacts);
 			step = false;
 			while(step == false)
 				OpenGl_drawAndUpdate(running, *bodiesPtr);
@@ -1708,10 +1709,11 @@ void
 		bodyB.isColliding = true;
 		//play = false;
 
-#if DEBUG_CR
+#ifdef DEBUG_CR
 		LOG("Displaying contact after move");
 		if(contacts.size() > 0)
 		{
+			setContacts(contacts);
 			step = false;
 			while(step == false)
 				OpenGl_drawAndUpdate(running, *bodiesPtr);
@@ -1795,7 +1797,7 @@ bool
 void
 	collision_detection(std::vector<RigidBody> & bodies, float t, float dt, std::vector<Contact> & contacts)
 {
-#if !NDEBUG
+#ifdef DEBUG_CR
 	bodiesPtr = &bodies;
 #endif
 

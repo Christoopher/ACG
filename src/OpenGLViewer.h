@@ -50,14 +50,15 @@ bool step = false, reset = false, showgrid = false, play = false;
 bool up_is_down;
 bool down_is_down;
 bool shiftdown = false;
-
 bool gjkdraw = true;
+bool wireframe = false;
 
 void setContacts(std::vector<Contact> & c)
 {
 	conts = &c;
-
 }
+
+
 
 //----------------------------------------------------------------------------//
 // Print opengl error to console
@@ -122,7 +123,7 @@ void Resize()
 	glMatrixMode(GL_PROJECTION);
 
 	glLoadIdentity();
-	gluPerspective(65.0, (float)winw / winh, 0.1, 100);
+	gluPerspective(65.0, (float)winw / winh, 0.1, 1000);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -244,12 +245,24 @@ void draw_axis(int size)
 // Draws all content
 //----------------------------------------------------------------------------//
 
-static float g_lightPos[4] = { 10, 10, +100, 1 };  // Position of light
+static float g_lightPos[4] = { 10, 10, +20, 1 };  // Position of light
 void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 {
-	//glDisable(GL_DEPTH_TEST);
-	//glDisable(GL_CULL_FACE);
-	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	if(wireframe)
+	{
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_CULL_FACE);
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+		glDisable(GL_LIGHTING);
+	}
+	else
+	{
+		glEnable(GL_LIGHTING);
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+		glLightfv(GL_LIGHT0, GL_POSITION, g_lightPos);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+	}
 
 
 	running = !glfwGetKey( GLFW_KEY_ESC ) && glfwGetWindowParam( GLFW_OPENED );
@@ -266,7 +279,6 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	glLightfv(GL_LIGHT0, GL_POSITION, g_lightPos);
 
 	//Disables vsync
 	//wglSwapIntervalEXT(0);
@@ -285,7 +297,6 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 
 	// Render the scene
 	glPointSize(4);
-	glDisable(GL_LIGHTING);
 	glBegin(GL_POINTS);
 		glVertex3f(0,0,0);
 
@@ -316,7 +327,7 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 		if(conts != NULL)
 		for(int i = 0; i < conts->size(); ++i)
 		{
-			glColor3f(1.0,1.0,1.0);
+			glColor3f(1.0,0.0,1.0);
 			glVertex3f(conts->at(i).P(0),conts->at(i).P(1), conts->at(i).P(2));
 			arma::vec w = conts->at(i).A->W;
 			w = w/norm(w,2);
@@ -331,8 +342,7 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 
 	//for (int i = rb.size()-1; i >= 0; --i)
 	for (int i = 0; i < rb.size(); ++i)
-	{
-		glEnable(GL_LIGHTING);
+	{		
 		glPushMatrix();
 		glScalef(rb[i].sx,rb[i].sy, rb[i].sz);
 		glTranslatef(rb[i].X(0),rb[i].X(1), rb[i].X(2));
@@ -375,6 +385,13 @@ void GLFWCALL KeyboardFunc( int key, int action )
 	{
 		if(action == GLFW_PRESS)
 			showgrid = !showgrid;
+
+	}
+
+	if(key == 'W')
+	{
+		if(action == GLFW_PRESS)
+			wireframe = !wireframe;
 
 	}
 

@@ -1,18 +1,2833 @@
 runnin gjk
 check if outside ADC
 D1: -2.58558, D2: -0.0546197, D3: -0.639474, D4: -0.284354
-vertex-face collision
+plane(0).dist : 0.0307332
+New closest plane: 0
+plane(1).dist : 0.179425
+plane(2).dist : 0.0136549
+New closest plane: 2
+plane(3).dist : 1.01624
+A_VERTEX-B_FACE collision
 A:    0.0716
 
 ddot:   -6.9722
 
 f:    1.9468e+02
 
-b:    3.5597e+02
+b:    3.5925e+02
 
 g:         0
 
-A*relA+b:    3.5597e+02
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.0198131, D2: 0.0972488, D3: 0.860305, D4: 0.253515
+plane(0).dist : 0.0269356
+New closest plane: 0
+plane(1).dist : 0.428099
+plane(2).dist : 0.0243122
+New closest plane: 2
+plane(3).dist : 0.00564015
+New closest plane: 3
+A_EDGE-B_FACE collision
+A:    0.1685
 
-relA:         0
+ddot:   -24.5420
 
+f:    2.9125e+02
+
+b:   -3.1914e+03
+
+g:    1.8937e+04
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.00657666, D2: 0.368853, D3: 1.52988, D4: 0.181257
+plane(0).dist : 0.0706676
+New closest plane: 0
+plane(1).dist : 0.273567
+plane(2).dist : 0.234135
+plane(3).dist : 0.000698092
+New closest plane: 3
+DOTPROD IS ZERO
+DOTPROD IS ZERO
+DOTPROD IS ZERO
+plane(0).dist : 0.0706676
+New closest plane: 0
+plane(1).dist : 0.273567
+plane(2).dist : 0.234135
+plane(3).dist : 0.187715
+plane(4).dist : 0.768226
+plane(5).dist : 0.0939167
+DOTPROD IS ZERO
+DOTPROD IS ZERO
+DOTPROD IS ZERO
+plane(0).dist : 3.67677
+New closest plane: 0
+plane(1).dist : 0.273567
+New closest plane: 1
+plane(2).dist : 0.234135
+New closest plane: 2
+plane(3).dist : 0.187715
+New closest plane: 3
+plane(4).dist : 0.768226
+plane(5).dist : 0.0939167
+New closest plane: 5
+plane(6).dist : 7.41526
+plane(7).dist : 1.76556
+A_EDGE-B_EDGE collision
+A:    0.1602
+
+ddot:   -8.9513
+
+f:    1.1177e+02
+
+b:    4.5590e+03
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 2.20606, D2: 0.0761663, D3: 0.467644, D4: 0.0394269
+plane(0).dist : 0.0251756
+New closest plane: 0
+plane(1).dist : 0.0856762
+plane(2).dist : 0.0190416
+New closest plane: 2
+plane(3).dist : 0.96818
+A_VERTEX-B_FACE collision
+A:    0.1359
+
+ddot:   -29.9594
+
+f:    4.4100e+02
+
+b:    8.8851e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.118913, D2: 1.13446, D3: 0.0390858, D4: 0.422325
+plane(0).dist : 0.0443654
+New closest plane: 0
+plane(1).dist : 0.0117988
+New closest plane: 1
+plane(2).dist : 0.472642
+plane(3).dist : 0.0297283
+A_EDGE-B_FACE collision
+A:    0.1823
+
+ddot:   -32.6927
+
+f:    3.5865e+02
+
+b:   -2.9472e+03
+
+g:    1.6166e+04
+
+runnin gjk
+check if outside ADC
+D1: -0.0450499, D2: -1.1632, D3: -1.49063, D4: -0.00522357
+plane(0).dist : 0.00232891
+New closest plane: 0
+plane(1).dist : 0.44713
+plane(2).dist : 0.207915
+plane(3).dist : 0.0112625
+plane(0).dist : 0.226564
+New closest plane: 0
+plane(1).dist : 0.44713
+plane(2).dist : 0.207915
+New closest plane: 2
+plane(3).dist : 0.0112625
+New closest plane: 3
+plane(4).dist : 6.27683
+plane(5).dist : 4.83604
+A_VERTEX-B_FACE collision
+A:    0.1004
+
+ddot:    4.1003
+
+f:         0
+
+b:    8.5300e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -0.0897153, D2: -0.650546, D3: -0.0654498, D4: -0.604461
+plane(0).dist : 0.0629556
+New closest plane: 0
+plane(1).dist : 0.0163625
+New closest plane: 1
+plane(2).dist : 0.246245
+plane(3).dist : 0.0290804
+A_VERTEX-B_FACE collision
+A:    0.0936
+
+ddot:    5.3715
+
+f:         0
+
+b:    8.6039e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -0.105842, D2: -0.586066, D3: -0.052593, D4: -0.63002
+plane(0).dist : 0.0655772
+New closest plane: 0
+plane(1).dist : 0.0131483
+New closest plane: 1
+plane(2).dist : 0.219773
+plane(3).dist : 0.0345935
+A_VERTEX-B_FACE collision
+A:    0.0877
+
+ddot:    6.6603
+
+f:         0
+
+b:    8.6602e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -0.120744, D2: -0.521703, D3: -0.0395915, D4: -0.653351
+plane(0).dist : 0.067967
+New closest plane: 0
+plane(1).dist : 0.00989787
+New closest plane: 1
+plane(2).dist : 0.1939
+plane(3).dist : 0.0397938
+A_VERTEX-B_FACE collision
+A:    0.0828
+
+ddot:    7.9638
+
+f:         0
+
+b:    8.6986e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -0.134127, D2: -0.0264442, D3: -0.834937, D4: -0.297357
+plane(0).dist : 0.06759
+New closest plane: 0
+plane(1).dist : 0.307691
+plane(2).dist : 0.00661104
+New closest plane: 2
+plane(3).dist : 0.0445741
+A_VERTEX-B_FACE collision
+A:    0.0787
+
+ddot:    9.2791
+
+f:         0
+
+b:    8.7192e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.145727, D2: 0.0131801, D3: 0.395216, D4: 0.692914
+plane(0).dist : 0.0720106
+New closest plane: 0
+plane(1).dist : 0.144473
+plane(2).dist : 0.00329503
+New closest plane: 2
+plane(3).dist : 0.0488329
+A_VERTEX-B_FACE collision
+A:    0.0757
+
+ddot:    10.6033
+
+f:         0
+
+b:    8.7219e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -0.534008, D2: -0.581409, D3: -0.0588627, D4: -0.506042
+plane(0).dist : 0.0874894
+New closest plane: 0
+plane(1).dist : 0.0147157
+New closest plane: 1
+plane(2).dist : 0.162933
+plane(3).dist : 0.267927
+A_VERTEX-B_FACE collision
+A:    0.0625
+
+ddot:   -15.9352
+
+f:    5.1008e+02
+
+b:    9.2861e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.0815776, D2: 0.718195, D3: 0.577032, D4: 0.575662
+plane(0).dist : 0.0959198
+New closest plane: 0
+plane(1).dist : 0.299147
+plane(2).dist : 0.197435
+plane(3).dist : 0.0203944
+New closest plane: 3
+A_VERTEX-B_FACE collision
+A:    0.0554
+
+ddot:    14.9432
+
+f:         0
+
+b:    9.4694e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.0755017, D2: 0.839946, D3: 0.621876, D4: 0.68539
+plane(0).dist : 0.110271
+New closest plane: 0
+plane(1).dist : 0.330704
+plane(2).dist : 0.226938
+plane(3).dist : 0.0188754
+New closest plane: 3
+A_VERTEX-B_FACE collision
+A:    0.0487
+
+ddot:    13.9031
+
+f:         0
+
+b:    9.6410e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.0692312, D2: 0.971903, D3: 0.655995, D4: 0.793222
+plane(0).dist : 0.123455
+New closest plane: 0
+plane(1).dist : 0.354686
+plane(2).dist : 0.258556
+plane(3).dist : 0.0173078
+New closest plane: 3
+A_VERTEX-B_FACE collision
+A:    0.0425
+
+ddot:    12.8178
+
+f:         0
+
+b:    9.8006e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.0627574, D2: 1.11439, D3: 0.679868, D4: 0.897652
+plane(0).dist : 0.135399
+New closest plane: 0
+plane(1).dist : 0.370036
+plane(2).dist : 0.292438
+plane(3).dist : 0.0156893
+New closest plane: 3
+A_VERTEX-B_FACE collision
+A:    0.0368
+
+ddot:    11.6901
+
+f:         0
+
+b:    9.9476e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -8.42761, D2: -3.35694, D3: -0.0560979, D4: -2.28526
+plane(0).dist : 0.186814
+New closest plane: 0
+plane(1).dist : 0.0140245
+New closest plane: 1
+plane(2).dist : 0.44778
+plane(3).dist : 1.18963
+A_VERTEX-B_EDGE collision
+A:    0.0315
+
+ddot:    10.5228
+
+f:         0
+
+b:    1.0082e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -1.53976, D2: -0.0492707, D3: -1.73445, D4: -0.812692
+plane(0).dist : 0.111896
+New closest plane: 0
+plane(1).dist : 0.645265
+plane(2).dist : 0.0123177
+New closest plane: 2
+plane(3).dist : 0.279037
+A_VERTEX-B_EDGE collision
+A:    0.0268
+
+ddot:    9.3191
+
+f:         0
+
+b:    1.0202e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -1.50413, D2: -0.0422943, D3: -1.81316, D4: -0.747305
+plane(0).dist : 0.102463
+New closest plane: 0
+plane(1).dist : 0.684838
+plane(2).dist : 0.0105736
+New closest plane: 2
+plane(3).dist : 0.27353
+A_VERTEX-B_EDGE collision
+A:    0.0227
+
+ddot:    8.0820
+
+f:         0
+
+b:    1.0310e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+check if outside ADC
+D1: -1.49901, D2: -0.0351876, D3: -1.86036, D4: -0.687034
+plane(0).dist : 0.0938175
+New closest plane: 0
+plane(1).dist : 0.310966
+plane(2).dist : 0.00879691
+New closest plane: 2
+plane(3).dist : 0.164273
+A_VERTEX-B_EDGE collision
+A:    0.0191
+
+ddot:    6.8148
+
+f:         0
+
+b:    1.0403e+03
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.44697, D2: 1.95361, D3: 0.0279699, D4: 0.631763
+plane(0).dist : 0.0859335
+New closest plane: 0
+plane(1).dist : 0.00699248
+New closest plane: 1
+plane(2).dist : 0.329301
+plane(3).dist : 0.158923
+A_VERTEX-B_EDGE collision
+A:    0.0161
+
+ddot:    5.5208
+
+f:         0
+
+b:    1.0482e+03
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 2.194, D2: 0.645521, D3: 0.0206607, D4: 1.37234
+plane(0).dist : 0.178115
+New closest plane: 0
+plane(1).dist : 0.00516516
+New closest plane: 1
+plane(2).dist : 0.302342
+plane(3).dist : 0.549875
+A_VERTEX-B_FACE collision
+A:    0.0138
+
+ddot:    4.2033
+
+f:         0
+
+b:    1.0547e+03
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 2.40911, D2: 0.617934, D3: 0.0132796, D4: 1.4144
+plane(0).dist : 0.180123
+New closest plane: 0
+plane(1).dist : 0.00331991
+New closest plane: 1
+plane(2).dist : 0.276978
+plane(3).dist : 0.602582
+A_VERTEX-B_FACE collision
+A:    0.0121
+
+ddot:    2.8659
+
+f:         0
+
+b:    1.0598e+03
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 2.63279, D2: 0.586603, D3: 0.00584681, D4: 1.44317
+plane(0).dist : 0.180633
+New closest plane: 0
+plane(1).dist : 0.0014617
+New closest plane: 1
+plane(2).dist : 0.251289
+plane(3).dist : 0.658214
+A_VERTEX-B_FACE collision
+A:    0.0111
+
+ddot:    1.5119
+
+f:         0
+
+b:    1.0634e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -2.10277, D2: -0.0197659, D3: -1.67264, D4: -0.414841
+plane(0).dist : 0.0576444
+New closest plane: 0
+plane(1).dist : 0.602965
+plane(2).dist : 0.00494146
+New closest plane: 2
+plane(3).dist : 0.37862
+A_VERTEX-B_EDGE collision
+A:    0.0373
+
+ddot:    9.4004
+
+f:         0
+
+b:    9.9341e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -2.14638, D2: -0.0759572, D3: -1.71468, D4: -0.235657
+plane(0).dist : 0.0326006
+New closest plane: 0
+plane(1).dist : 0.627451
+plane(2).dist : 0.0189893
+New closest plane: 2
+plane(3).dist : 0.387609
+A_VERTEX-B_EDGE collision
+A:    0.0320
+
+ddot:    8.2367
+
+f:         0
+
+b:    1.0070e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -2.11161, D2: -0.0690885, D3: -1.78898, D4: -0.169455
+plane(0).dist : 0.023341
+New closest plane: 0
+plane(1).dist : 0.664599
+plane(2).dist : 0.0172721
+New closest plane: 2
+plane(3).dist : 0.382548
+A_VERTEX-B_EDGE collision
+A:    0.0272
+
+ddot:    7.0363
+
+f:         0
+
+b:    1.0192e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -2.07248, D2: -0.0621255, D3: -1.86706, D4: -0.10782
+plane(0).dist : 0.014789
+New closest plane: 0
+plane(1).dist : 0.704185
+plane(2).dist : 0.0155314
+plane(3).dist : 0.376757
+plane(0).dist : 18.9897
+New closest plane: 0
+plane(1).dist : 0.704185
+New closest plane: 1
+plane(2).dist : 0.0155314
+New closest plane: 2
+plane(3).dist : 0.376757
+plane(4).dist : 16.3675
+plane(5).dist : 1.11416
+A_VERTEX-B_EDGE collision
+A:    0.0230
+
+ddot:    5.8022
+
+f:         0
+
+b:    1.0300e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -2.02915, D2: -0.0550303, D3: -1.94889, D4: -0.050729
+plane(0).dist : 0.00692989
+New closest plane: 0
+plane(1).dist : 0.74624
+plane(2).dist : 0.0137576
+plane(3).dist : 0.37025
+plane(0).dist : 18.6098
+New closest plane: 0
+plane(1).dist : 0.74624
+New closest plane: 1
+plane(2).dist : 0.0137576
+New closest plane: 2
+plane(3).dist : 0.37025
+plane(4).dist : 17.5099
+plane(5).dist : 0.764638
+A_VERTEX-B_EDGE collision
+A:    0.0194
+
+ddot:    4.5377
+
+f:         0
+
+b:    1.0395e+03
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 3.29141, D2: 0.00194371, D3: 3.19829, D4: 0.0754072
+plane(0).dist : 0.036942
+New closest plane: 0
+plane(1).dist : 0.236529
+plane(2).dist : 0.000264483
+New closest plane: 2
+plane(3).dist : 0.438672
+DOTPROD IS ZERO
+DOTPROD IS ZERO
+DOTPROD IS ZERO
+plane(0).dist : 0.036942
+New closest plane: 0
+plane(1).dist : 0.236529
+plane(2).dist : 2.03445
+plane(3).dist : 0.438672
+plane(4).dist : 0.0478222
+plane(5).dist : 1.98182
+DOTPROD IS ZERO
+DOTPROD IS ZERO
+DOTPROD IS ZERO
+plane(0).dist : 2.41914
+New closest plane: 0
+plane(1).dist : 0.236529
+New closest plane: 1
+plane(2).dist : 2.03445
+plane(3).dist : 0.438672
+plane(4).dist : 0.0478222
+New closest plane: 4
+plane(5).dist : 1.98182
+plane(6).dist : 1.33994
+plane(7).dist : 0.382418
+A_VERTEX-B_FACE collision
+A:    0.0164
+
+ddot:    3.2461
+
+f:         0
+
+b:    1.0703e+03
+
+g:         0
+
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+check if outside ADC
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 2.2232, D2: 0.0148049, D3: 1.55215, D4: 0.0494133
+plane(0).dist : 0.00592562
+New closest plane: 0
+plane(1).dist : 0.388036
+plane(2).dist : 0.00371967
+New closest plane: 2
+plane(3).dist : 1.13394
+A_EDGE-B_EDGE collision
+A:    0.0263
+
+ddot:    3.9038
+
+f:         0
+
+b:    1.2806e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+check if outside ADC
+D1: -1.5286, D2: -0.0281558, D3: -1.39534, D4: -0.44853
+plane(0).dist : 0.0607259
+New closest plane: 0
+plane(1).dist : 0.775475
+plane(2).dist : 0.00711642
+New closest plane: 2
+plane(3).dist : 0.38215
+A_EDGE-B_EDGE collision
+A:    0.0238
+
+ddot:    3.6563
+
+f:         0
+
+b:   -26.0964
+
+g:    1.0944e+03
+
+runnin gjk
+check if outside ADC
+check if outside ADC
+D1: -1.53447, D2: -0.0297047, D3: -1.36709, D4: -0.328876
+plane(0).dist : 0.0458529
+New closest plane: 0
+plane(1).dist : 0.757011
+plane(2).dist : 0.00757046
+New closest plane: 2
+plane(3).dist : 0.383618
+A_EDGE-B_EDGE collision
+A:    0.0217
+
+ddot:    3.4555
+
+f:         0
+
+b:   -72.7939
+
+g:    3.3530e+03
+
+runnin gjk
+check if outside ADC
+check if outside ADC
+D1: -1.52803, D2: -0.0312036, D3: -1.32751, D4: -0.22053
+plane(0).dist : 0.0317271
+New closest plane: 0
+plane(1).dist : 0.726173
+plane(2).dist : 0.00803749
+New closest plane: 2
+plane(3).dist : 0.382007
+A_EDGE-B_EDGE collision
+A:    0.0199
+
+ddot:    3.3091
+
+f:         0
+
+b:   -1.1423e+02
+
+g:    5.7440e+03
+
+runnin gjk
+check if outside ADC
+check if outside ADC
+D1: -1.50906, D2: -0.0326855, D3: -1.27679, D4: -0.123545
+plane(0).dist : 0.0183793
+New closest plane: 0
+plane(1).dist : 0.684557
+plane(2).dist : 0.0085293
+New closest plane: 2
+plane(3).dist : 0.377265
+A_EDGE-B_EDGE collision
+A:    0.0184
+
+ddot:    3.2165
+
+f:         0
+
+b:   -1.5158e+02
+
+g:    8.2507e+03
+
+runnin gjk
+check if outside ADC
+D1: -3.6139, D2: -0.0341922, D3: -3.06921, D4: -0.158506
+plane(0).dist : 0.0167029
+New closest plane: 0
+plane(1).dist : 0.72799
+plane(2).dist : 0.00906086
+New closest plane: 2
+plane(3).dist : 0.806299
+A_EDGE-B_EDGE collision
+A:    0.0172
+
+ddot:    3.1785
+
+f:         0
+
+b:   -1.8614e+02
+
+g:    1.0842e+04
+
+runnin gjk
+check if outside ADC
+D1: -9.49506, D2: -0.0201518, D3: -7.8013, D4: -0.0663227
+plane(0).dist : 0.012418
+New closest plane: 0
+plane(1).dist : 0.407721
+plane(2).dist : 0.00222083
+New closest plane: 2
+plane(3).dist : 0.681345
+plane(0).dist : 0.012418
+New closest plane: 0
+plane(1).dist : 0.407721
+plane(2).dist : 3.67011
+plane(3).dist : 0.681345
+plane(4).dist : 0.0357638
+plane(5).dist : 3.03841
+plane(0).dist : 9.71312
+New closest plane: 0
+plane(1).dist : 0.407721
+New closest plane: 1
+plane(2).dist : 3.67011
+plane(3).dist : 0.681345
+plane(4).dist : 0.0357638
+New closest plane: 4
+plane(5).dist : 3.03841
+plane(6).dist : 7.56512
+plane(7).dist : 0.170912
+A_EDGE-B_EDGE collision
+A:    0.0163
+
+ddot:    3.1966
+
+f:         0
+
+b:    1.6527e+03
+
+g:         0
+
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+D1: -1.04105, D2: -0.0256925, D3: -0.16325, D4: -0.717881
+plane(0).dist : 0.0971726
+New closest plane: 0
+plane(1).dist : 0.0297
+New closest plane: 1
+plane(2).dist : 0.00741916
+New closest plane: 2
+plane(3).dist : 0.545442
+A_EDGE-B_EDGE collision
+A:    0.0159
+
+ddot:    3.3715
+
+f:         0
+
+b:   -3.3760e+02
+
+g:    2.1199e+04
+
+runnin gjk
+check if outside ADC
+D1: -0.909009, D2: -0.0435761, D3: -0.214357, D4: -0.551452
+plane(0).dist : 0.0754643
+New closest plane: 0
+plane(1).dist : 0.0408927
+New closest plane: 1
+plane(2).dist : 0.0129375
+New closest plane: 2
+plane(3).dist : 0.554789
+A_EDGE-B_EDGE collision
+A:    0.0167
+
+ddot:    3.6461
+
+f:         0
+
+b:   -3.8412e+02
+
+g:    2.3013e+04
+
+runnin gjk
+check if outside ADC
+D1: -0.780745, D2: -0.0456854, D3: -0.2288, D4: -0.4229
+plane(0).dist : 0.0585687
+New closest plane: 0
+plane(1).dist : 0.0458892
+New closest plane: 1
+plane(2).dist : 0.0139825
+New closest plane: 2
+plane(3).dist : 0.57273
+A_EDGE-B_EDGE collision
+A:    0.0180
+
+ddot:    3.9990
+
+f:         0
+
+b:   -4.3906e+02
+
+g:    2.4348e+04
+
+runnin gjk
+check if outside ADC
+D1: -0.648748, D2: -0.0479761, D3: -0.231034, D4: -0.299688
+plane(0).dist : 0.0420476
+New closest plane: 0
+plane(1).dist : 0.0488436
+plane(2).dist : 0.0151774
+New closest plane: 2
+plane(3).dist : 0.598364
+A_EDGE-B_EDGE collision
+A:    0.0201
+
+ddot:    4.4382
+
+f:         0
+
+b:   -5.0378e+02
+
+g:    2.5106e+04
+
+runnin gjk
+check if outside ADC
+check if outside ADC
+D1: -0.512633, D2: -0.0504098, D3: -0.220635, D4: -0.183102
+plane(0).dist : 0.0260527
+New closest plane: 0
+plane(1).dist : 0.0492917
+plane(2).dist : 0.0165276
+New closest plane: 2
+plane(3).dist : 0.637433
+A_EDGE-B_EDGE collision
+A:    0.0229
+
+ddot:    4.9721
+
+f:         0
+
+b:   -5.7868e+02
+
+g:    2.5225e+04
+
+runnin gjk
+check if outside ADC
+D1: -0.372051, D2: -0.0529459, D3: -0.197157, D4: -0.0745035
+plane(0).dist : 0.0107612
+New closest plane: 0
+plane(1).dist : 0.0466522
+plane(2).dist : 0.0180373
+plane(3).dist : 0.701117
+plane(0).dist : 18.0553
+New closest plane: 0
+plane(1).dist : 0.0466522
+New closest plane: 1
+plane(2).dist : 0.0180373
+New closest plane: 2
+plane(3).dist : 0.701117
+plane(4).dist : 11.8765
+plane(5).dist : 4.17165
+A_EDGE-B_EDGE collision
+A:    0.0268
+
+ddot:    5.6084
+
+f:         0
+
+b:   -6.6264e+02
+
+g:    2.4682e+04
+
+runnin gjk
+check if outside ADC
+D1: -4.94144, D2: -0.0246865, D3: -3.08964, D4: -0.955162
+plane(0).dist : 0.140625
+New closest plane: 0
+plane(1).dist : 0.197265
+plane(2).dist : 0.00362315
+New closest plane: 2
+plane(3).dist : 0.315083
+plane(0).dist : 0.140625
+New closest plane: 0
+plane(1).dist : 0.197265
+plane(2).dist : 0.226738
+plane(3).dist : 0.315083
+plane(4).dist : 0.0555286
+New closest plane: 4
+plane(5).dist : 0.160128
+A_EDGE-B_EDGE collision
+A:    0.0320
+
+ddot:    6.3527
+
+f:         0
+
+b:   -7.6861e+02
+
+g:    2.4005e+04
+
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+D1: -4.45197, D2: -0.0958555, D3: -2.63291, D4: -0.50505
+plane(0).dist : 0.0540742
+New closest plane: 0
+plane(1).dist : 0.385154
+plane(2).dist : 0.0145641
+New closest plane: 2
+plane(3).dist : 0.461677
+plane(0).dist : 0.0540742
+New closest plane: 0
+plane(1).dist : 0.385154
+plane(2).dist : 0.0840402
+plane(3).dist : 0.461677
+plane(4).dist : 0.0715984
+plane(5).dist : 0.101309
+plane(0).dist : 26.9112
+New closest plane: 0
+plane(1).dist : 0.385154
+New closest plane: 1
+plane(2).dist : 0.0840402
+New closest plane: 2
+plane(3).dist : 0.461677
+plane(4).dist : 0.0715984
+New closest plane: 4
+plane(5).dist : 0.101309
+plane(6).dist : 13.5
+plane(7).dist : 2.60228
+A_VERTEX-B_FACE collision
+A:    0.1074
+
+ddot:    18.0112
+
+f:         0
+
+b:    9.9320e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -4.02815, D2: -0.0713128, D3: -2.36164, D4: -0.285411
+plane(0).dist : 0.0308508
+New closest plane: 0
+plane(1).dist : 0.355167
+plane(2).dist : 0.011249
+New closest plane: 2
+plane(3).dist : 0.419332
+plane(0).dist : 0.0308508
+New closest plane: 0
+plane(1).dist : 0.355167
+plane(2).dist : 0.430475
+plane(3).dist : 0.419332
+plane(4).dist : 0.0881704
+plane(5).dist : 0.307324
+plane(0).dist : 26.3366
+New closest plane: 0
+plane(1).dist : 0.355167
+New closest plane: 1
+plane(2).dist : 0.430475
+plane(3).dist : 0.419332
+plane(4).dist : 0.0881704
+New closest plane: 4
+plane(5).dist : 0.307324
+plane(6).dist : 13.8722
+plane(7).dist : 1.71399
+A_VERTEX-B_FACE collision
+A:    0.0891
+
+ddot:    16.1777
+
+f:         0
+
+b:    1.0583e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -0.825762, D2: -0.0144083, D3: -0.475523, D4: -0.0400814
+plane(0).dist : 0.00657863
+New closest plane: 0
+plane(1).dist : 0.138562
+plane(2).dist : 0.00360206
+New closest plane: 2
+plane(3).dist : 0.508843
+A_VERTEX-B_EDGE collision
+A:    0.0719
+
+ddot:    14.0699
+
+f:         0
+
+b:    1.0604e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -10.546, D2: -0.135304, D3: -5.73051, D4: -0.0783365
+plane(0).dist : 0.00861449
+New closest plane: 0
+plane(1).dist : 0.308397
+plane(2).dist : 0.0148687
+plane(3).dist : 0.569539
+plane(0).dist : 20.2765
+New closest plane: 0
+plane(1).dist : 0.308397
+New closest plane: 1
+plane(2).dist : 0.0148687
+New closest plane: 2
+plane(3).dist : 0.569539
+plane(4).dist : 10.6287
+plane(5).dist : 0.420661
+plane(0).dist : 20.2765
+New closest plane: 0
+plane(1).dist : 0.308397
+New closest plane: 1
+plane(2).dist : 3.80889
+plane(3).dist : 0.569539
+plane(4).dist : 10.6287
+plane(5).dist : 0.420661
+plane(6).dist : 0.129733
+New closest plane: 6
+plane(7).dist : 2.19307
+A_VERTEX-B_FACE collision
+A:    0.0638
+
+ddot:    12.9208
+
+f:         0
+
+b:    1.1554e+03
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 5.32308, D2: 0.00986871, D3: 1.67496, D4: 0.433454
+plane(0).dist : 0.0598832
+New closest plane: 0
+plane(1).dist : 0.324888
+plane(2).dist : 0.00300896
+New closest plane: 2
+plane(3).dist : 1.17224
+A_EDGE-B_EDGE collision
+A:    0.0657
+
+ddot:    10.9462
+
+f:         0
+
+b:   -2.0737e+02
+
+g:    3.1552e+03
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 5.27816, D2: 0.0384113, D3: 1.97306, D4: 0.506153
+plane(0).dist : 0.0658184
+New closest plane: 0
+plane(1).dist : 0.375484
+plane(2).dist : 0.0113094
+New closest plane: 2
+plane(3).dist : 1.14713
+A_EDGE-B_EDGE collision
+A:    0.0584
+
+ddot:    10.2940
+
+f:         0
+
+b:   -37.6669
+
+g:    6.4486e+02
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.49758, D2: 0.0411223, D3: 0.687617, D4: 0.144671
+plane(0).dist : 0.0257319
+New closest plane: 0
+plane(1).dist : 0.171903
+plane(2).dist : 0.0117378
+New closest plane: 2
+plane(3).dist : 0.6611
+A_EDGE-B_EDGE collision
+A:    0.0526
+
+ddot:    9.6929
+
+f:         0
+
+b:    1.2071e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.4944, D2: 0.0439099, D3: 0.770581, D4: 0.186312
+plane(0).dist : 0.0315534
+New closest plane: 0
+plane(1).dist : 0.192644
+plane(2).dist : 0.0121956
+New closest plane: 2
+plane(3).dist : 0.697295
+A_EDGE-B_EDGE collision
+A:    0.0479
+
+ddot:    9.1760
+
+f:         0
+
+b:    2.6769e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.48706, D2: 0.0467086, D3: 0.851124, D4: 0.23291
+plane(0).dist : 0.0376834
+New closest plane: 0
+plane(1).dist : 0.21278
+plane(2).dist : 0.0126672
+New closest plane: 2
+plane(3).dist : 0.732931
+A_EDGE-B_EDGE collision
+A:    0.0442
+
+ddot:    8.7465
+
+f:         0
+
+b:    4.0509e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.47535, D2: 0.0495221, D3: 0.928847, D4: 0.284699
+plane(0).dist : 0.0441422
+New closest plane: 0
+plane(1).dist : 0.232211
+plane(2).dist : 0.0131572
+New closest plane: 2
+plane(3).dist : 0.766169
+A_EDGE-B_EDGE collision
+A:    0.0414
+
+ddot:    8.3974
+
+f:         0
+
+b:    5.3480e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.45906, D2: 0.0523542, D3: 1.00335, D4: 0.341913
+plane(0).dist : 0.0509523
+New closest plane: 0
+plane(1).dist : 0.250835
+plane(2).dist : 0.0136701
+New closest plane: 2
+plane(3).dist : 0.794491
+A_EDGE-B_EDGE collision
+A:    0.0392
+
+ddot:    8.1230
+
+f:         0
+
+b:    6.5851e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.438, D2: 0.0552087, D3: 1.07421, D4: 0.404792
+plane(0).dist : 0.0581387
+New closest plane: 0
+plane(1).dist : 0.26855
+plane(2).dist : 0.0142104
+New closest plane: 2
+plane(3).dist : 0.814808
+A_EDGE-B_EDGE collision
+A:    0.0377
+
+ddot:    7.9191
+
+f:         0
+
+b:    7.7770e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.41199, D2: 0.05809, D3: 1.14101, D4: 0.473577
+plane(0).dist : 0.0657289
+New closest plane: 0
+plane(1).dist : 0.285252
+plane(2).dist : 0.0147828
+New closest plane: 2
+plane(3).dist : 0.823866
+A_EDGE-B_EDGE collision
+A:    0.0367
+
+ddot:    7.7827
+
+f:         0
+
+b:    8.9370e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -0.0610032, D2: -1.38085, D3: -1.20335, D4: -0.548518
+plane(0).dist : 0.0737534
+New closest plane: 0
+plane(1).dist : 0.300835
+plane(2).dist : 0.818965
+plane(3).dist : 0.0153923
+New closest plane: 3
+A_EDGE-B_EDGE collision
+A:    0.0363
+
+ddot:    7.7116
+
+f:         0
+
+b:    1.0077e+03
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -4.32283, D2: -0.0639536, D3: -2.69142, D4: -0.133347
+plane(0).dist : 0.0103668
+New closest plane: 0
+plane(1).dist : 0.503626
+plane(2).dist : 0.0160445
+plane(3).dist : 0.82504
+plane(0).dist : 38.3591
+New closest plane: 0
+plane(1).dist : 0.503626
+New closest plane: 1
+plane(2).dist : 0.0160445
+New closest plane: 2
+plane(3).dist : 0.82504
+plane(4).dist : 24.0537
+plane(5).dist : 0.95677
+A_EDGE-B_EDGE collision
+A:    0.0363
+
+ddot:    7.7047
+
+f:         0
+
+b:    61.5240
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -17.4878, D2: -0.0792767, D3: -10.3517, D4: -0.138451
+plane(0).dist : 0.016948
+New closest plane: 0
+plane(1).dist : 0.50105
+plane(2).dist : 0.00634811
+New closest plane: 2
+plane(3).dist : 1.19104
+plane(0).dist : 0.016948
+New closest plane: 0
+plane(1).dist : 0.50105
+plane(2).dist : 4.51716
+plane(3).dist : 1.19104
+plane(4).dist : 0.0669477
+plane(5).dist : 2.72528
+plane(0).dist : 17.8013
+New closest plane: 0
+plane(1).dist : 0.50105
+New closest plane: 1
+plane(2).dist : 4.51716
+plane(3).dist : 1.19104
+plane(4).dist : 0.0669477
+New closest plane: 4
+plane(5).dist : 2.72528
+plane(6).dist : 10.0462
+plane(7).dist : 0.348078
+A_EDGE-B_EDGE collision
+A:    0.0368
+
+ddot:    7.7616
+
+f:         0
+
+b:    1.2743e+03
+
+g:         0
+
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+check if outside ADC
+D1: -8.91794, D2: -4.36787, D3: -0.019289, D4: -0.864934
+plane(0).dist : 0.0730017
+New closest plane: 0
+plane(1).dist : 0.00485882
+New closest plane: 1
+plane(2).dist : 0.598262
+plane(3).dist : 1.21762
+A_EDGE-B_EDGE collision
+A:    0.0410
+
+ddot:    8.3369
+
+f:         0
+
+b:   -3.4657e+02
+
+g:    8.4449e+03
+
+runnin gjk
+check if outside ADC
+D1: -2.03964, D2: -0.080138, D3: -0.432245, D4: -0.789807
+plane(0).dist : 0.101911
+New closest plane: 0
+plane(1).dist : 0.0594563
+New closest plane: 1
+plane(2).dist : 0.0203416
+New closest plane: 2
+plane(3).dist : 0.548046
+A_EDGE-B_EDGE collision
+A:    0.0434
+
+ddot:    8.7806
+
+f:         0
+
+b:   -4.6241e+02
+
+g:    1.0653e+04
+
+runnin gjk
+check if outside ADC
+D1: -1.94737, D2: -0.0841499, D3: -0.495014, D4: -0.65265
+plane(0).dist : 0.0844785
+New closest plane: 0
+plane(1).dist : 0.0703526
+New closest plane: 1
+plane(2).dist : 0.0215821
+New closest plane: 2
+plane(3).dist : 0.558247
+A_EDGE-B_EDGE collision
+A:    0.0463
+
+ddot:    9.3409
+
+f:         0
+
+b:   -5.8865e+02
+
+g:    1.2707e+04
+
+runnin gjk
+check if outside ADC
+D1: -1.84737, D2: -0.0885891, D3: -0.546758, D4: -0.516884
+plane(0).dist : 0.0671993
+New closest plane: 0
+plane(1).dist : 0.0804867
+plane(2).dist : 0.0230194
+New closest plane: 2
+plane(3).dist : 0.569607
+A_EDGE-B_EDGE collision
+A:    0.0499
+
+ddot:    10.0281
+
+f:         0
+
+b:   -7.2775e+02
+
+g:    1.4596e+04
+
+runnin gjk
+check if outside ADC
+D1: -1.73875, D2: -0.0934431, D3: -0.587027, D4: -0.383671
+plane(0).dist : 0.0501619
+New closest plane: 0
+plane(1).dist : 0.0897385
+plane(2).dist : 0.0246685
+New closest plane: 2
+plane(3).dist : 0.582205
+A_EDGE-B_EDGE collision
+A:    0.0541
+
+ddot:    10.8550
+
+f:         0
+
+b:   -8.8197e+02
+
+g:    1.6306e+04
+
+runnin gjk
+check if outside ADC
+D1: -1.62047, D2: -0.098745, D3: -0.615348, D4: -0.254291
+plane(0).dist : 0.0334755
+New closest plane: 0
+plane(1).dist : 0.0979516
+plane(2).dist : 0.0265598
+New closest plane: 2
+plane(3).dist : 0.596128
+A_EDGE-B_EDGE collision
+A:    0.0591
+
+ddot:    11.8365
+
+f:         0
+
+b:   -1.0532e+03
+
+g:    1.7815e+04
+
+runnin gjk
+check if outside ADC
+D1: -4.00656, D2: -0.845925, D3: -0.104521, D4: -1.03423
+plane(0).dist : 0.169256
+New closest plane: 0
+plane(1).dist : 0.0287264
+New closest plane: 1
+plane(2).dist : 0.246937
+plane(3).dist : 1.00164
+A_EDGE-B_EDGE collision
+A:    0.0651
+
+ddot:    12.9896
+
+f:         0
+
+b:   -1.2426e+03
+
+g:    1.9093e+04
+
+runnin gjk
+check if outside ADC
+D1: -1.35038, D2: -0.110785, D3: -0.633622, D4: -0.0134157
+plane(0).dist : 0.00179715
+New closest plane: 0
+plane(1).dist : 0.110303
+plane(2).dist : 0.0312042
+plane(3).dist : 0.62844
+plane(0).dist : 24.1168
+New closest plane: 0
+plane(1).dist : 0.110303
+New closest plane: 1
+plane(2).dist : 0.0312042
+New closest plane: 2
+plane(3).dist : 0.62844
+plane(4).dist : 11.5208
+plane(5).dist : 2.10222
+A_EDGE-B_EDGE collision
+A:    0.0721
+
+ddot:    14.3331
+
+f:         0
+
+b:   -1.4501e+03
+
+g:    2.0103e+04
+
+runnin gjk
+check if outside ADC
+D1: -8.5216, D2: -0.094168, D3: -3.63066, D4: -0.437396
+plane(0).dist : 0.0661123
+New closest plane: 0
+plane(1).dist : 0.232383
+plane(2).dist : 0.0127486
+New closest plane: 2
+plane(3).dist : 0.572321
+plane(0).dist : 0.0661123
+New closest plane: 0
+plane(1).dist : 0.232383
+plane(2).dist : 1.19607
+plane(3).dist : 0.572321
+plane(4).dist : 0.117537
+plane(5).dist : 0.62197
+plane(0).dist : 20.3419
+New closest plane: 0
+plane(1).dist : 0.232383
+New closest plane: 1
+plane(2).dist : 1.19607
+plane(3).dist : 0.572321
+plane(4).dist : 0.117537
+New closest plane: 4
+plane(5).dist : 0.62197
+plane(6).dist : 5.79544
+plane(7).dist : 1.42088
+A_EDGE-B_EDGE collision
+A:    0.0805
+
+ddot:    15.8865
+
+f:         0
+
+b:   -1.7281e+03
+
+g:    2.1473e+04
+
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+check if outside ADC
+D1: -0.846217, D2: -0.0188475, D3: -0.967308, D4: -0.820739
+plane(0).dist : 0.162672
+New closest plane: 0
+plane(1).dist : 0.184828
+plane(2).dist : 0.0110887
+New closest plane: 2
+plane(3).dist : 0.0952525
+A_EDGE-B_EDGE collision
+A:    0.0885
+
+ddot:    13.6916
+
+f:         0
+
+b:   -1.5964e+03
+
+g:    1.8030e+04
+
+runnin gjk
+check if outside ADC
+D1: -0.694565, D2: -0.0456016, D3: -1.23424, D4: -1.00645
+plane(0).dist : 0.195157
+New closest plane: 0
+plane(1).dist : 0.228531
+plane(2).dist : 0.0239021
+New closest plane: 2
+plane(3).dist : 0.0775337
+A_EDGE-B_EDGE collision
+A:    0.0806
+
+ddot:    12.5218
+
+f:         0
+
+b:   -1.3313e+03
+
+g:    1.6519e+04
+
+runnin gjk
+check if outside ADC
+D1: -0.456992, D2: -0.0509461, D3: -1.56468, D4: -1.23526
+plane(0).dist : 0.234928
+New closest plane: 0
+plane(1).dist : 0.281272
+plane(2).dist : 0.0241372
+New closest plane: 2
+plane(3).dist : 0.050677
+A_EDGE-B_EDGE collision
+A:    0.0765
+
+ddot:    11.7282
+
+f:         0
+
+b:   -1.1098e+03
+
+g:    1.4510e+04
+
+runnin gjk
+check if outside ADC
+D1: -0.21693, D2: -0.0568066, D3: -1.90351, D4: -1.45472
+plane(0).dist : 0.272031
+New closest plane: 0
+plane(1).dist : 0.332846
+plane(2).dist : 0.0246231
+New closest plane: 2
+plane(3).dist : 0.0239381
+New closest plane: 3
+plane(0).dist : 0.272031
+New closest plane: 0
+plane(1).dist : 0.332846
+plane(2).dist : 0.0246231
+New closest plane: 2
+plane(3).dist : 0.0568066
+plane(4).dist : 2.12044
+plane(5).dist : 1.67165
+A_EDGE-B_EDGE collision
+A:    0.0748
+
+ddot:    11.2069
+
+f:         0
+
+b:   -9.1608e+02
+
+g:    1.2244e+04
+
+runnin gjk
+check if outside ADC
+check if outside ADC
+D1: -0.528783, D2: -0.0629955, D3: -0.304247, D4: -0.0605142
+plane(0).dist : 0.0178406
+New closest plane: 0
+plane(1).dist : 0.0962137
+plane(2).dist : 0.02524
+plane(3).dist : 0.132194
+plane(0).dist : 11.2168
+New closest plane: 0
+plane(1).dist : 0.0962137
+New closest plane: 1
+plane(2).dist : 0.02524
+New closest plane: 2
+plane(3).dist : 0.132194
+plane(4).dist : 4.87281
+plane(5).dist : 2.00082
+A_EDGE-B_EDGE collision
+A:    0.0748
+
+ddot:    10.8903
+
+f:         0
+
+b:   -7.3985e+02
+
+g:    9.8913e+03
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.61361, D2: 0.320694, D3: 0.0693885, D4: 0.100864
+plane(0).dist : 0.0270526
+New closest plane: 0
+plane(1).dist : 0.0259281
+New closest plane: 1
+plane(2).dist : 0.106058
+plane(3).dist : 0.153401
+A_EDGE-B_EDGE collision
+A:    0.0759
+
+ddot:    10.7319
+
+f:         0
+
+b:   -5.7414e+02
+
+g:    7.5599e+03
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.700821, D2: 0.331619, D3: 0.0758922, D4: 0.150703
+plane(0).dist : 0.0370651
+New closest plane: 0
+plane(1).dist : 0.026655
+New closest plane: 1
+plane(2).dist : 0.115177
+plane(3).dist : 0.175203
+A_EDGE-B_EDGE collision
+A:    0.0780
+
+ddot:    10.6990
+
+f:         0
+
+b:   -4.1433e+02
+
+g:    5.3141e+03
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.789233, D2: 0.336644, D3: 0.0824366, D4: 0.210917
+plane(0).dist : 0.0479062
+New closest plane: 0
+plane(1).dist : 0.0274043
+New closest plane: 1
+plane(2).dist : 0.123299
+plane(3).dist : 0.197306
+A_EDGE-B_EDGE collision
+A:    0.0807
+
+ddot:    10.7677
+
+f:         0
+
+b:   -2.5747e+02
+
+g:    3.1908e+03
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.877588, D2: 0.335319, D3: 0.0889693, D4: 0.282327
+plane(0).dist : 0.0595956
+New closest plane: 0
+plane(1).dist : 0.0281689
+New closest plane: 1
+plane(2).dist : 0.130013
+plane(3).dist : 0.219395
+A_EDGE-B_EDGE collision
+A:    0.0840
+
+ddot:    10.9205
+
+f:         0
+
+b:   -1.0180e+02
+
+g:    1.2119e+03
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 0.96455, D2: 0.327175, D3: 0.0954514, D4: 0.365674
+plane(0).dist : 0.0721479
+New closest plane: 0
+plane(1).dist : 0.0289474
+New closest plane: 1
+plane(2).dist : 0.134749
+plane(3).dist : 0.241135
+A_EDGE-B_EDGE collision
+A:    0.0878
+
+ddot:    11.1443
+
+f:         0
+
+b:    53.5420
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.04896, D2: 0.311709, D3: 0.101943, D4: 0.461539
+plane(0).dist : 0.0855599
+New closest plane: 0
+plane(1).dist : 0.0297674
+New closest plane: 1
+plane(2).dist : 0.136727
+plane(3).dist : 0.262237
+A_EDGE-B_EDGE collision
+A:    0.0922
+
+ddot:    11.4469
+
+f:         0
+
+b:    2.1060e+02
+
+g:         0
+
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+D1: 1.12999, D2: 0.288412, D3: 0.1086, D4: 0.570413
+plane(0).dist : 0.099829
+New closest plane: 0
+plane(1).dist : 0.03068
+New closest plane: 1
+plane(2).dist : 0.134915
+plane(3).dist : 0.282494
+A_EDGE-B_EDGE collision
+A:    0.0970
+
+ddot:    11.8544
+
+f:         0
+
+b:    3.7409e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -1.20662, D2: -0.115427, D3: -0.256879, D4: -0.693009
+plane(0).dist : 0.115007
+New closest plane: 0
+plane(1).dist : 0.12807
+plane(2).dist : 0.0316894
+New closest plane: 2
+plane(3).dist : 0.301652
+A_EDGE-B_EDGE collision
+A:    0.1024
+
+ddot:    12.3620
+
+f:         0
+
+b:    5.4616e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -1.27786, D2: -0.122429, D3: -0.216696, D4: -0.830032
+plane(0).dist : 0.131151
+New closest plane: 0
+plane(1).dist : 0.114747
+New closest plane: 1
+plane(2).dist : 0.0328016
+New closest plane: 2
+plane(3).dist : 0.31946
+A_EDGE-B_EDGE collision
+A:    0.1082
+
+ddot:    12.9666
+
+f:         0
+
+b:    7.2859e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -1.93987, D2: -0.129613, D3: -1.79071, D4: -0.062531
+plane(0).dist : 0.00830889
+New closest plane: 0
+plane(1).dist : 0.200583
+plane(2).dist : 0.0340242
+plane(3).dist : 0.367817
+plane(0).dist : 17.6396
+New closest plane: 0
+plane(1).dist : 0.200583
+New closest plane: 1
+plane(2).dist : 0.0340242
+New closest plane: 2
+plane(3).dist : 0.367817
+plane(4).dist : 17.1836
+plane(5).dist : 1.52129
+A_EDGE-B_EDGE collision
+A:    0.1147
+
+ddot:    13.6673
+
+f:         0
+
+b:    1.1229e+02
+
+g:         0
+
+runnin gjk
+check if outside ADC
+D1: -7.29512, D2: -0.0626441, D3: -6.36741, D4: -0.316013
+plane(0).dist : 0.0349962
+New closest plane: 0
+plane(1).dist : 0.516142
+plane(2).dist : 0.00823881
+New closest plane: 2
+plane(3).dist : 0.555782
+plane(0).dist : 0.0349962
+New closest plane: 0
+plane(1).dist : 0.516142
+plane(2).dist : 1.95504
+plane(3).dist : 0.555782
+plane(4).dist : 0.136991
+plane(5).dist : 1.85521
+plane(0).dist : 18.9812
+New closest plane: 0
+plane(1).dist : 0.516142
+New closest plane: 1
+plane(2).dist : 1.95504
+plane(3).dist : 0.555782
+plane(4).dist : 0.136991
+New closest plane: 4
+plane(5).dist : 1.85521
+plane(6).dist : 14.6625
+plane(7).dist : 0.897744
+A_EDGE-B_EDGE collision
+A:    0.1218
+
+ddot:    14.4647
+
+f:         0
+
+b:   -29.6158
+
+g:    2.4318e+02
+
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+No intersection in gjk
+runnin gjk
+flipped normal
+flipped normal
+check if outside ADC
+flipped normal
+No intersection in gjk

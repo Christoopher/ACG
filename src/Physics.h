@@ -12,7 +12,7 @@
 #include <armadillo>
 #endif
 
-const int nrOfRigidBodies = 4;
+const int nrOfRigidBodies = 15;
 std::vector<RigidBody> rigidBodyArray;
 std::vector<arma::vec> cube;
 std::vector<Contact> contacts;
@@ -21,7 +21,6 @@ std::vector<Contact> contacts;
 void
 physicsSetState()
 {
-
 
 //	rigidBodyArray[0].X(0) = rigidBodyArray[0].X(2) = 0;
 //	rigidBodyArray[0].X(1) = 5.0;	
@@ -43,10 +42,10 @@ physicsSetState()
 	float m = 0.0;
 	for(int i = 0; i < nrOfRigidBodies-1; ++i)
 	{
-		rigidBodyArray[i].X(0) = 2*(rand()/(float)RAND_MAX - 0.5)*10; 
-		rigidBodyArray[i].X(2) = 2*(rand()/(float)RAND_MAX - 0.5)*10;
+		rigidBodyArray[i].X(0) = 2*(rand()/(float)RAND_MAX - 0.5)*3; 
+		rigidBodyArray[i].X(2) = 2*(rand()/(float)RAND_MAX - 0.5)*3;
 		rigidBodyArray[i].X(1) = 5.0 + m;
-		m += 0.5;
+		m += 1.4;
 
 		//	double val = 1.0/sqrt(2.0);
 		rigidBodyArray[i].R(0,0) = 0.891006524188368; rigidBodyArray[i].R(0,1) = 0.0; rigidBodyArray[i].R(0,2) = -0.453990499739547;
@@ -82,7 +81,7 @@ physicsSetState()
 	rigidBodyArray[index].force_fun = &Force;
 	rigidBodyArray[index].torque_fun = &Torque;
 	rigidBodyArray[index].isMovable = false;
-	rigidBodyArray[index].init(20,1,20);
+	rigidBodyArray[index].init(10,1,10);
 }
 
 void
