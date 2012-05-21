@@ -4,10 +4,10 @@
 #include <iostream>
 #include <fstream>
 
-//#define LOG(msg) Logger::getInstance().file << msg << "\n"; Logger::getInstance().file.flush(); \
-//	std::cout << msg << "\n"	
+#define LOG(msg) Logger::getInstance().file << msg << "\n"; Logger::getInstance().file.flush(); \
+	std::cout << msg << "\n"	
 
-#define LOG(msg) 
+//#define LOG(msg) 
 
 using namespace std;
 class Logger

@@ -22,23 +22,28 @@ int main(void)
 	physicsInit();
 
 	OpenGl_initViewer(600, 600);
-	double t = 0, dt = 1.0/60.0;
+	double t = 0, dt = 1.0/200.0;
 
-
+	int frames = 0;
 	while(running) {
 		if(reset)
 			physicsReset();
 		reset = false;
 		
 
-		if(step || play)
+		//if( (step || play) && frames >= 20)
+		if( step || play)
 		{
 			physicsTick(t,dt);	
 			t += dt;
+
 		}
 			
 		//Draw
 		OpenGl_drawAndUpdate(running, rigidBodyArray);
+		//frames++;
+		//if(frames > 20)
+		//	frames = 0;
 	}
 
 	TerminateViewer();

@@ -12,7 +12,7 @@
 #include <armadillo>
 #endif
 
-const int nrOfRigidBodies = 15;
+const int nrOfRigidBodies = 5;
 std::vector<RigidBody> rigidBodyArray;
 std::vector<arma::vec> cube;
 std::vector<Contact> contacts;
@@ -42,15 +42,20 @@ physicsSetState()
 	float m = 0.0;
 	for(int i = 0; i < nrOfRigidBodies-1; ++i)
 	{
-		rigidBodyArray[i].X(0) = 2*(rand()/(float)RAND_MAX - 0.5)*3; 
-		rigidBodyArray[i].X(2) = 2*(rand()/(float)RAND_MAX - 0.5)*3;
+		rigidBodyArray[i].X(0) = 0.0;//2*(rand()/(float)RAND_MAX - 0.5)*2; 
+		rigidBodyArray[i].X(2) = 0.0;//2*(rand()/(float)RAND_MAX - 0.5)*2;
 		rigidBodyArray[i].X(1) = 5.0 + m;
 		m += 1.4;
 
-		//	double val = 1.0/sqrt(2.0);
+		double val = 1.0/sqrt(2.0);
 		rigidBodyArray[i].R(0,0) = 0.891006524188368; rigidBodyArray[i].R(0,1) = 0.0; rigidBodyArray[i].R(0,2) = -0.453990499739547;
 		rigidBodyArray[i].R(1,0) = 0.226995249869773; rigidBodyArray[i].R(1,1) = 0.866025403784439; rigidBodyArray[i].R(1,2) = 0.445503262094184;
 		rigidBodyArray[i].R(2,0) =0.39316730585124; rigidBodyArray[i].R(2,1) = -0.5; rigidBodyArray[i].R(2,2) = 0.771634284884801;
+
+			
+		/*rigidBodyArray[i].R(0,0) = 1; rigidBodyArray[i].R(0,1) = 0.0; rigidBodyArray[i].R(0,2) = 0;
+		rigidBodyArray[i].R(1,0) = 0; rigidBodyArray[i].R(1,1) = val; rigidBodyArray[i].R(1,2) = val;
+		rigidBodyArray[i].R(2,0) = 0; rigidBodyArray[i].R(2,1) = -val; rigidBodyArray[i].R(2,2) = val;*/
 
 		rigidBodyArray[i].Q.FromRotationMatrix(rigidBodyArray[i].R);
 
@@ -127,4 +132,5 @@ physicsTick(double t, double dt)
 		//std::cout << rigidBodyArray[0].X(1) << "\n";
 		rigidBodyArray[i].update(t,dt);
 	}
+	//step = false; play = false;
 }

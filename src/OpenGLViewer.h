@@ -323,15 +323,21 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 	glEnd();
 	
 	//Draw normalized angular velocity vector
-	glBegin(GL_LINES);
-		if(conts != NULL)
-		for(int i = 0; i < conts->size(); ++i)
+	glBegin(GL_LINES);		
+		for(int i = 0; i < rb.size(); ++i)
 		{
 			glColor3f(1.0,0.0,1.0);
-			glVertex3f(conts->at(i).P(0),conts->at(i).P(1), conts->at(i).P(2));
-			arma::vec w = conts->at(i).A->W;
-			w = w/norm(w,2);
-			glVertex3f(w(0)+conts->at(i).P(0),w(1)+conts->at(i).P(1), w(2)+conts->at(i).P(2));
+			glVertex3f(rb[i].X(0),rb[i].X(1),rb[i].X(2));
+			arma::vec w = rb[i].W;
+			//w = w/norm(w,2);
+			glVertex3f(w(0)+rb[i].X(0),w(1)+rb[i].X(1), w(2)+rb[i].X(2));
+
+
+			glColor3f(1.0,1.0,0.0);
+			glVertex3f(rb[i].X(0),rb[i].X(1),rb[i].X(2));
+			w = rb[i].V;
+			//w = w/norm(w,2);
+			glVertex3f(w(0)+rb[i].X(0),w(1)+rb[i].X(1), w(2)+rb[i].X(2));
 		}
 	glEnd();
 
@@ -348,9 +354,9 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 		glTranslatef(rb[i].X(0),rb[i].X(1), rb[i].X(2));
 		glMultMatrixd(rb[i].R.memptr());
 
-		if(rb[i].isColliding)
-			drawColorCube(0.5,1.0,0.0,0.0);
-		else
+		//if(rb[i].isColliding)
+		//	drawColorCube(0.5,1.0,0.0,0.0);
+		//else
 			drawColorCube(0.5,0.6,0.6,0.6);
 
 		glPopMatrix();

@@ -11,14 +11,14 @@
 #include <armadillo>
 #endif
 void
-createA(std::vector<Contact>& contactArray,arma::mat& A)
+	createA(std::vector<Contact>& contactArray,arma::mat& A)
 {
 	for(unsigned int i=0; i < contactArray.size(); ++i)
 	{
 		Contact ci = contactArray.at(i);
 
-		arma::vec riAlphaCrossN = arma::cross(ci.P-ci.A->X,ci.N);
-		arma::vec riBetaCrossN = arma::cross(ci.P-ci.B->X,ci.N);
+		arma::vec riAlphaCrossN = arma::cross(ci.P-ci.A->X,ci.N); //A->P vector
+		arma::vec riBetaCrossN = arma::cross(ci.P-ci.B->X,ci.N); //B->P vector
 		/*
 		std::cout << "ci.N: " << ci.N << std::endl;
 		std::cout << "ci.P: " << ci.P << std::endl;
@@ -42,23 +42,23 @@ createA(std::vector<Contact>& contactArray,arma::mat& A)
 
 			if (ci.A == cj.A)
 			{
-			A(i,j) += ci.A->inv_mass * arma::dot(ci.N,cj.N);
-			A(i,j) += arma::dot(riAlphaCrossN,ci.A->inv_inertia * rjAlphaCrossN);
+				A(i,j) += ci.A->inv_mass * arma::dot(ci.N,cj.N);
+				A(i,j) += arma::dot(riAlphaCrossN,ci.A->inv_inertia * rjAlphaCrossN);
 			}
 			else if (ci.A == cj.B)
 			{
-			A(i,j) -= ci.A->inv_mass * arma::dot(ci.N,cj.N);
-			A(i,j) -= arma::dot(riAlphaCrossN,ci.A->inv_inertia * rjAlphaCrossN);
+				A(i,j) -= ci.A->inv_mass * arma::dot(ci.N,cj.N);
+				A(i,j) -= arma::dot(riAlphaCrossN,ci.A->inv_inertia * rjAlphaCrossN);
 			}
 			if (ci.B == cj.A)
 			{
-			A(i,j) -= ci.B->inv_mass * arma::dot(ci.N,cj.N);
-			A(i,j) -= arma::dot(riBetaCrossN,ci.B->inv_inertia * rjBetaCrossN);
+				A(i,j) -= ci.B->inv_mass * arma::dot(ci.N,cj.N);
+				A(i,j) -= arma::dot(riBetaCrossN,ci.B->inv_inertia * rjBetaCrossN);
 			}
 			else if (ci.B == cj.B)
 			{
-			A(i,j) += ci.B->inv_mass * arma::dot(ci.N,cj.N);
-			A(i,j) += arma::dot(riBetaCrossN,ci.B->inv_inertia * rjBetaCrossN);
+				A(i,j) += ci.B->inv_mass * arma::dot(ci.N,cj.N);
+				A(i,j) += arma::dot(riBetaCrossN,ci.B->inv_inertia * rjBetaCrossN);
 			}
 
 			/*
@@ -106,8 +106,8 @@ createA(std::vector<Contact>& contactArray,arma::mat& A)
 
 }
 void
-computePreImpulseVelocity (std::vector<Contact>& contactArray,
-arma::vec& ddot)
+	computePreImpulseVelocity (std::vector<Contact>& contactArray,
+	arma::vec& ddot)
 {
 	arma::vec3 rAi,rBi;
 	rAi.set_size(3,1);rBi.set_size(3,1);
@@ -125,7 +125,7 @@ arma::vec& ddot)
 		ddot(i) = arma::dot(ci.N,(ci.A->V + arma::cross(ci.A->W,rAi)) - (ci.B->V + arma::cross(ci.B->W,rBi)));
 	}
 
-/*
+	/*
 	std::cout << "ci.N: " << ci.N << std::endl;
 	std::cout << "ci.A->V: " << ci.A->V << std::endl;
 	std::cout << "ci.A->W: " << ci.A->W << std::endl;
@@ -135,11 +135,11 @@ arma::vec& ddot)
 	std::cout << "ci.A->V + + arma::cross(ci.A->W,rAi): " << ci.A->V + arma::cross(ci.A->W,rAi) << std::endl;
 	std::cout << "(ci.B->V + arma::cross(ci.B->W,rBi)): " << (ci.B->V + arma::cross(ci.B->W,rBi)) << std::endl;
 	std::cout << "ddot: " << ddot << std::endl;
-   /* */
+	/* */
 }
 
 void
-lemke(arma::mat& M,arma::vec& q, arma::vec& z)
+	lemke(arma::mat& M,arma::vec& q, arma::vec& z)
 {
 	unsigned int n = q.n_rows;
 	float zErrorTol = 1e-5;
@@ -168,41 +168,41 @@ lemke(arma::mat& M,arma::vec& q, arma::vec& z)
 	//Determine initial basis
 	arma::mat B = -(arma::diagmat(arma::eye(n,n)));
 	arma::uvec bas; bas.set_size(n);
-	  for(unsigned int i=0;i<n;++i)
+	for(unsigned int i=0;i<n;++i)
 		bas.at(i)= n + i;
 
 	//Determine initial values
 
-	  arma::vec x; x.set_size(n,1);
+	arma::vec x; x.set_size(n,1);
 
-	   //   x = -arma::solve(B,q); Ändrat här själv
-		  x = q;
-		  /*
-		  std::cout << "q: " << q << std::endl;
-		  std::cout << "B: " << B << std::endl;
-		  std::cout << "-arma::solve(B,q): " << x << std::endl;
-		  */
+	//   x = -arma::solve(B,q); Ändrat här själv
+	x = q;
+	/*
+	std::cout << "q: " << q << std::endl;
+	std::cout << "B: " << B << std::endl;
+	std::cout << "-arma::solve(B,q): " << x << std::endl;
+	*/
 	//Check if initial basis provides solution, already done now? since x = q ?!
 	/*
 	trivial = true;
 	for(unsigned int i = 0;i<n;++i)
 	{
-		if(x(i)<0);
-		{
-			trivial = false;
-			break;
-		}
+	if(x(i)<0);
+	{
+	trivial = false;
+	break;
+	}
 	}
 	if(trivial)
 	{
-		z.rows(n,2*n-1) = x;
-		z = z.rows(0,n-1);
-		//z.rows(n+1,2*n) = x;
-		//z = z.rows(1,n); //wierd? z(bas)=x; z=z(1:n);
-		return;
+	z.rows(n,2*n-1) = x;
+	z = z.rows(0,n-1);
+	//z.rows(n+1,2*n) = x;
+	//z = z.rows(1,n); //wierd? z(bas)=x; z=z(1:n);
+	return;
 	}
 	*/
-   // arma::uword t = 2*n+1;
+	// arma::uword t = 2*n+1;
 	arma::uword t = 2*n; //Correct for armadillo?
 	arma::uword entering = t;
 
@@ -219,7 +219,7 @@ lemke(arma::mat& M,arma::vec& q, arma::vec& z)
 	bas(lvindex)=t;
 	//std::cout << "leaving: " << leaving << std::endl;
 	//std::cout << "bas(lvindex)=t: " << bas << std::endl;
-   // std::cout << "x before addition of scalar: " << x << std::endl;
+	// std::cout << "x before addition of scalar: " << x << std::endl;
 	x=x+tval; //vector + double samma som i matlab? JA
 	//std::cout << "x after addition of scalar: " << x << std::endl;
 	x(lvindex)=tval;
@@ -238,19 +238,19 @@ lemke(arma::mat& M,arma::vec& q, arma::vec& z)
 		if(leaving == t) break;
 		else if(leaving < n) //leaving <= n
 		{
-		   // std::cout << "bas i loop: " << bas << std::endl;
-		  //  std::cout << "leaving: " << leaving << std::endl;
-		   // std::cout << "n: " << n << std::endl;
+			// std::cout << "bas i loop: " << bas << std::endl;
+			//  std::cout << "leaving: " << leaving << std::endl;
+			// std::cout << "n: " << n << std::endl;
 			entering = n+leaving;
 			Be.zeros();
 			Be(leaving) = -1.0;//sparse(leaving,1,-1.0,n,1);
-		  //  std::cout << "Be: " << Be << std::endl;
+			//  std::cout << "Be: " << Be << std::endl;
 		}
 		else
 		{
 			entering = leaving-n;
 			if(entering >= n)
-			   std::cout << "entering index out of bounds: " << entering << "n: " << n << std::endl;// LOG("entering index out of bounds: " << entering << "n: " << n);
+				std::cout << "entering index out of bounds: " << entering << "n: " << n << std::endl;// LOG("entering index out of bounds: " << entering << "n: " << n);
 			Be = M.col(entering);
 
 		}
@@ -268,15 +268,15 @@ lemke(arma::mat& M,arma::vec& q, arma::vec& z)
 
 
 		//Find new leaving variable
-	  //  std::cout << "d: " << d << std::endl;
-	  //  std::cout << "tol: " << pivTol << std::endl;
+		//  std::cout << "d: " << d << std::endl;
+		//  std::cout << "tol: " << pivTol << std::endl;
 		j = arma::find(d>pivTol);
-	   // std::cout << "j = arma::find(d>pivTol): " << j << std::endl;
+		// std::cout << "j = arma::find(d>pivTol): " << j << std::endl;
 		if(j.empty())
 		{
 			LOG("Inne i unbounded ray!");
-		  //  LOG("j = arma::find(d>pivTol): " << j);
-		   // LOG("d: " << d);
+			//  LOG("j = arma::find(d>pivTol): " << j);
+			// LOG("d: " << d);
 			err=2;
 			break;
 		}
@@ -320,48 +320,48 @@ lemke(arma::mat& M,arma::vec& q, arma::vec& z)
 			abort();
 		}
 
-			  if(!sbo.empty())
-				  lvindex=j(lvindex);
-				else
-				{
-					theta = arma::max(d.elem(j));
-					//std::cout << "d.elem(j): " << d.elem(j) << std::endl;
-					arma::uvec index = arma::find(d.elem(j)==theta);
-					double ed = index.size();
-					arma::vec edd = arma::randu<arma::vec>(1);
-					double random = edd[0];
-					double bajs = ed*random;
+		if(!sbo.empty())
+			lvindex=j(lvindex);
+		else
+		{
+			theta = arma::max(d.elem(j));
+			//std::cout << "d.elem(j): " << d.elem(j) << std::endl;
+			arma::uvec index = arma::find(d.elem(j)==theta);
+			double ed = index.size();
+			arma::vec edd = arma::randu<arma::vec>(1);
+			double random = edd[0];
+			double bajs = ed*random;
 
-					//std::cout << "ed = index.size(): " << ed << std::endl;
-					//std::cout << "random: " << random << std::endl;
-					//std::cout << "bajs= ed*random: " << bajs << std::endl;
-					arma::uword tmp = (arma::uword)ceil(bajs)-1;
-					//std::cout << "ciel(bajs): " << tmp << std::endl;
-					lvindex = j(tmp);
-					//std::cout << "lvindex = j(tmp): " << lvindex << std::endl;
-				}
-				leaving = bas(lvindex);
-				//std::cout << "bas: " << bas << std::endl;
-				//std::cout << "leaving = bas(lvindex): " << leaving << std::endl;
-				//Perform pivot
-				double ratio = x(lvindex)/d(lvindex);
-				//std::cout << "x(lvindex): " << x(lvindex) << std::endl;
-				//std::cout << "d(lvindex): " << d(lvindex) << std::endl;
-				//std::cout << "ratio: " << ratio << std::endl;
-				//std::cout << "d: " << d << std::endl;
-				//std::cout << "x before: " << x << std::endl;
-				x = x - (ratio*d);
-				//std::cout << "x after: " << x << std::endl;
+			//std::cout << "ed = index.size(): " << ed << std::endl;
+			//std::cout << "random: " << random << std::endl;
+			//std::cout << "bajs= ed*random: " << bajs << std::endl;
+			arma::uword tmp = (arma::uword)ceil(bajs)-1;
+			//std::cout << "ciel(bajs): " << tmp << std::endl;
+			lvindex = j(tmp);
+			//std::cout << "lvindex = j(tmp): " << lvindex << std::endl;
+		}
+		leaving = bas(lvindex);
+		//std::cout << "bas: " << bas << std::endl;
+		//std::cout << "leaving = bas(lvindex): " << leaving << std::endl;
+		//Perform pivot
+		double ratio = x(lvindex)/d(lvindex);
+		//std::cout << "x(lvindex): " << x(lvindex) << std::endl;
+		//std::cout << "d(lvindex): " << d(lvindex) << std::endl;
+		//std::cout << "ratio: " << ratio << std::endl;
+		//std::cout << "d: " << d << std::endl;
+		//std::cout << "x before: " << x << std::endl;
+		x = x - (ratio*d);
+		//std::cout << "x after: " << x << std::endl;
 
 
-				x(lvindex) = ratio;
-				//std::cout << "x(lvindex) = ratio, visar x: " << x << std::endl;
-				//std::cout << "B: " << B << std::endl;
-				//std::cout << "Be: " << Be << std::endl;
-				B.col(lvindex) = Be;
-			   // std::cout << "B after B.col(lvindex) =Be: " << B << std::endl;
-				bas(lvindex) = entering;
-				//std::cout << "bas after bas(lvindex) = entering: " << bas << std::endl;
+		x(lvindex) = ratio;
+		//std::cout << "x(lvindex) = ratio, visar x: " << x << std::endl;
+		//std::cout << "B: " << B << std::endl;
+		//std::cout << "Be: " << Be << std::endl;
+		B.col(lvindex) = Be;
+		// std::cout << "B after B.col(lvindex) =Be: " << B << std::endl;
+		bas(lvindex) = entering;
+		//std::cout << "bas after bas(lvindex) = entering: " << bas << std::endl;
 	}
 	/*
 	std::cout << "After loop" << std::endl;
@@ -373,17 +373,6 @@ lemke(arma::mat& M,arma::vec& q, arma::vec& z)
 	if(iter>=maxIter && leaving !=t)
 		err=1;
 
-   // z.rows(n+1,2*n) = x;
-   // LOG("x: " << x);
-  //  LOG("z before last assignment: " << z);
-	z.elem(bas) = x;
-   // LOG("z in middle of last assignment: " << z);
-	z = z.rows(0,n-1);
-   // z.rows(n,2*n-1) = x;
-   // z = z.rows(0,n-1);
-  //  LOG("z after last assignment: " << z);
-   // z = z.rows(1,n); //wierd? z(bas)=x; z=z(1:n);
-
 	if(err!=0)
 	{
 		if(err==1)
@@ -393,12 +382,24 @@ lemke(arma::mat& M,arma::vec& q, arma::vec& z)
 		else if(err==2)
 		{
 			LOG("Unbounded ray! Should not happen in our case!");
+			return;
 		}
 	}
+	// z.rows(n+1,2*n) = x;
+	// LOG("x: " << x);
+	//  LOG("z before last assignment: " << z);
+	z.elem(bas) = x;
+	// LOG("z in middle of last assignment: " << z);
+	z = z.rows(0,n-1);
+	// z.rows(n,2*n-1) = x;
+	// z = z.rows(0,n-1);
+	//  LOG("z after last assignment: " << z);
+	// z = z.rows(1,n); //wierd? z(bas)=x; z=z(1:n);
+
 }
 
 void
-minimize(arma::mat& A,arma::vec& ddot,arma::vec& f)
+	minimize(arma::mat& A,arma::vec& ddot,arma::vec& f)
 {
 	//|Af +b|^2
 	//Skriv om till LCP: Mz + q = w;
@@ -408,91 +409,91 @@ minimize(arma::mat& A,arma::vec& ddot,arma::vec& f)
 
 	arma::vec b = arma::zeros<arma::vec>(n,1);
 	arma::vec c = arma::zeros<arma::vec>(n,1);
-   for(int i = 0;i < n;++i)
-   {
-	  //Här skapas b, se boksidan 493.
-	   if(ddot(i) < 0.0)
-		   b(i) = 2.0*ddot(i); //else behövs inte ty alla b element är 0 från början
-	   //Här skapas c, se boksidan 496.
-	   c(i) = fabs(ddot(i));
-   }
+	for(int i = 0;i < n;++i)
+	{
+		//Här skapas b, se boksidan 493.
+		if(ddot(i) < 0.0)
+			b(i) = 2.0*ddot(i); //else behövs inte ty alla b element är 0 från början
+		//Här skapas c, se boksidan 496.
+		c(i) = fabs(ddot(i));
+	}
 
-   //Yey nu har vi A, b och c så nu kan vi skapa M och q.
-   arma::mat M = arma::zeros<arma::mat>(3*n,3*n);
-   arma::vec q = arma::zeros<arma::vec>(3*n,1);
-   //.submat( first_row, first_col, last_row, last_col )
+	//Yey nu har vi A, b och c så nu kan vi skapa M och q.
+	arma::mat M = arma::zeros<arma::mat>(3*n,3*n);
+	arma::vec q = arma::zeros<arma::vec>(3*n,1);
+	//.submat( first_row, first_col, last_row, last_col )
 
-  //Här skapas M, se boksidan 844.
-   M.submat(0,0  ,n-1, n-1) = 2.0*arma::trans(A)*A;
-   M.submat(0,n  ,n-1, 2*n-1) = -A;
-   M.submat(0,2*n,n-1, 3*n-1) = A;
+	//Här skapas M, se boksidan 844.
+	M.submat(0,0  ,n-1, n-1) = 2.0*arma::trans(A)*A;
+	M.submat(0,n  ,n-1, 2*n-1) = -A;
+	M.submat(0,2*n,n-1, 3*n-1) = A;
 
-   M.submat(n,0,2*n-1,  n-1) = A;
-   M.submat(2*n,0,3*n-1,n-1) = -A;
+	M.submat(n,0,2*n-1,  n-1) = A;
+	M.submat(2*n,0,3*n-1,n-1) = -A;
 
-   //Här skapas q, se boksidan 844.
-   q.subvec(0,n-1) = 2.0*arma::trans(A)*b;
-   q.subvec(n,2*n-1) = b;
-   q.subvec(2*n,3*n-1) = c-b;
-/*
-   std::cout << "b: " << b << std::endl;
-   std::cout << "c: " << c << std::endl;
-   std::cout << "M: " << M << std::endl;
-   std::cout << "q: " << q << std::endl;
-*/
-   //Se Er1ks mobilbild också!
+	//Här skapas q, se boksidan 844.
+	q.subvec(0,n-1) = 2.0*arma::trans(A)*b;
+	q.subvec(n,2*n-1) = b;
+	q.subvec(2*n,3*n-1) = c-b;
+	/*
+	std::cout << "b: " << b << std::endl;
+	std::cout << "c: " << c << std::endl;
+	std::cout << "M: " << M << std::endl;
+	std::cout << "q: " << q << std::endl;
+	*/
+	//Se Er1ks mobilbild också!
 
-   arma::vec z = arma::zeros<arma::vec>(3*n,1);
-   arma::vec w = arma::zeros<arma::vec>(3*n,1);
-   //LCP STUFF GOES HERE
-   //---------------------------
-   lemke(M,q,z);
+	arma::vec z = arma::zeros<arma::vec>(3*n,1);
+	arma::vec w = arma::zeros<arma::vec>(3*n,1);
+	//LCP STUFF GOES HERE
+	//---------------------------
+	lemke(M,q,z);
 
-   //w = M*z+q;
+	//w = M*z+q;
 
-   f = z.rows(0,n-1);
+	f = z.rows(0,n-1);
 
 
-/*
-   LOG("f: " << f);
-   LOG("b: " << b);
-   LOG("Af+b: " << A*f+b);
-   LOG("Af+ddot: " << A*f+ddot);
-   LOG("c: " << c);*/
-   //DEBUG
-   //-------------------------------------------------------------------------
-   arma::vec tmp = A*f + b;
-   for(unsigned int i = 0; i < f.n_rows; ++i)
-   {
-	   if(tmp(i) > c(i))
-	   {
-		   std::cout << "Af+b > c. Något fel i lemke? Af+b: " << tmp << "c: " << c << std::endl;
-		   abort();
-	   }
-	   else if(tmp(i) < 0.0)
-	   {
-			 std::cout << "Af+b < 0. Något fel i lemke? Af+b: " << tmp << std::endl;
+	/*
+	LOG("f: " << f);
+	LOG("b: " << b);
+	LOG("Af+b: " << A*f+b);
+	LOG("Af+ddot: " << A*f+ddot);
+	LOG("c: " << c);*/
+	//DEBUG
+	//-------------------------------------------------------------------------
+	arma::vec tmp = A*f + b;
+	for(unsigned int i = 0; i < f.n_rows; ++i)
+	{
+		if(tmp(i) > c(i))
+		{
+			std::cout << "Af+b > c. Något fel i lemke? Af+b: " << tmp << "c: " << c << std::endl;
+			//abort();
+		}
+		else if(tmp(i) < 0.0)
+		{
+			std::cout << "Af+b < 0. Något fel i lemke? Af+b: " << tmp << std::endl;
 
-	   }
-	   else if(f(i) < 0.0)
-	   {
-		   std::cout << "f < 0.0. Något fel i lemke? f: " << f << std::endl;
-		   abort();
-	   }
-   }
-   //-------------------------------------------------------------------------
-   /*
-   std::cout << "w: " << w << std::endl;
-   std::cout << "z: " << z << std::endl;
-   std::cout << "w%z: " << w%z << std::endl;
-   std::cout << "f: " << f << std::endl;
-   */
-   //---------------------------
+		}
+		else if(f(i) < 0.0)
+		{
+			std::cout << "f < 0.0. Något fel i lemke? f: " << f << std::endl;
+			abort();
+		}
+	}
+	//-------------------------------------------------------------------------
+	/*
+	std::cout << "w: " << w << std::endl;
+	std::cout << "z: " << z << std::endl;
+	std::cout << "w%z: " << w%z << std::endl;
+	std::cout << "f: " << f << std::endl;
+	*/
+	//---------------------------
 
 }
 
 void
-applyImpulse (std::vector<Contact>& contactArray,arma::vec& f)
+	applyImpulse (std::vector<Contact>& contactArray,arma::vec& f)
 {
 	Contact ci;
 	arma::vec impulse;
@@ -500,7 +501,7 @@ applyImpulse (std::vector<Contact>& contactArray,arma::vec& f)
 	for (unsigned int i = 0; i < contactArray.size(); ++i)
 	{
 		ci = contactArray.at(i);
-		impulse = f(i) * ci.N;
+		impulse = 0.6*f(i) * ci.N;
 		//Optimization: Add up all impulses to P and L in separate pass
 		//and then assign the new velocities?
 		//Parallelization: Find a way to skip +=
@@ -519,9 +520,9 @@ applyImpulse (std::vector<Contact>& contactArray,arma::vec& f)
 }
 
 void
-computeRestingVector(std::vector<Contact>& contactArray,arma::vec& b)
+	computeRestingVector(std::vector<Contact>& contactArray,arma::vec& b)
 {
-//LOG("Debug in computeRestingVector.");
+	//LOG("Debug in computeRestingVector.");
 	for (unsigned int i = 0; i < contactArray.size(); ++i)
 	{
 
@@ -561,34 +562,34 @@ computeRestingVector(std::vector<Contact>& contactArray,arma::vec& b)
 
 		if(b(i)>1e3)
 		{
-		LOG("rAi = ci.P - ci.A->X: " << rAi);
-		LOG("wAxrAi = arma::cross(ci.A->W,rAi): " << wAxrAi);
-		LOG("At1 = ci.A->inv_mass * ci.A->m_externalForce: " << At1);
-		LOG("ci.A->inv_inertia" << ci.A->inv_inertia);
-		LOG("ci.A->inv_inertia * (ci.A->m_externalTorque + arma::cross(ci.A->L,ci.A->W)): " << ci.A->inv_inertia * (ci.A->m_externalTorque + arma::cross(ci.A->L,ci.A->W)));
-		LOG("At2 = arma::cross(ci.A->inv_inertia * (ci.A->m_externalTorque + arma::cross(ci.A->L,ci.A->W)),rAi): " << At2);
-		LOG("At3 = arma::cross(ci.A->W,wAxrAi): " << At3);
-		LOG("At4 = ci.A->V + wAxrAi: " << At4);
+			LOG("rAi = ci.P - ci.A->X: " << rAi);
+			LOG("wAxrAi = arma::cross(ci.A->W,rAi): " << wAxrAi);
+			LOG("At1 = ci.A->inv_mass * ci.A->m_externalForce: " << At1);
+			LOG("ci.A->inv_inertia" << ci.A->inv_inertia);
+			LOG("ci.A->inv_inertia * (ci.A->m_externalTorque + arma::cross(ci.A->L,ci.A->W)): " << ci.A->inv_inertia * (ci.A->m_externalTorque + arma::cross(ci.A->L,ci.A->W)));
+			LOG("At2 = arma::cross(ci.A->inv_inertia * (ci.A->m_externalTorque + arma::cross(ci.A->L,ci.A->W)),rAi): " << At2);
+			LOG("At3 = arma::cross(ci.A->W,wAxrAi): " << At3);
+			LOG("At4 = ci.A->V + wAxrAi: " << At4);
 
-		LOG("Ndot: " << Ndot);
+			LOG("Ndot: " << Ndot);
 
-		LOG("norm At1: " << arma::norm(At1,2));
-		LOG("norm At2: " << arma::norm(At2,2));
-		LOG("norm At3: " << arma::norm(At3,2));
-		LOG("norm At4: " << arma::norm(At4,2));
+			LOG("norm At1: " << arma::norm(At1,2));
+			LOG("norm At2: " << arma::norm(At2,2));
+			LOG("norm At3: " << arma::norm(At3,2));
+			LOG("norm At4: " << arma::norm(At4,2));
 
-		LOG("norm Bt1: " << arma::norm(Bt1,2));
-		LOG("norm Bt2: " << arma::norm(Bt2,2));
-		LOG("norm Bt3: " << arma::norm(Bt3,2));
-		LOG("norm Bt4: " << arma::norm(Bt4,2));
+			LOG("norm Bt1: " << arma::norm(Bt1,2));
+			LOG("norm Bt2: " << arma::norm(Bt2,2));
+			LOG("norm Bt3: " << arma::norm(Bt3,2));
+			LOG("norm Bt4: " << arma::norm(Bt4,2));
 
-		LOG("arma::dot(ci.N,At1 + At2 + At3 - Bt1 - Bt2 - Bt3): " << arma::dot(ci.N,At1 + At2 + At3 - Bt1 - Bt2 - Bt3));
-		LOG("2.0*arma::dot(Ndot,At4 - Bt4): " << 2.0*arma::dot(Ndot,At4 - Bt4));
+			LOG("arma::dot(ci.N,At1 + At2 + At3 - Bt1 - Bt2 - Bt3): " << arma::dot(ci.N,At1 + At2 + At3 - Bt1 - Bt2 - Bt3));
+			LOG("2.0*arma::dot(Ndot,At4 - Bt4): " << 2.0*arma::dot(Ndot,At4 - Bt4));
 		}
 
 	}
 
-			 // LOG("Leaving computeRestingVector.");
+	// LOG("Leaving computeRestingVector.");
 
 
 }
@@ -613,7 +614,7 @@ void updateInternalValues(std::vector<Contact>& contactArray,arma::vec& g)
 }
 
 void
-collisionResponse(std::vector<Contact>& contactArray)
+	collisionResponse(std::vector<Contact>& contactArray)
 {
 	arma::mat A    = arma::zeros<arma::mat>(contactArray.size(),contactArray.size());
 	arma::vec ddot = arma::zeros<arma::vec>(contactArray.size(),1);
@@ -621,15 +622,15 @@ collisionResponse(std::vector<Contact>& contactArray)
 	arma::vec b    = arma::zeros<arma::vec>(contactArray.size(),1); //RestingContactVector
 	arma::vec g    = arma::zeros<arma::vec>(contactArray.size(),1); //RestingContactMagnitude
 	arma::vec relA = arma::zeros<arma::vec>(contactArray.size(),1); //Relative acceleration
-  //  A.set_size(contactArray.size(),contactArray.size());
-  //  A.zeros(contactArray.size(),contactArray.size());
+	//  A.set_size(contactArray.size(),contactArray.size());
+	//  A.zeros(contactArray.size(),contactArray.size());
 	for(unsigned int i=0; i < contactArray.size();++i)
 	{
-		   if(contactArray.at(i).A->inv_mass == 0)
-		   {
-			   std::cout << "A och B ihop blandade!" << std::endl;
-			   abort();
-		   }
+		if(contactArray.at(i).A->inv_mass == 0)
+		{
+			std::cout << "A och B ihop blandade!" << std::endl;
+			abort();
+		}
 	}
 	createA(contactArray,A);
 	LOG("A: " << A);
@@ -661,35 +662,35 @@ collisionResponse(std::vector<Contact>& contactArray)
 	{
 #endif
 
-	computeRestingVector(contactArray,b);
-	LOG("b: " << b);
-	lemke(A,b,relA);
-
-	//LOG("relA: " << relA);
-	//LOG("b: " << b);
-	//LOG("ArelA+b: " << A*relA+b);
-
-	//LOG("ArelA+ddot: " << A*f+ddot);
-	//LOG("c: " << c);
-	//g = A*b + relA;
-	g = relA.rows(0,contactArray.size()-1);
-	if(g(0)!=0)
-	{
-		arma::vec tmp = A*g+b;
-		arma::vec tmp2 = tmp*g;
-		//Studerade detta och såg att b blev stor vilket gav ett stort g. Kollar upp b nu.
-		LOG("Resting contact!");
-		LOG("A: " << A);
-		LOG("b: " << b);
-		LOG("g: " << g << "<-- Ska vara > 0");
-		LOG("ddotdot = Ag+b: " << tmp << " <-- Ska vara > 0");
-		LOG("ddotdot boll g: " << tmp2 << "<-- Ska vara = 0");
-
-	}
-
-	//---------------------------
-
-	updateInternalValues(contactArray,g);
+		//	computeRestingVector(contactArray,b);
+		//	LOG("b: " << b);
+		//	lemke(A,b,relA);
+		//
+		//	//LOG("relA: " << relA);
+		//	//LOG("b: " << b);
+		//	//LOG("ArelA+b: " << A*relA+b);
+		//
+		//	//LOG("ArelA+ddot: " << A*f+ddot);
+		//	//LOG("c: " << c);
+		//	//g = A*b + relA;
+		//	g = relA.rows(0,contactArray.size()-1);
+		//	if(g(0)!=0)
+		//	{
+		//		arma::vec tmp = A*g+b;
+		//		arma::vec tmp2 = tmp*g;
+		//		//Studerade detta och såg att b blev stor vilket gav ett stort g. Kollar upp b nu.
+		//		LOG("Resting contact!");
+		//		LOG("A: " << A);
+		//		LOG("b: " << b);
+		//		LOG("g: " << g << "<-- Ska vara > 0");
+		//		LOG("ddotdot = Ag+b: " << tmp << " <-- Ska vara > 0");
+		//		LOG("ddotdot boll g: " << tmp2 << "<-- Ska vara = 0");
+		//
+		//	}
+		//
+		//	//---------------------------
+		//
+		//	updateInternalValues(contactArray,g);
 #ifdef checkResting
 	}
 #endif

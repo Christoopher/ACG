@@ -1537,7 +1537,7 @@ void
 	arma::vec bWorld = lA*b.getWorldVerts()[A->Bj] + lB*b.getWorldVerts()[B->Bj] + lC*b.getWorldVerts()[C->Bj];
 	arma::vec pWorld = aWorld - bWorld; /* The translation vector */
 	*dist = arma::norm(pWorld,2);
-	c.P = bWorld;	
+	c.P = bWorld;
 	c.pOnA = aWorld;
 
 	/* Determine vertex-face or edge-edge */
