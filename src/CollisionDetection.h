@@ -71,7 +71,7 @@ public:
 	}
 
 	MPoint *
-	getStartingPoint()
+		getStartingPoint()
 	{
 		//Do some smart picking of the first point =)
 
@@ -80,19 +80,19 @@ public:
 		float maxDist = 100000;
 		for(int i = 0; i < _a.getNumVrts(); ++i)
 		{
-			for(int j = 0; j < _b.getNumVrts(); ++j)
-			{
-				int offset = i+_stride*j;
-				_points[offset].Ai = i;
-				_points[offset].Bj = j;
-				_points[offset].p = _a.getWorldVerts()[i] - _b.getWorldVerts()[j];
-				float d = arma::norm(_points[offset].p,2);
-				if(d < maxDist)
-				{
-					maxDist = d;
-					maxIndex = offset;
-				}
-			}
+		for(int j = 0; j < _b.getNumVrts(); ++j)
+		{
+		int offset = i+_stride*j;
+		_points[offset].Ai = i;
+		_points[offset].Bj = j;
+		_points[offset].p = _a.getWorldVerts()[i] - _b.getWorldVerts()[j];
+		float d = arma::norm(_points[offset].p,2);
+		if(d < maxDist)
+		{
+		maxDist = d;
+		maxIndex = offset;
+		}
+		}
 		}
 		return &_points[maxIndex];*/
 		return &_points[_hull[0]];
@@ -100,7 +100,7 @@ public:
 
 	/*  Returns the farthest away point in the direction d  */
 	MPoint *
-	support(arma::vec & d)
+		support(arma::vec & d)
 	{
 		/*int i = _supportMax(d,_a);
 		int j = _supportMin(d,_b);
@@ -129,11 +129,18 @@ public:
 				index = i;
 			}
 		}
+
+		if(index < 0)
+		{
+			LOG("couldn't find support point in MKset");
+			abort();
+		}
+
 		return &_points[_hull[index]];
 	}
 
 	void
-	remove(int i)
+		remove(int i)
 	{
 		std::swap(_points[i],_points.back());
 		_points.pop_back();
@@ -161,7 +168,7 @@ private:
 
 
 	bool
-	_onHull(const std::vector<MPoint> & p,const int & i)
+		_onHull(const std::vector<MPoint> & p,const int & i)
 	{
 		bool onHull[8];
 
@@ -174,26 +181,19 @@ private:
 			{
 				if(p[j].p(0) <= p[i].p(0) && p[j].p(1) <= p[i].p(1) && p[j].p(2) <= p[i].p(2) )
 					onHull[0] = false;
-
-				if(p[j].p(0) >= p[i].p(0) && p[j].p(1) <= p[i].p(1) && p[j].p(2) <= p[i].p(2) )
+				else if(p[j].p(0) >= p[i].p(0) && p[j].p(1) <= p[i].p(1) && p[j].p(2) <= p[i].p(2) )
 					onHull[1] = false;
-
-				if(p[j].p(0) <= p[i].p(0) && p[j].p(1) >= p[i].p(1) && p[j].p(2) <= p[i].p(2) )
+				else if(p[j].p(0) <= p[i].p(0) && p[j].p(1) >= p[i].p(1) && p[j].p(2) <= p[i].p(2) )
 					onHull[2] = false;
-
-				if(p[j].p(0) >= p[i].p(0) && p[j].p(1) >= p[i].p(1) && p[j].p(2) <= p[i].p(2) )
+				else if(p[j].p(0) >= p[i].p(0) && p[j].p(1) >= p[i].p(1) && p[j].p(2) <= p[i].p(2) )
 					onHull[3] = false;
-
-				if(p[j].p(0) <= p[i].p(0) && p[j].p(1) <= p[i].p(1) && p[j].p(2) >= p[i].p(2) )
+				else if(p[j].p(0) <= p[i].p(0) && p[j].p(1) <= p[i].p(1) && p[j].p(2) >= p[i].p(2) )
 					onHull[4] = false;
-
-				if(p[j].p(0) >= p[i].p(0) && p[j].p(1) <= p[i].p(1) && p[j].p(2) >= p[i].p(2) )
+				else if(p[j].p(0) >= p[i].p(0) && p[j].p(1) <= p[i].p(1) && p[j].p(2) >= p[i].p(2) )
 					onHull[5] = false;
-
-				if(p[j].p(0) <= p[i].p(0) && p[j].p(1) >= p[i].p(1) && p[j].p(2) >= p[i].p(2) )
+				else if(p[j].p(0) <= p[i].p(0) && p[j].p(1) >= p[i].p(1) && p[j].p(2) >= p[i].p(2) )
 					onHull[6] = false;
-
-				if(p[j].p(0) >= p[i].p(0) && p[j].p(1) >= p[i].p(1) && p[j].p(2) >= p[i].p(2) )
+				else if(p[j].p(0) >= p[i].p(0) && p[j].p(1) >= p[i].p(1) && p[j].p(2) >= p[i].p(2) )
 					onHull[7] = false;
 			}
 		}
@@ -208,7 +208,7 @@ private:
 	}
 
 	void
-	_makeConvexHull(const std::vector<MPoint> & p)
+		_makeConvexHull(const std::vector<MPoint> & p)
 	{
 		for(int i = 0; i < p.size(); ++i)
 		{
@@ -433,16 +433,16 @@ private:
 		/*glColor3f(0.5,0.5,0.5);
 		for(int i = 0; i < mk._points.size(); ++i)
 		{
-			glVertex3f(mk._points[i].p(0),mk._points[i].p(1),mk._points[i].p(2));
+		glVertex3f(mk._points[i].p(0),mk._points[i].p(1),mk._points[i].p(2));
 		}*/
-		
+
 		glColor3f(0.5,0.5,0.5);
 		for(int i = 0; i < mk._hull.size(); ++i)
 		{
 			glVertex3f(mk._points[mk._hull[i]].p(0),mk._points[mk._hull[i]].p(1),mk._points[mk._hull[i]].p(2));
 		}
 		glEnd();
-		
+
 
 
 		// A
@@ -576,10 +576,13 @@ private:
 			A = _mk.support(d);
 
 #ifdef VISGJK
-			gjkdraw = true;
-			while(gjkdraw)
+			if(!skip)
 			{
-				drawGJK(gjkdraw,_mk,_s);
+				gjkdraw = true;
+				while(gjkdraw)
+				{
+					drawGJK(gjkdraw,_mk,_s);
+				}
 			}
 #endif
 
@@ -600,16 +603,19 @@ private:
 				if(_doSimplex(d))
 				{
 					_intersects = true;
-
+					LOG("GJK ended with " << _iterations << " iterations");
 					if(!_tetraContainsOrigin())
 					{
 						LOG("GJK ended with a tetra not containing the origin");
 					}
 #ifdef VISGJK
-					gjkdraw = true;
-					while(gjkdraw)
+					if(!skip)
 					{
-						drawGJK(gjkdraw,_mk,_s);
+						gjkdraw = true;
+						while(gjkdraw)
+						{
+							drawGJK(gjkdraw,_mk,_s);
+						}
 					}
 #endif
 
@@ -617,10 +623,13 @@ private:
 				}
 			}
 #ifdef VISGJK
-			gjkdraw = true;
-			while(gjkdraw)
+			if(!skip)
 			{
-				drawGJK(gjkdraw,_mk,_s);
+				gjkdraw = true;
+				while(gjkdraw)
+				{
+					drawGJK(gjkdraw,_mk,_s);
+				}
 			}
 #endif
 			++_iterations;
@@ -739,10 +748,13 @@ private:
 				d = ACB;
 				normal = ACB;
 				LOG("check if outside ACB");
-				gjkdraw = true;
-				while(gjkdraw)
+				if(!skip)
 				{
-					drawGJK(gjkdraw,_mk,_s);
+					gjkdraw = true;
+					while(gjkdraw)
+					{
+						drawGJK(gjkdraw,_mk,_s);
+					}
 				}
 #endif
 
@@ -782,10 +794,13 @@ private:
 					normal = ABD;
 					d = ABD;
 					LOG("check if outside ABD");
-					gjkdraw = true;
-					while(gjkdraw)
+					if(!skip)
 					{
-						drawGJK(gjkdraw,_mk,_s);
+						gjkdraw = true;
+						while(gjkdraw)
+						{
+							drawGJK(gjkdraw,_mk,_s);
+						}
 					}
 #endif
 					if((dotprod = dot(ABD, Ao)) > 0) //Outside ABD
@@ -817,10 +832,13 @@ private:
 						plane = 3;
 						d = ADC;
 						normal = ADC;
-						gjkdraw = true;
-						while(gjkdraw)
+						if(!skip)
 						{
-							drawGJK(gjkdraw,_mk,_s);
+							gjkdraw = true;
+							while(gjkdraw)
+							{
+								drawGJK(gjkdraw,_mk,_s);
+							}
 						}
 #endif
 						if((dotprod = dot(ADC, Ao)) > 0) //Outside of ACD
@@ -969,7 +987,7 @@ struct Plane
 	arma::vec n; //closest point to plane
 	double dist; //mag(p) i.e distance to plane
 	MinkowskiSet::MPoint * points[3];	
-	Plane * adj[3]; //Adjacency list  [leftof(AB) leftof(BC) leftof(CA)] 
+	//Plane * adj[3]; //Adjacency list  [leftof(AB) leftof(BC) leftof(CA)] 
 };
 
 
@@ -1028,7 +1046,7 @@ private:
 			_planes[_size].n = n/arma::norm(n,2);
 			_planes[_size].p = dot(A->p, _planes[_size].n) * _planes[_size].n; //Can be zero
 			if(zerodot)
-				_planes[_size].dist = 0.0; //NOT SO GOOD TO ABS HERE
+				_planes[_size].dist = 0.0;
 			else
 				_planes[_size].dist = arma::norm(_planes[_size].p,2);
 
@@ -1109,6 +1127,7 @@ private:
 
 		//Init adjacency
 
+		/*
 		//ACB
 		_planes[0].adj[0] = &_planes[2]; 
 		_planes[0].adj[1] = &_planes[3];
@@ -1128,16 +1147,20 @@ private:
 		_planes[3].adj[0] = &_planes[0]; 
 		_planes[3].adj[1] = &_planes[2];
 		_planes[3].adj[2] = &_planes[1];
-
+		*/
 
 #ifdef VISEPA
-		gjkdraw = true;
-		while(gjkdraw)
+		if(!skip)
 		{
-			drawEPA(gjkdraw);
+			gjkdraw = true;
+			while(gjkdraw)
+			{
+				drawEPA(gjkdraw);
+			}
 		}
 #endif
 		double d = 0.0;
+		int iterations = 0;
 		while (true) 
 		{
 			//Find the closest face
@@ -1145,33 +1168,40 @@ private:
 
 			if(_planes.size() > 20)
 			{
-					LOG("YOUR FUCKED");
-					return;
+				LOG("EPA took more than 20 iterations.. aborting");
+				return;
 			}
 
 			A = _gjk._mk.support(_planes[_cpi].n);
 
 
 #ifdef VISEPA
-			gjkdraw = true;
-			while(gjkdraw)
+			if(!skip)
 			{
-				drawEPA(gjkdraw);
+				gjkdraw = true;
+				while(gjkdraw)
+				{
+					drawEPA(gjkdraw);
+				}
 			}
 #endif
 			d = arma::dot(A->p, _planes[_cpi].n);
 
 #ifdef VISEPA
-			gjkdraw = true;
-			while(gjkdraw)
+			if(!skip)
 			{
-				drawEPA(gjkdraw);
+				gjkdraw = true;
+				while(gjkdraw)
+				{
+					drawEPA(gjkdraw);
+				}
 			}
 #endif
-
-			if (d - _closestDist < 0.00001) 
+			LOG("d - _closestDist = " << d - _closestDist);
+			if (d - _closestDist < 0.01) 
 			{
 				//Finished!
+				LOG("EPA ended with " << iterations << " iterations");
 				return; 
 			} 
 			else //We now have the closest plane, which is the plane from where a new tetrahedron will be "extruded" by	inserting a new point on the non-origin-side of this plane and adding the 3 new planes. A is the new point.
@@ -1226,19 +1256,19 @@ private:
 
 				//if(!conc)
 				//{
-					_planes.insert(A, _planes[_cpi].points[2], _planes[_cpi].points[0]); //ACB
-					if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[1]->p)) > 0) //dot(N,D)
-						_planes[_planes.size()-1].n *= -1;
+				_planes.insert(A, _planes[_cpi].points[2], _planes[_cpi].points[0]); //ACB
+				if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[1]->p)) > 0) //dot(N,D)
+					_planes[_planes.size()-1].n *= -1;
 
-					_planes.insert(A, _planes[_cpi].points[0], _planes[_cpi].points[1]); //ABD
-					if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[2]->p)) > 0) //dot(N,C)
-						_planes[_planes.size()-1].n *= -1;
+				_planes.insert(A, _planes[_cpi].points[0], _planes[_cpi].points[1]); //ABD
+				if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[2]->p)) > 0) //dot(N,C)
+					_planes[_planes.size()-1].n *= -1;
 
-					_planes.insert(A, _planes[_cpi].points[1], _planes[_cpi].points[2]); //ADC
-					if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[0]->p)) > 0) //dot(N,B)
-						_planes[_planes.size()-1].n *= -1;
+				_planes.insert(A, _planes[_cpi].points[1], _planes[_cpi].points[2]); //ADC
+				if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[0]->p)) > 0) //dot(N,B)
+					_planes[_planes.size()-1].n *= -1;
 
-					_planes.remove(_cpi);
+				_planes.remove(_cpi);
 				//}
 				//else
 				//{
@@ -1283,6 +1313,7 @@ private:
 
 
 			}
+			iterations++;
 		}
 	}
 
@@ -1300,10 +1331,13 @@ private:
 			_currplane = i;
 			//LOG(_planes[i].dist << ", " << _closestDist);
 #ifdef VISEPA
-			gjkdraw = true;
-			while(gjkdraw)
+			if(!skip)
 			{
-				drawEPA(gjkdraw);
+				gjkdraw = true;
+				while(gjkdraw)
+				{
+					drawEPA(gjkdraw);
+				}
 			}
 #endif
 			if (_planes[i].dist < _closestDist) 
@@ -1315,10 +1349,13 @@ private:
 				//LOG("new closest plane: " << _cpi);
 
 #ifdef VISEPA
-				gjkdraw = true;
-				while(gjkdraw)
+				if(!skip)
 				{
-					drawEPA(gjkdraw);
+					gjkdraw = true;
+					while(gjkdraw)
+					{
+						drawEPA(gjkdraw);
+					}
 				}
 #endif
 
@@ -1478,6 +1515,8 @@ private:
 
 };
 
+
+
 void
 	makeContact(const Plane & plane,RigidBody & a,RigidBody & b, Contact & c, float * dist)
 {
@@ -1593,26 +1632,47 @@ void
 		if(A->Bj == B->Bj && B->Bj == C->Bj) 
 		{
 			LOG("A_FACE-B_VERTEX collision");
+
+			if(b.isMovable)
+			{
+				c.A = &b;
+				c.B = &a;
+			}
+			c.isVFContact = true;
+			//ACB plane i.e N = AC x AB
+			c.N = arma::cross(a.getWorldVerts()[C->Ai] - a.getWorldVerts()[A->Ai], b.getWorldVerts()[B->Ai] - a.getWorldVerts()[A->Ai]);
+			c.N = (1.0/arma::norm(c.N,2))*c.N;
+
+			if(arma::dot(c.N,c.P-a.X) < 0.0)
+				c.N = -c.N;
 		}
 		else if(A->Bj != B->Bj && A->Bj != C->Ai  && B->Bj != C->Bj)
 		{
 			LOG("A_FACE-B_FACE collision");
+			c.isVFContact = true;
+
+			//ACB plane i.e N = AC x AB //Plane on A so flip -> N = AB x AC
+			c.N = arma::cross(a.getWorldVerts()[B->Ai] - a.getWorldVerts()[A->Ai], a.getWorldVerts()[C->Ai] - a.getWorldVerts()[A->Ai]);
+			c.N /= arma::norm(c.N,2);
+
+			if(arma::dot(c.N,a.X-c.P) < 0.0)
+				c.N = -c.N;
 		}
 		else
 		{
 			LOG("A_FACE-B_EDGE collision");
+			c.isVFContact = true;
+			//ACB plane i.e N = AC x AB
+			c.N = arma::cross(a.getWorldVerts()[C->Ai] - a.getWorldVerts()[A->Ai], b.getWorldVerts()[B->Ai] - a.getWorldVerts()[A->Ai]);
+			c.N = (1.0/arma::norm(c.N,2))*c.N;
+
+			if(arma::dot(c.N,c.P-a.X) < 0.0)
+				c.N = -c.N;
 		}
 
 		//can be face-face / face-vertex / face-edge
 
-		c.isVFContact = true;
 
-		//ACB plane i.e N = AC x AB //Plane on A so flip -> N = AB x AC
-		c.N = arma::cross(a.getWorldVerts()[B->Ai] - a.getWorldVerts()[A->Ai], a.getWorldVerts()[C->Ai] - a.getWorldVerts()[A->Ai]);
-		c.N /= arma::norm(c.N,2);
-
-		if(arma::dot(c.N,c.P-b.X) < 0.0)
-			c.N = -c.N;
 
 
 	}
@@ -1623,41 +1683,51 @@ void
 		{
 			LOG("A_EDGE-B_VERTEX collision");
 		}
-		else if(A->Bj != B->Bj && A->Bj != C->Ai  && B->Bj != C->Bj)
+		else if(A->Bj != B->Bj && A->Bj != C->Bj  && B->Bj != C->Bj)
 		{
 			LOG("A_EDGE-B_FACE collision");
+
+			c.isVFContact = true;
+			//ACB plane i.e N = AC x AB
+			c.N = arma::cross(b.getWorldVerts()[C->Bj] - b.getWorldVerts()[A->Bj], b.getWorldVerts()[B->Bj] - b.getWorldVerts()[A->Bj]);
+			c.N = (1.0/arma::norm(c.N,2))*c.N;
+
+			if(arma::dot(c.N,c.P-b.X) < 0.0)
+				c.N = -c.N;
+
 		}
 		else
 		{
 			LOG("A_EDGE-B_EDGE collision");
+			//c.N = pWorld/norm(pWorld,2);
+			c.isVFContact = false;
+
+			int i1 = plane.points[0]->Ai, i2;
+			if(plane.points[1]->Ai != i1)
+				i2 = plane.points[1]->Ai;
+			else
+				i2 = plane.points[2]->Ai;
+
+			c.EA = a.getWorldVerts()[i2] - a.getWorldVerts()[i1];
+
+			i1 = plane.points[0]->Bj;
+			if(plane.points[1]->Bj != i1)
+				i2 = plane.points[1]->Bj;
+			else
+				i2 = plane.points[2]->Bj;
+			c.EB = b.getWorldVerts()[i2] - b.getWorldVerts()[i1];
+
+			c.N = arma::cross(c.EA,c.EB);
+			c.N /= arma::norm(c.N,2);
+
+			if(arma::dot(c.N,c.P-b.X) < 0) //c.P-b.X point into the object
+				c.N *= -1;
 		}
 
 
 		//can be edge-vertex / edge-face / edge-vertex
 
-		//c.N = pWorld/norm(pWorld,2);
-		c.isVFContact = false;
 
-		int i1 = plane.points[0]->Ai, i2;
-		if(plane.points[1]->Ai != i1)
-			i2 = plane.points[1]->Ai;
-		else
-			i2 = plane.points[2]->Ai;
-
-		c.EA = a.getWorldVerts()[i2] - a.getWorldVerts()[i1];
-
-		i1 = plane.points[0]->Bj;
-		if(plane.points[1]->Bj != i1)
-			i2 = plane.points[1]->Bj;
-		else
-			i2 = plane.points[2]->Bj;
-		c.EB = b.getWorldVerts()[i2] - b.getWorldVerts()[i1];
-
-		c.N = arma::cross(c.EA,c.EB);
-		c.N /= arma::norm(c.N,2);
-
-		if(arma::dot(c.N,c.P-b.X) < 0) //c.P-b.X point into the object
-			c.N *= -1;
 	}
 
 }
@@ -1676,7 +1746,7 @@ void
 		makeContact(epa.plane(),bodyA,bodyB, c, &dist);
 		contacts.push_back(c);
 		dist *= 1.0009;
-		
+
 #ifdef DEBUG_CR
 		LOG("Displaying contact before move");
 		if(contacts.size() > 0)
@@ -1688,21 +1758,13 @@ void
 			step = false;
 		}
 #endif
-		
+
 #ifdef FIX_COLLISION
-		//Ugly way to separate objects
-		if(bodyA.inv_mass <= 10e-8) // == 0
-		{
-			bodyB.X(0) -= dist*c.N(0);
-			bodyB.X(1) -= dist*c.N(1);
-			bodyB.X(2) -= dist*c.N(2);
-		}
-		else //Every other cases we only move bodyA
-		{
-			bodyA.X(0) += dist*c.N(0);
-			bodyA.X(1) += dist*c.N(1);
-			bodyA.X(2) += dist*c.N(2);
-		}
+		//Always move A since we switch inside makeContact 
+		c.A->X(0) += dist*c.N(0);
+		c.A->X(1) += dist*c.N(1);
+		c.A->X(2) += dist*c.N(2);
+
 #endif
 
 		bodyA.isColliding = true;
@@ -1813,7 +1875,7 @@ void
 
 	//Broad Phase collision (AABB)
 	//Possible collisions are stored in possibleContacts vector
-//#pragma omp parallel for
+	//#pragma omp parallel for
 	for (int i = 0; i < bodies.size() - 1; ++i)
 	{
 		for (int j = i + 1; j < bodies.size(); ++j)
@@ -1824,6 +1886,8 @@ void
 			}
 		}
 	}
+
+	LOG("numbe of coliision pairs: " << colPairs.size());
 
 #if NDEBUG
 	//For all possible contacts check if we have contact
@@ -1841,7 +1905,7 @@ void
 	{
 		contacts.insert(contacts.end(), contactsVector[i].begin(),contactsVector[i].end());
 	}
-	std::cout << contacts.size() << std::endl;
+	LOG("numbe of contacts: " << contacts.size());
 #else
 	for (int i = 0; i < colPairs.size(); ++i)
 	{
@@ -1851,6 +1915,5 @@ void
 
 
 }
-
 
 #endif

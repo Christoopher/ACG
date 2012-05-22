@@ -12,11 +12,37 @@
 #include <armadillo>
 #endif
 
-const int nrOfRigidBodies = 5;
+const int nrOfRigidBodies = 100;
 std::vector<RigidBody> rigidBodyArray;
 std::vector<arma::vec> cube;
 std::vector<Contact> contacts;
 
+void 
+rot(arma::mat & R, int axel, float angle)
+{
+	if(axel == 1) //x
+	{
+		R(0,0) = 1.0; 		R(0,1) = 0.0; 			R(0,2) = 0.0;
+		R(1,0) = 0.0; 		R(1,1) = cos(angle); 	R(1,2) = -sin(angle);
+		R(2,0) = 0.0; 		R(2,1) = sin(angle); 	R(2,2) = cos(angle);
+	}
+	else if(axel == 2) //y
+	{
+		R(0,0) = cos(angle); 	R(0,1) = 0.0; 		R(0,2) = sin(angle);
+		R(1,0) = 0.0; 		R(1,1) = 1.0; 		R(1,2) = 0.0;
+		R(2,0) = -sin(angle); R(2,1) = 0.0; 		R(2,2) = cos(angle);
+	}
+	else if(axel == 3) //z
+	{
+		R(0,0) = cos(angle); 	R(0,1) = -sin(angle);	R(0,2) = 0.0;
+		R(1,0) = sin(angle); 	R(1,1) = cos(angle);	R(1,2) = 0.0;
+		R(2,0) = 0.0; 			R(2,1) = 0.0; 			R(2,2) = 1.0;
+	}
+	else
+	{
+		std::cout << "That's not possible. Choose x, y or z as rotation axix!" << endl;
+	}
+}
 
 void
 physicsSetState()
@@ -42,20 +68,23 @@ physicsSetState()
 	float m = 0.0;
 	for(int i = 0; i < nrOfRigidBodies-1; ++i)
 	{
-		rigidBodyArray[i].X(0) = 0.0;//2*(rand()/(float)RAND_MAX - 0.5)*2; 
-		rigidBodyArray[i].X(2) = 0.0;//2*(rand()/(float)RAND_MAX - 0.5)*2;
+		rigidBodyArray[i].X(0) = 2*(rand()/(float)RAND_MAX - 0.5)*3; 
+		rigidBodyArray[i].X(2) = 2*(rand()/(float)RAND_MAX - 0.5)*3;
 		rigidBodyArray[i].X(1) = 5.0 + m;
-		m += 1.4;
+		m += 1.6;
 
 		double val = 1.0/sqrt(2.0);
 		rigidBodyArray[i].R(0,0) = 0.891006524188368; rigidBodyArray[i].R(0,1) = 0.0; rigidBodyArray[i].R(0,2) = -0.453990499739547;
 		rigidBodyArray[i].R(1,0) = 0.226995249869773; rigidBodyArray[i].R(1,1) = 0.866025403784439; rigidBodyArray[i].R(1,2) = 0.445503262094184;
 		rigidBodyArray[i].R(2,0) =0.39316730585124; rigidBodyArray[i].R(2,1) = -0.5; rigidBodyArray[i].R(2,2) = 0.771634284884801;
 
-			
+		
 		/*rigidBodyArray[i].R(0,0) = 1; rigidBodyArray[i].R(0,1) = 0.0; rigidBodyArray[i].R(0,2) = 0;
 		rigidBodyArray[i].R(1,0) = 0; rigidBodyArray[i].R(1,1) = val; rigidBodyArray[i].R(1,2) = val;
 		rigidBodyArray[i].R(2,0) = 0; rigidBodyArray[i].R(2,1) = -val; rigidBodyArray[i].R(2,2) = val;*/
+
+		//rot(rigidBodyArray[i].R,1,45);
+
 
 		rigidBodyArray[i].Q.FromRotationMatrix(rigidBodyArray[i].R);
 
@@ -86,7 +115,7 @@ physicsSetState()
 	rigidBodyArray[index].force_fun = &Force;
 	rigidBodyArray[index].torque_fun = &Torque;
 	rigidBodyArray[index].isMovable = false;
-	rigidBodyArray[index].init(10,1,10);
+	rigidBodyArray[index].init(20,1,20);
 }
 
 void

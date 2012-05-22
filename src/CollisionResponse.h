@@ -1,6 +1,6 @@
 #ifndef COLLISION_RESPONSE_H
 #define COLLISION_RESPONSE_H
-#define checkResting
+//#define checkResting
 #include <cstdlib>
 #include <cmath>
 #include "UTLog.h"
@@ -125,17 +125,16 @@ void
 		ddot(i) = arma::dot(ci.N,(ci.A->V + arma::cross(ci.A->W,rAi)) - (ci.B->V + arma::cross(ci.B->W,rBi)));
 	}
 
-	/*
+
 	std::cout << "ci.N: " << ci.N << std::endl;
 	std::cout << "ci.A->V: " << ci.A->V << std::endl;
 	std::cout << "ci.A->W: " << ci.A->W << std::endl;
-	std::cout << "ci.B->V: " << ci.B->V << std::endl;
-	std::cout << "ci.B->W: " << ci.B->W << std::endl;
+	//std::cout << "ci.B->V: " << ci.B->V << std::endl;
+	//std::cout << "ci.B->W: " << ci.B->W << std::endl;
 
 	std::cout << "ci.A->V + + arma::cross(ci.A->W,rAi): " << ci.A->V + arma::cross(ci.A->W,rAi) << std::endl;
-	std::cout << "(ci.B->V + arma::cross(ci.B->W,rBi)): " << (ci.B->V + arma::cross(ci.B->W,rBi)) << std::endl;
-	std::cout << "ddot: " << ddot << std::endl;
-	/* */
+	//std::cout << "(ci.B->V + arma::cross(ci.B->W,rBi)): " << (ci.B->V + arma::cross(ci.B->W,rBi)) << std::endl;
+
 }
 
 void
@@ -330,13 +329,13 @@ void
 			double ed = index.size();
 			arma::vec edd = arma::randu<arma::vec>(1);
 			double random = edd[0];
-			double bajs = ed*random;
+			double random2 = ed*random;
 
 			//std::cout << "ed = index.size(): " << ed << std::endl;
 			//std::cout << "random: " << random << std::endl;
-			//std::cout << "bajs= ed*random: " << bajs << std::endl;
-			arma::uword tmp = (arma::uword)ceil(bajs)-1;
-			//std::cout << "ciel(bajs): " << tmp << std::endl;
+			//std::cout << "random2= ed*random: " << random2 << std::endl;
+			arma::uword tmp = (arma::uword)ceil(random2)-1;
+			//std::cout << "ciel(random2): " << tmp << std::endl;
 			lvindex = j(tmp);
 			//std::cout << "lvindex = j(tmp): " << lvindex << std::endl;
 		}
@@ -409,11 +408,13 @@ void
 
 	arma::vec b = arma::zeros<arma::vec>(n,1);
 	arma::vec c = arma::zeros<arma::vec>(n,1);
+	double epsilon = 0.4;
 	for(int i = 0;i < n;++i)
 	{
 		//Här skapas b, se boksidan 493.
 		if(ddot(i) < 0.0)
-			b(i) = 2.0*ddot(i); //else behövs inte ty alla b element är 0 från början
+			b(i) = (1.0+epsilon)*ddot(i);//  b(i) = ddot(i) + epsilon*ddot(i);
+		// b(i) = 1.6*ddot(i); //else behövs inte ty alla b element är 0 från början
 		//Här skapas c, se boksidan 496.
 		c(i) = fabs(ddot(i));
 	}
@@ -453,13 +454,23 @@ void
 
 	f = z.rows(0,n-1);
 
-
-	/*
-	LOG("f: " << f);
-	LOG("b: " << b);
-	LOG("Af+b: " << A*f+b);
-	LOG("Af+ddot: " << A*f+ddot);
-	LOG("c: " << c);*/
+	bool print = false;
+	for(int i =0; i < f.n_rows;++i)
+	{
+		if(f(i) > 0)
+		{
+			print = true;
+			break;
+		}
+	}
+	if(print)
+	{
+		LOG("f: " << f);
+		LOG("b: " << b);
+		LOG("Af+b: " << A*f+b);
+		LOG("Af+ddot: " << A*f+ddot);
+		LOG("c: " << c);
+	}
 	//DEBUG
 	//-------------------------------------------------------------------------
 	arma::vec tmp = A*f + b;
@@ -501,7 +512,7 @@ void
 	for (unsigned int i = 0; i < contactArray.size(); ++i)
 	{
 		ci = contactArray.at(i);
-		impulse = 0.6*f(i) * ci.N;
+		impulse = f(i) * ci.N;
 		//Optimization: Add up all impulses to P and L in separate pass
 		//and then assign the new velocities?
 		//Parallelization: Find a way to skip +=
@@ -516,6 +527,15 @@ void
 
 		ci.A->W = ci.A->inv_inertia * ci.A->L;
 		ci.B->W = ci.B->inv_inertia * ci.B->L;
+		/*
+		if(f(i) > 0.0)
+		{
+		double scale = 0.90;
+		ci.A->P *= scale;
+		ci.B->P *= scale;
+		ci.A->L *= scale;
+		ci.B->L *= scale;
+		}*/
 	}
 }
 
@@ -624,14 +644,7 @@ void
 	arma::vec relA = arma::zeros<arma::vec>(contactArray.size(),1); //Relative acceleration
 	//  A.set_size(contactArray.size(),contactArray.size());
 	//  A.zeros(contactArray.size(),contactArray.size());
-	for(unsigned int i=0; i < contactArray.size();++i)
-	{
-		if(contactArray.at(i).A->inv_mass == 0)
-		{
-			std::cout << "A och B ihop blandade!" << std::endl;
-			abort();
-		}
-	}
+
 	createA(contactArray,A);
 	LOG("A: " << A);
 	computePreImpulseVelocity(contactArray,ddot);
@@ -639,7 +652,6 @@ void
 	minimize(A,ddot,f);
 	//LOG("f: " << f);
 	applyImpulse(contactArray,f);
-
 
 
 	//LCP STUFF GOES HERE
@@ -662,35 +674,37 @@ void
 	{
 #endif
 
-		//	computeRestingVector(contactArray,b);
-		//	LOG("b: " << b);
-		//	lemke(A,b,relA);
-		//
-		//	//LOG("relA: " << relA);
-		//	//LOG("b: " << b);
-		//	//LOG("ArelA+b: " << A*relA+b);
-		//
-		//	//LOG("ArelA+ddot: " << A*f+ddot);
-		//	//LOG("c: " << c);
-		//	//g = A*b + relA;
-		//	g = relA.rows(0,contactArray.size()-1);
-		//	if(g(0)!=0)
-		//	{
-		//		arma::vec tmp = A*g+b;
-		//		arma::vec tmp2 = tmp*g;
-		//		//Studerade detta och såg att b blev stor vilket gav ett stort g. Kollar upp b nu.
-		//		LOG("Resting contact!");
-		//		LOG("A: " << A);
-		//		LOG("b: " << b);
-		//		LOG("g: " << g << "<-- Ska vara > 0");
-		//		LOG("ddotdot = Ag+b: " << tmp << " <-- Ska vara > 0");
-		//		LOG("ddotdot boll g: " << tmp2 << "<-- Ska vara = 0");
-		//
-		//	}
-		//
-		//	//---------------------------
-		//
-		//	updateInternalValues(contactArray,g);
+		computeRestingVector(contactArray,b);
+
+		LOG("b: " << b);
+		lemke(A,b,relA);
+		//LOG("relA: " << relA);
+		//LOG("b: " << b);
+		//LOG("ArelA+b: " << A*relA+b);
+
+		//LOG("ArelA+ddot: " << A*f+ddot);
+		//LOG("c: " << c);
+		//g = A*b + relA;
+		g = relA.rows(0,contactArray.size()-1);
+		if(g(0)!=0)
+		{
+			arma::vec tmp = A*g+b;
+			arma::vec tmp2 = arma::zeros<arma::vec>(g.n_rows,1);
+			for(int i = 0; i < g.n_rows;i++)
+				tmp2(i) = tmp(i)*g(i);
+
+			LOG("Resting contact!");
+			LOG("A: " << A);
+			LOG("b: " << b);
+			LOG("g: " << g << "<-- Ska vara > 0");
+			LOG("ddotdot = Ag+b: " << tmp << " <-- Ska vara > 0");
+			LOG("ddotdot boll g: " << tmp2 << "<-- Ska vara = 0");
+
+		}
+
+		//---------------------------
+
+		updateInternalValues(contactArray,g);
 #ifdef checkResting
 	}
 #endif

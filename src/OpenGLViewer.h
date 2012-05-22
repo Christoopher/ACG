@@ -52,6 +52,7 @@ bool down_is_down;
 bool shiftdown = false;
 bool gjkdraw = true;
 bool wireframe = false;
+bool skip = false;
 
 void setContacts(std::vector<Contact> & c)
 {
@@ -323,6 +324,7 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 	glEnd();
 	
 	//Draw normalized angular velocity vector
+	/*
 	glBegin(GL_LINES);		
 		for(int i = 0; i < rb.size(); ++i)
 		{
@@ -340,6 +342,7 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 			glVertex3f(w(0)+rb[i].X(0),w(1)+rb[i].X(1), w(2)+rb[i].X(2));
 		}
 	glEnd();
+	*/
 
 	if(showgrid)
 		draw_grid(10.0);
@@ -377,10 +380,21 @@ void GLFWCALL KeyboardFunc( int key, int action )
 	if(key == 'G')
 	{
 		if(action == GLFW_PRESS)
-			gjkdraw = false;
+			gjkdraw = !gjkdraw;
 	}
 
+	if(key == 'M')
+	{
+		if(action == GLFW_PRESS)
+			skip = !skip;
 
+		if(skip)
+			std::cout << "skip = true";
+		else
+			std::cout << "skip = false";
+	}
+
+	
 	if(key == 'P')
 	{
 		if(action == GLFW_PRESS)
