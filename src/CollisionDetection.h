@@ -5,11 +5,13 @@
 //#define VISEPA
 #define FIX_COLLISION
 //#define DEBUG_CR
+#define CDGRID
 
 #include <vector>
 #include <map>
 #include <cmath>
 #include <cstdlib>
+#include <set>
 
 
 #include "OpenGLViewer.h"
@@ -134,6 +136,7 @@ public:
 		{
 			LOG("couldn't find support point in MKset");
 			abort();
+			return NULL;
 		}
 
 		return &_points[_hull[index]];
@@ -159,9 +162,12 @@ private:
 				int offset = i+_stride*j;
 				_points[offset].Ai = i;
 				_points[offset].Bj = j;
-				_points[offset].p = _a.getWorldVerts()[i] - _b.getWorldVerts()[j];
+				_points[offset].p = _a.getWorldVerts()[i] - _b.getWorldVerts()[j];		
+
 			}
 		}
+
+
 
 		_makeConvexHull(_points);
 	}
@@ -988,13 +994,23 @@ struct Plane
 	double dist; //mag(p) i.e distance to plane
 	MinkowskiSet::MPoint * points[3];	
 	//Plane * adj[3]; //Adjacency list  [leftof(AB) leftof(BC) leftof(CA)] 
+	bool pointOnTri;
+
+
+	bool operator==(const Plane & rhs)
+	{
+		if(points[0] == rhs.points[0] && points[1] == rhs.points[1] && points[2] == rhs.points[2])
+			return true;
+		else
+			return false;
+	}
 };
 
 
 class EPA
 {
 public:
-	EPA(GJK & gjk) : _gjk(gjk) , A(NULL), _currplane(-1), conc(false)
+	EPA(GJK & gjk) : _gjk(gjk) , A(NULL), _currplane(-1), conc(false), error(false)
 	{
 		pOnPlane.zeros(3,1);
 		_run();
@@ -1019,9 +1035,12 @@ private:
 		int
 			size() { return _size; }
 
-		void
+		bool
 			insert(MinkowskiSet::MPoint * A, MinkowskiSet::MPoint * B, MinkowskiSet::MPoint * C)
 		{
+			//First check if plane exists
+
+
 			if(_size >= _planes.size())
 			{
 				Plane p;
@@ -1031,6 +1050,12 @@ private:
 			_planes[_size].points[0] = A;
 			_planes[_size].points[1] = B;
 			_planes[_size].points[2] = C;
+
+			for(int i = 0; i < _size-1; ++i)
+			{
+				if(_planes[_size] == _planes[i])
+					return false;
+			}
 
 			// create the normal to the current simplex face ABC = cross(AB,AC) = cross(B-A,C-A)
 			arma::vec n = arma::cross(B->p - A->p, C->p- A->p);
@@ -1052,6 +1077,10 @@ private:
 
 			//Dont forget to increment the size
 			++_size;
+
+
+
+			return true;
 		}
 
 		void
@@ -1078,6 +1107,73 @@ private:
 			++_size;
 		}
 
+		void
+			onTri()
+		{
+			/*
+			arma::vec pOnPlane =  _planes[_size-1].p;
+
+
+			//Check if point is inside the triangle
+
+			//Prepare our barycentric variables
+			//_planes[_cpi].points = [ A(0) B(1) C(2)]
+
+			arma::vec u = _planes[_size-1].points[1]->p - _planes[_size-1].points[0]->p;
+			arma::vec v = _planes[_size-1].points[2]->p - _planes[_size-1].points[0]->p;
+			arma::vec w = pOnPlane - _planes[_size-1].points[0]->p;
+			arma::vec vCrossW = arma::cross(v, w);
+			arma::vec vCrossU = arma::cross(v, u);
+
+			// Test sign of r
+			if (arma::dot(vCrossW, vCrossU) < 0)
+			{
+			_planes[_size-1].pointOnTri = false;
+			LOG("point is not in tri");
+			}
+			else
+			{
+			_planes[_size-1].pointOnTri = true;
+			LOG("point is on tri");
+			}
+			*/
+
+			MinkowskiSet::MPoint * A = _planes[_size-1].points[0];
+			MinkowskiSet::MPoint * B = _planes[_size-1].points[1];
+			MinkowskiSet::MPoint * C = _planes[_size-1].points[2];
+
+			arma::vec n,na,nb,nc;
+			n = na = nb = nc = arma::zeros<arma::vec>(3,1);
+
+			/* N = AB x AC = ABC */
+			n = arma::cross(B->p - A->p, C->p - A->p);
+
+			/* na = BC x BP = BCP */
+			na = arma::cross(C->p - B->p, _planes[_size-1].p - B->p);
+
+			/* nb = CA x CP = CAP */
+			nb = arma::cross(A->p - C->p, _planes[_size-1].p - C->p);
+
+			/* nc = AB x AP = ABP */
+			nc = arma::cross(B->p - A->p, _planes[_size-1].p - A->p);
+
+			double nnormsq = n(0)*n(0)+n(1)*n(1)+n(2)*n(2);
+			double lA = arma::dot(n,na) / nnormsq;
+			double lB = arma::dot(n,nb) / nnormsq;
+			double lC = arma::dot(n,nc) / nnormsq;
+
+			if(lA < 0 || lB < 0 || lC < 0)
+			{
+				_planes[_size-1].pointOnTri = false;
+				LOG("NOT ON");
+			}
+			else
+			{
+				_planes[_size-1].pointOnTri = true;
+				LOG("ON");
+			}
+		}
+
 		std::vector<Plane> &
 			getPlanes() { return _planes; }
 
@@ -1086,7 +1182,9 @@ private:
 		{
 			//Lazy deletion -> swap i to end & decrease size
 			_removedPlanes.push_back(_planes[i]);
-			std::swap(_planes[i],_planes[_size-1]);
+			if(i != _size-1)
+				std::swap(_planes[i],_planes[_size-1]);
+
 			--_size;
 		}
 
@@ -1103,27 +1201,45 @@ private:
 		//create planes for the starting simplex and insert to planes
 		// S = [ A(0) B(1) C(2) D(3) ]
 		_planes.insertPointsOnly(&_gjk._s[0], &_gjk._s[2], &_gjk._s[1]); //ACB
-		_planes.insertPointsOnly(&_gjk._s[0], &_gjk._s[1], &_gjk._s[3]); //ABD
-		_planes.insertPointsOnly(&_gjk._s[0], &_gjk._s[3], &_gjk._s[2]); //ADC
-		_planes.insertPointsOnly(&_gjk._s[1], &_gjk._s[2], &_gjk._s[3]); //BCD
-
-
 		//CHECK PLANE ACB
 		float dotprod = 0.0;
 		if((dotprod = dot(_planes[0].n,_gjk._s[3].p)) > 0) //dot(N,D)
 			_planes[0].n *= -1;
+		_planes.onTri();
 
+		_planes.insertPointsOnly(&_gjk._s[0], &_gjk._s[1], &_gjk._s[3]); //ABD
 		//CHECK PLANE ABD
 		if((dotprod = dot(_planes[1].n,_gjk._s[2].p)) > 0) //dot(N,C)
 			_planes[1].n *= -1;
+		_planes.onTri();
 
+
+		_planes.insertPointsOnly(&_gjk._s[0], &_gjk._s[3], &_gjk._s[2]); //ADC
 		//CHECK PLANE ADC
 		if((dotprod = dot(_planes[2].n,_gjk._s[1].p)) > 0) //dot(N,B)
 			_planes[2].n *= -1;
+		_planes.onTri();
 
+
+		_planes.insertPointsOnly(&_gjk._s[1], &_gjk._s[2], &_gjk._s[3]); //BCD
 		//CHECK PLANE BCD
 		if((dotprod = dot(_planes[3].n,_gjk._s[0].p)) > 0) //dot(N,A)
 			_planes[3].n *= -1;
+		_planes.onTri();
+
+		if(!_planes[3].pointOnTri)
+			_planes.remove(3);
+
+		if(!_planes[2].pointOnTri)
+			_planes.remove(2);
+
+		if(!_planes[1].pointOnTri)
+			_planes.remove(1);
+
+		if(!_planes[0].pointOnTri)
+			_planes.remove(0);
+
+
 
 		//Init adjacency
 
@@ -1163,17 +1279,50 @@ private:
 		int iterations = 0;
 		while (true) 
 		{
+
+
+
 			//Find the closest face
 			_findClosestPlane();   //Sets _cpi (closestPlaneIndex) and _closestDist
 
-			if(_planes.size() > 20)
+			if(iterations > 20)
 			{
 				LOG("EPA took more than 20 iterations.. aborting");
+				error = true;
 				return;
+
+
+#ifdef VISEPA
+				{
+					gjkdraw = true;
+					while(gjkdraw)
+					{
+						drawEPA(gjkdraw);
+					}
+				}
+#endif
+				abort();
 			}
 
 			A = _gjk._mk.support(_planes[_cpi].n);
 
+			if(A == NULL)
+			{
+#ifdef VISEPA
+				gjkdraw = true;
+				while(gjkdraw)
+				{
+					drawEPA(gjkdraw);
+				}
+#endif
+
+				error = true;
+				return;
+			}
+
+
+			if(A == _planes[_cpi].points[0] || A == _planes[_cpi].points[1] || A == _planes[_cpi].points[2])
+				return;
 
 #ifdef VISEPA
 			if(!skip)
@@ -1197,8 +1346,8 @@ private:
 				}
 			}
 #endif
-			LOG("d - _closestDist = " << d - _closestDist);
-			if (d - _closestDist < 0.01) 
+			LOG("d - _closestDist = " << fabs(d - _closestDist));
+			if (fabs(d - _closestDist) < 0.01) 
 			{
 				//Finished!
 				LOG("EPA ended with " << iterations << " iterations");
@@ -1206,6 +1355,12 @@ private:
 			} 
 			else //We now have the closest plane, which is the plane from where a new tetrahedron will be "extruded" by	inserting a new point on the non-origin-side of this plane and adding the 3 new planes. A is the new point.
 			{
+				//if(iterations >= 2)
+				//{
+				//	skip = false;
+				//}
+
+
 				//First check if new point creates a concave convex hull
 
 				//project the point onto the plane
@@ -1256,17 +1411,47 @@ private:
 
 				//if(!conc)
 				//{
-				_planes.insert(A, _planes[_cpi].points[2], _planes[_cpi].points[0]); //ACB
-				if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[1]->p)) > 0) //dot(N,D)
-					_planes[_planes.size()-1].n *= -1;
 
-				_planes.insert(A, _planes[_cpi].points[0], _planes[_cpi].points[1]); //ABD
-				if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[2]->p)) > 0) //dot(N,C)
-					_planes[_planes.size()-1].n *= -1;
+				//First check if the point we are trying to add is coplanar to _planes[_cpi]
+				double ddot = arma::dot(_planes[_cpi].n,A->p - _planes[_cpi].points[0]->p);
+				LOG("dist from new point to _planes[_cpi]: " << ddot);
+				if(abs(ddot) < 1e-7)
+				{
+					LOG("point is in the same plane EPA");
+					return;
+				}
 
-				_planes.insert(A, _planes[_cpi].points[1], _planes[_cpi].points[2]); //ADC
-				if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[0]->p)) > 0) //dot(N,B)
+
+				if(_planes.insert(A, _planes[_cpi].points[2], _planes[_cpi].points[0]) == false) //ACB
+					return;				
+				if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[1]->p)) > -1e4) //dot(N,D)
 					_planes[_planes.size()-1].n *= -1;
+				LOG("dot(N,D) : " << dotprod);
+				_planes.onTri();
+				if(!_planes[_planes.size()-1].pointOnTri)
+					_planes.remove(_planes.size()-1);
+
+
+				if(_planes.insert(A, _planes[_cpi].points[0], _planes[_cpi].points[1]) == false)//ABD
+					return;
+				if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[2]->p)) > -1e4) //dot(N,C)
+					_planes[_planes.size()-1].n *= -1;
+				LOG("dot(N,C) : " << dotprod);
+				_planes.onTri();
+				if(!_planes[_planes.size()-1].pointOnTri)
+					_planes.remove(_planes.size()-1);
+
+
+
+				if(_planes.insert(A, _planes[_cpi].points[1], _planes[_cpi].points[2]) == false) //ADC
+					return;
+				if((dotprod = dot(_planes[_planes.size()-1].n,_planes[_cpi].points[0]->p)) > -1e4) //dot(N,B)
+					_planes[_planes.size()-1].n *= -1;
+				LOG("dot(N,B) : " << dotprod);
+				_planes.onTri();								
+				if(!_planes[_planes.size()-1].pointOnTri)
+					_planes.remove(_planes.size()-1);
+
 
 				_planes.remove(_cpi);
 				//}
@@ -1312,6 +1497,9 @@ private:
 				//}
 
 
+
+
+
 			}
 			iterations++;
 		}
@@ -1329,7 +1517,15 @@ private:
 		{
 			// check the distance against the other distances			
 			_currplane = i;
-			//LOG(_planes[i].dist << ", " << _closestDist);
+			LOG("current: " << _planes[i].dist << ", closestDist: " << _closestDist);
+			if(_planes[i].pointOnTri == false)
+			{
+				LOG("point is not in tri so skipping plane");
+			}
+			else
+			{
+				LOG("point is on tri so checking dist");
+			}
 #ifdef VISEPA
 			if(!skip)
 			{
@@ -1340,7 +1536,7 @@ private:
 				}
 			}
 #endif
-			if (_planes[i].dist < _closestDist) 
+			if ( _planes[i].dist < _closestDist && _planes[i].pointOnTri) 
 			{
 				// if this face is closer than previous faces we use it
 				_closestDist = _planes[i].dist;
@@ -1364,7 +1560,7 @@ private:
 
 	}
 
-#ifdef _DEBUG
+#ifdef VISEPA
 
 	void 
 		drawEPA(bool &running)
@@ -1414,12 +1610,6 @@ private:
 		glPointSize(8);
 		glVertex3f(0,0,0);
 		glPointSize(4);
-		// Draw contact points and contact vector
-		//glColor3f(0.5,0.5,0.5);
-		//for(int i = 0; i < _gjk._mk._points.size(); ++i)
-		//{
-		//	glVertex3f( _gjk._mk._points[i].p(0), _gjk._mk._points[i].p(1), _gjk._mk._points[i].p(2));
-		//}
 
 		glColor3f(0.5,0.5,0.5);
 		for(int i = 0; i < _gjk._mk._hull.size(); ++i)
@@ -1464,6 +1654,7 @@ private:
 			glEnd();
 		}
 
+
 		//CLosest points on planes
 		glBegin(GL_LINES);
 		for(int i = 0; i < _planes.size(); ++i)
@@ -1481,10 +1672,19 @@ private:
 		}
 		glEnd();
 
-		glBegin(GL_POINTS);
-		glColor4f(1.0,0.0,1.0,1.0);
-		glVertex3f(pOnPlane(0),pOnPlane(1),pOnPlane(2));				
-		glEnd();
+
+		if(_currplane > 0)
+		{
+			glBegin(GL_LINES);
+			glColor4f(0.0,0.0,1.0,1.0);
+			glVertex3f(0,0,0);
+			glVertex3f(_planes[_currplane].p(0),_planes[_currplane].p(1),_planes[_currplane].p(2));	
+
+			glVertex3f(_planes[_currplane].points[0]->p(0),_planes[_currplane].points[0]->p(1),_planes[_currplane].points[0]->p(2));	
+			glVertex3f(_planes[_currplane].p(0),_planes[_currplane].p(1),_planes[_currplane].p(2));	
+
+			glEnd();
+		}
 
 		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		glBegin(GL_TRIANGLES);
@@ -1512,6 +1712,9 @@ private:
 	_PlaneMgr _planes;
 	std::vector<Plane *> _polyFillPlanes;
 	std::vector<std::pair<MinkowskiSet::MPoint *, MinkowskiSet::MPoint *> > _borderPoints;
+
+public:
+	bool error;
 
 };
 
@@ -1638,6 +1841,7 @@ void
 				c.A = &b;
 				c.B = &a;
 			}
+
 			c.isVFContact = true;
 			//ACB plane i.e N = AC x AB
 			c.N = arma::cross(a.getWorldVerts()[C->Ai] - a.getWorldVerts()[A->Ai], b.getWorldVerts()[B->Ai] - a.getWorldVerts()[A->Ai]);
@@ -1646,7 +1850,7 @@ void
 			if(arma::dot(c.N,c.P-a.X) < 0.0)
 				c.N = -c.N;
 		}
-		else if(A->Bj != B->Bj && A->Bj != C->Ai  && B->Bj != C->Bj)
+		else if(A->Bj != B->Bj && A->Bj != C->Bj  && B->Bj != C->Bj)
 		{
 			LOG("A_FACE-B_FACE collision");
 			c.isVFContact = true;
@@ -1665,6 +1869,15 @@ void
 			//ACB plane i.e N = AC x AB
 			c.N = arma::cross(a.getWorldVerts()[C->Ai] - a.getWorldVerts()[A->Ai], b.getWorldVerts()[B->Ai] - a.getWorldVerts()[A->Ai]);
 			c.N = (1.0/arma::norm(c.N,2))*c.N;
+
+
+			int i1 = plane.points[0]->Bj, i2;
+			if(plane.points[1]->Bj != i1)
+				i2 = plane.points[1]->Bj;
+			else
+				i2 = plane.points[2]->Bj;
+
+			c.P = 0.5*b.getWorldVerts()[i1] + 0.5*b.getWorldVerts()[i2];
 
 			if(arma::dot(c.N,c.P-a.X) < 0.0)
 				c.N = -c.N;
@@ -1691,6 +1904,14 @@ void
 			//ACB plane i.e N = AC x AB
 			c.N = arma::cross(b.getWorldVerts()[C->Bj] - b.getWorldVerts()[A->Bj], b.getWorldVerts()[B->Bj] - b.getWorldVerts()[A->Bj]);
 			c.N = (1.0/arma::norm(c.N,2))*c.N;
+
+			int i1 = plane.points[0]->Ai, i2;
+			if(plane.points[1]->Ai != i1)
+				i2 = plane.points[1]->Ai;
+			else
+				i2 = plane.points[2]->Ai;
+
+			c.P = 0.5*a.getWorldVerts()[i1] + 0.5*a.getWorldVerts()[i2];
 
 			if(arma::dot(c.N,c.P-b.X) < 0.0)
 				c.N = -c.N;
@@ -1726,7 +1947,10 @@ void
 
 
 		//can be edge-vertex / edge-face / edge-vertex
-
+		if(norm(c.N,2) < 1e-7)
+		{
+			LOG("contact normal is close to zero");
+		}
 
 	}
 
@@ -1735,12 +1959,22 @@ void
 void
 	narrowPhase(RigidBody & bodyA,RigidBody & bodyB, std::vector<Contact> & contacts)
 {
+
+
+
 	LOG("runnin gjk");
 	GJK gjk(bodyA,bodyB);
 	float dist = 0.0;
 	if(gjk.intersects())
 	{
 		EPA epa(gjk);
+
+		if(epa.error == true)
+		{
+			LOG("There was an error in EPA that could not be resolved");
+			return;
+		}
+
 		Contact c;
 
 		makeContact(epa.plane(),bodyA,bodyB, c, &dist);
@@ -1853,6 +2087,45 @@ bool
 
 }
 
+
+struct Triple
+{
+	Triple(int i_,int j_,int k_):i(i_),j(j_),k(k_)
+	{
+
+	}
+	const int i,j,k;
+	bool operator <(const Triple& rhs) const
+	{
+		if(i<rhs.i)
+			return true;
+		else if(i > rhs.i)
+			return false;
+		else
+		{
+			if(j<rhs.j)
+				return true;
+			else if(j > rhs.j)
+				return false;
+			else
+			{
+				if(k<rhs.k)
+					return true;
+				else if(k > rhs.k)
+					return false;
+				else
+					return false;
+			}
+		}
+	}
+
+};
+
+template <class T>
+inline int hashindex(T &i, T &j, T &k)
+{
+	return (int)i+1000*(int)j+1000000*(int)k;
+}
 /***********************************************************************************************/
 //================================= COLLISION DETECTION ========================================
 /***********************************************************************************************/
@@ -1863,7 +2136,7 @@ void
 	bodiesPtr = &bodies;
 #endif
 
-	std::vector<RigidBodyIndexPair> colPairs;
+
 
 
 #if !NDEBUG
@@ -1873,29 +2146,157 @@ void
 	}
 #endif
 
-	//Broad Phase collision (AABB)
-	//Possible collisions are stored in possibleContacts vector
-	//#pragma omp parallel for
+
+#ifdef CDGRID
+
+	typedef multimap<int,int > mymap;
+	std::vector<mymap> mapArray; mapArray.resize(MAX_THREADS);
+	//contactsVector.resize(MAX_THREADS);
+	// int chunkSize = colPairs.size() - (colPairs.size() % MAX_THREADS) / MAX_THREADS;
+	float maxx,maxy,maxz, minx, miny, minz;
+	float OVERCELLSIZE = 1.0/10.0;
+	int GRIDDIM = 1000;
+	//std::cout << "MAX_THREADS: " << MAX_THREADS << std::endl;
+
+#pragma omp parallel for schedule(dynamic) private(maxx,maxy,maxz, minx, miny, minz)
+	for (int b = 0; b < bodies.size()-1; ++b)
+	{
+		//std::cout << "b: " << b << std::endl;
+
+		maxx = maxy = maxz = -10e10;
+		minx = miny = minz = +10e10;
+		set<int> indices;
+		set<int>::iterator it;
+		//Calculate bounds for body A
+		for(int i = 0; i<bodies[b].getWorldVerts().size(); ++i)
+		{
+
+			//X axis
+			if(maxx < bodies[b].getWorldVerts()[i](0))
+				maxx = bodies[b].getWorldVerts()[i](0);
+			if(minx > bodies[b].getWorldVerts()[i](0))
+				minx = bodies[b].getWorldVerts()[i](0);
+			//Y axis
+			if(maxy < bodies[b].getWorldVerts()[i](1))
+				maxy = bodies[b].getWorldVerts()[i](1);
+			if(miny > bodies[b].getWorldVerts()[i](1))
+				miny = bodies[b].getWorldVerts()[i](1);
+			//Z axis
+			if(maxz < bodies[b].getWorldVerts()[i](2))
+				maxz = bodies[b].getWorldVerts()[i](2);
+			if(minz > bodies[b].getWorldVerts()[i](2))
+				minz = bodies[b].getWorldVerts()[i](2);
+
+		}
+
+		minx  = (minx + GRIDDIM)*OVERCELLSIZE;
+		miny  = (miny + GRIDDIM)*OVERCELLSIZE;
+		minz  = (minz + GRIDDIM)*OVERCELLSIZE;
+		maxx  = (maxx + GRIDDIM)*OVERCELLSIZE;
+		maxy  = (maxy + GRIDDIM)*OVERCELLSIZE;
+		maxz  = (maxz + GRIDDIM)*OVERCELLSIZE;
+
+		indices.insert(hashindex(minx,miny,minz));
+		indices.insert(hashindex(minx,miny,maxz));
+		indices.insert(hashindex(minx,maxy,minz));
+		indices.insert(hashindex(minx,maxy,maxz));
+		indices.insert(hashindex(maxx,miny,minz));
+		indices.insert(hashindex(maxx,miny,maxz));
+		indices.insert(hashindex(maxx,maxy,minz));
+		indices.insert(hashindex(maxx,maxy,maxz));
+
+#if NDEBUG
+		for(it=indices.begin(); it!= indices.end();++it)
+			mapArray[omp_get_thread_num()].insert(pair<int,int>(*it,b));
+#else
+		for(it=indices.begin(); it!= indices.end();++it)
+			mapArray[0].insert(pair<int,int>(*it,b));
+#endif
+
+	}
+
+#if NDEBUG
+	//Merge
+	for(int i = 1; i < MAX_THREADS;++i)
+	{
+		mapArray[0].insert(mapArray[i].begin(),mapArray[i].end());
+	}
+#endif
+
+	//    typedef multimap<string, int> StringToIntMap;
+
+	//uniquePairs is the set with uniquePairs(duh!)
+	std::set<RigidBodyIndexPair> tmp;
+
+	typedef mymap::iterator mapIter;
+
+	mapIter m_it, s_it,s2_it;
+
+	for (m_it = mapArray[0].begin();  m_it != mapArray[0].end();  m_it = s_it)
+	{
+		int theKey = (*m_it).first;
+
+		pair<mapIter, mapIter> keyRange = mapArray[0].equal_range(theKey);
+
+		// Iterate over all map elements with key == theKey
+
+		for (s_it = keyRange.first;  s_it != keyRange.second;  ++s_it)
+		{
+			for (s2_it = s_it;  s2_it != keyRange.second;  ++s2_it)
+			{
+				if(s_it!=s2_it)
+					tmp.insert(pair<int,int>((*s_it).second,(*s2_it).second));
+			}
+		}
+
+	}
+
+
+	//std::cout << tmp.size() << std::endl;
+
+	std::vector<RigidBodyIndexPair> uniquePairs; uniquePairs.reserve(1000);
+	uniquePairs.insert(uniquePairs.begin(),tmp.begin(),tmp.end());
+
+
+
+	for(int i = 0; i < bodies.size()-1; ++i)
+	{
+		uniquePairs.push_back(pair<int,int>(i,bodies.size()-1));
+	}
+	//Make sure to only have unique pairs
+	uniquePairs.erase(std::unique(uniquePairs.begin(), uniquePairs.end()), uniquePairs.end());
+#else
+	std::vector<RigidBodyIndexPair> uniquePairs;
 	for (int i = 0; i < bodies.size() - 1; ++i)
 	{
 		for (int j = i + 1; j < bodies.size(); ++j)
 		{
-			if(broadPhase(bodies[i],bodies[j]))
-			{
-				colPairs.push_back(RigidBodyIndexPair(i,j));
-			}
+
+			uniquePairs.push_back(make_pair(i,j));
+		}
+	}
+#endif
+	//Broad Phase collision (AABB)
+	//Possible collisions are stored in possibleContacts vector
+	std::vector<RigidBodyIndexPair> colPairs;// colPairs.resize(uniquePairs.size());
+	//#pragma omp parallel for schedule(dynamic)
+	for(int i = 0; i < uniquePairs.size();++i)
+	{
+		if(broadPhase(bodies[uniquePairs[i].first],bodies[uniquePairs[i].second]))
+		{
+			colPairs.push_back(uniquePairs[i]);
 		}
 	}
 
-	LOG("numbe of coliision pairs: " << colPairs.size());
+	//LOG("number of coliision pairs: " << colPairs.size());
 
 #if NDEBUG
 	//For all possible contacts check if we have contact
 	//if so add the contact thethe contacts vector
 	std::vector<std::vector<Contact> > contactsVector;
 	contactsVector.resize(MAX_THREADS);
-	int chunksize = colPairs.size() - (colPairs.size() % MAX_THREADS) / MAX_THREADS;
-#pragma omp parallel for schedule(dynamic, chunksize)
+	//int chunksize = colPairs.size() - (colPairs.size() % MAX_THREADS) / MAX_THREADS;
+#pragma omp parallel for schedule(dynamic)
 	for (int i = 0; i < colPairs.size(); ++i)
 	{
 		narrowPhase(bodies[ colPairs[i].first ], bodies[ colPairs[i].second ], contactsVector[omp_get_thread_num()]);
@@ -1905,10 +2306,11 @@ void
 	{
 		contacts.insert(contacts.end(), contactsVector[i].begin(),contactsVector[i].end());
 	}
-	LOG("numbe of contacts: " << contacts.size());
+	LOG("number of contacts: " << contacts.size());
 #else
 	for (int i = 0; i < colPairs.size(); ++i)
 	{
+		//if(colPairs[i].first != -1)
 		narrowPhase(bodies[ colPairs[i].first ], bodies[ colPairs[i].second ], contacts);
 	}
 #endif

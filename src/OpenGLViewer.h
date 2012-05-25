@@ -353,17 +353,18 @@ void OpenGl_drawAndUpdate(bool &running, std::vector<RigidBody> &rb)
 	for (int i = 0; i < rb.size(); ++i)
 	{		
 		glPushMatrix();
-		glScalef(rb[i].sx,rb[i].sy, rb[i].sz);
-		glTranslatef(rb[i].X(0),rb[i].X(1), rb[i].X(2));
-		glMultMatrixd(rb[i].R.memptr());
+			glTranslatef(rb[i].X(0),rb[i].X(1), rb[i].X(2));
+			glPushMatrix();
+			glMultMatrixd(rb[i].R.memptr());
+			glScalef(rb[i].sx, rb[i].sy, rb[i].sz);
 
-		//if(rb[i].isColliding)
-		//	drawColorCube(0.5,1.0,0.0,0.0);
-		//else
-			drawColorCube(0.5,0.6,0.6,0.6);
+			//if(rb[i].isColliding)
+			//	drawColorCube(0.5,1.0,0.0,0.0);
+			//else
+				drawColorCube(0.5,0.6,0.6,0.6);
 
+			glPopMatrix();
 		glPopMatrix();
-
 		rb[i].isColliding = false;
 	}
 

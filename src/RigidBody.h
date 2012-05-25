@@ -164,7 +164,7 @@ public:
 		Function force_fun;
 
 		void
-				update(double t, double dt)
+		update(double t, double dt)
 		{
 				double halfdt = 0.5 * dt, sixthdt = dt / 6.0;
 				double tphalfdt = t + halfdt, tpdt = t + dt;
@@ -244,6 +244,11 @@ public:
 				L = L + (A1DLDT + (A2DLDT + A3DLDT)*2.0 + A4DLDT) * sixthdt;
 				Convert(Q,P,L,R,V,W);
 
+				float detR = 0.0;
+				if(abs( (detR = arma::det(R)) - 1.0) > 0.1)
+				{
+					LOG("Rotation matrix error, abs(arma::det(R) - 1.0) > 0.1");
+				}
 
 				//Recalc world transform
 				_calcWorldTransform();
@@ -279,6 +284,9 @@ private:
 					arma::vec p = mScale * _vertices[i];
 					//arma::vec p = R.submat(0,0,2,2)*_vertices[i];
 					p = R.submat(0,0,2,2)*p;
+
+					
+
 					p += X;
 					_verticesWorldCache[i] = p;
 			}

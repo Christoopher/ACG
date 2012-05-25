@@ -20,15 +20,15 @@ void
 		arma::vec riAlphaCrossN = arma::cross(ci.P-ci.A->X,ci.N); //A->P vector
 		arma::vec riBetaCrossN = arma::cross(ci.P-ci.B->X,ci.N); //B->P vector
 		/*
-		std::cout << "ci.N: " << ci.N << std::endl;
-		std::cout << "ci.P: " << ci.P << std::endl;
-		std::cout << "ci.A->X: " << ci.A->X << std::endl;
-		std::cout << "ci.B->X: " << ci.B->X << std::endl;
-		std::cout << "ci.P-ci.A->X: " << ci.P-ci.A->X << std::endl;
-		std::cout << "ci.P-ci.B->X: " << ci.P-ci.B->X << std::endl;
+		LOG( "ci.N: " << ci.N );
+		LOG( "ci.P: " << ci.P );
+		LOG( "ci.A->X: " << ci.A->X );
+		LOG( "ci.B->X: " << ci.B->X );
+		LOG( "ci.P-ci.A->X: " << ci.P-ci.A->X );
+		LOG( "ci.P-ci.B->X: " << ci.P-ci.B->X );
 		/*
-		std::cout << "riAlphaCrossN: " << riAlphaCrossN << std::endl;
-		std::cout << "riBetaCrossN: " << riBetaCrossN << std::endl;
+		LOG( "riAlphaCrossN: " << riAlphaCrossN );
+		LOG( "riBetaCrossN: " << riBetaCrossN );
 		*/
 		for(unsigned int j=0; j < contactArray.size(); ++j)
 		{
@@ -78,28 +78,28 @@ void
 			A(i,j) += (ci.B==cj.B)*b;
 			*/
 			/*
-			std::cout << "cj.N: " << cj.N << std::endl;
-			std::cout << "cj.P: " << cj.P << std::endl;
-			std::cout << "cj.A->X: " << cj.A->X << std::endl;
-			std::cout << "cj.B->X: " << cj.B->X << std::endl;
-			std::cout << "cj.P-cj.A->X: " << cj.P-ci.A->X << std::endl;
+			LOG( "cj.N: " << cj.N );
+			LOG( "cj.P: " << cj.P );
+			LOG( "cj.A->X: " << cj.A->X );
+			LOG( "cj.B->X: " << cj.B->X );
+			LOG( "cj.P-cj.A->X: " << cj.P-ci.A->X );
 			*/
 			/*
-			std::cout << "rjAlphaCrossN: " << rjAlphaCrossN << std::endl;
-			std::cout << "rjBetaCrossN: " << rjBetaCrossN << std::endl;
-			std::cout << "dotCommon: " << dotCommon << std::endl;
-			std::cout << "ci.A->inv_mass*dotCommon: " << ci.A->inv_mass * dotCommon << std::endl;
-			std::cout << "+=dot(riAlphaCrossN,ci.A->inv_inertia * rjAlphaCrossN): " << a << std::endl;
-			std::cout << "i: " << i << "j: "<< j << std::endl;
-			std::cout << "(ci.A==cj.A)*a: " << (ci.A==cj.A)*a << std::endl;
-			std::cout << "(ci.A==cj.B)*a: " << (ci.A==cj.B)*a << std::endl;
-			std::cout << "ci.B->inv_mass: " << ci.B->inv_mass << std::endl;
-			std::cout << "dot(riBetaCrossN,ci.B->inv_inertia * rjBetaCrossN): " << dot(riBetaCrossN,ci.B->inv_inertia * rjBetaCrossN) << std::endl;
-			std::cout << "b: " << b << std::endl;
-			std::cout << "(ci.B==cj.A)*b: " << (ci.B==cj.A)*b << std::endl;
-			std::cout << "(ci.B==cj.B)*b: " << (ci.B==cj.B)*b << std::endl;
-			std::cout << "ci.A->inv_inertia" << ci.A->inv_inertia << std::endl;
-			std::cout << "ci.B->inv_inertia" << ci.B->inv_inertia << std::endl;
+			LOG( "rjAlphaCrossN: " << rjAlphaCrossN );
+			LOG( "rjBetaCrossN: " << rjBetaCrossN );
+			LOG( "dotCommon: " << dotCommon );
+			LOG( "ci.A->inv_mass*dotCommon: " << ci.A->inv_mass * dotCommon );
+			LOG( "+=dot(riAlphaCrossN,ci.A->inv_inertia * rjAlphaCrossN): " << a );
+			LOG( "i: " << i << "j: "<< j );
+			LOG( "(ci.A==cj.A)*a: " << (ci.A==cj.A)*a );
+			LOG( "(ci.A==cj.B)*a: " << (ci.A==cj.B)*a );
+			LOG( "ci.B->inv_mass: " << ci.B->inv_mass );
+			LOG( "dot(riBetaCrossN,ci.B->inv_inertia * rjBetaCrossN): " << dot(riBetaCrossN,ci.B->inv_inertia * rjBetaCrossN) );
+			LOG( "b: " << b );
+			LOG( "(ci.B==cj.A)*b: " << (ci.B==cj.A)*b );
+			LOG( "(ci.B==cj.B)*b: " << (ci.B==cj.B)*b );
+			LOG( "ci.A->inv_inertia" << ci.A->inv_inertia );
+			LOG( "ci.B->inv_inertia" << ci.B->inv_inertia );
 			*/
 		}
 	}
@@ -126,14 +126,14 @@ void
 	}
 
 
-	std::cout << "ci.N: " << ci.N << std::endl;
-	std::cout << "ci.A->V: " << ci.A->V << std::endl;
-	std::cout << "ci.A->W: " << ci.A->W << std::endl;
-	//std::cout << "ci.B->V: " << ci.B->V << std::endl;
-	//std::cout << "ci.B->W: " << ci.B->W << std::endl;
+	//LOG( "ci.N: " << ci.N );
+	//LOG( "ci.A->V: " << ci.A->V );
+	//LOG( "ci.A->W: " << ci.A->W );
+	//LOG( "ci.B->V: " << ci.B->V );
+	//LOG( "ci.B->W: " << ci.B->W );
 
-	std::cout << "ci.A->V + + arma::cross(ci.A->W,rAi): " << ci.A->V + arma::cross(ci.A->W,rAi) << std::endl;
-	//std::cout << "(ci.B->V + arma::cross(ci.B->W,rBi)): " << (ci.B->V + arma::cross(ci.B->W,rBi)) << std::endl;
+	LOG( "ci.A->V + + arma::cross(ci.A->W,rAi): " << ci.A->V + arma::cross(ci.A->W,rAi) );
+	//LOG( "(ci.B->V + arma::cross(ci.B->W,rBi)): " << (ci.B->V + arma::cross(ci.B->W,rBi)) );
 
 }
 
@@ -177,9 +177,9 @@ void
 	//   x = -arma::solve(B,q); Ändrat här själv
 	x = q;
 	/*
-	std::cout << "q: " << q << std::endl;
-	std::cout << "B: " << B << std::endl;
-	std::cout << "-arma::solve(B,q): " << x << std::endl;
+	LOG( "q: " << q );
+	LOG( "B: " << B );
+	LOG( "-arma::solve(B,q): " << x );
 	*/
 	//Check if initial basis provides solution, already done now? since x = q ?!
 	/*
@@ -208,25 +208,25 @@ void
 	//Determine initial leaving variable
 	arma::uword lvindex;
 	double tval = x.min(lvindex);
-	//std::cout << "x: " << x << std::endl;
-	//std::cout << "tval: " << tval << std::endl;
-	//std::cout << "lvindex: " << lvindex << std::endl;
-	//std::cout << "bas: " << bas << std::endl;
-	//std::cout << "t: " << t << std::endl;
+	//LOG( "x: " << x );
+	//LOG( "tval: " << tval );
+	//LOG( "lvindex: " << lvindex );
+	//LOG( "bas: " << bas );
+	//LOG( "t: " << t );
 	tval = -tval;
 	arma::uword leaving = bas(lvindex);
 	bas(lvindex)=t;
-	//std::cout << "leaving: " << leaving << std::endl;
-	//std::cout << "bas(lvindex)=t: " << bas << std::endl;
-	// std::cout << "x before addition of scalar: " << x << std::endl;
+	//LOG( "leaving: " << leaving );
+	//LOG( "bas(lvindex)=t: " << bas );
+	// LOG( "x before addition of scalar: " << x );
 	x=x+tval; //vector + double samma som i matlab? JA
-	//std::cout << "x after addition of scalar: " << x << std::endl;
+	//LOG( "x after addition of scalar: " << x );
 	x(lvindex)=tval;
-	//std::cout << "x(lvindex)=tval: " << x << std::endl;
-	//std::cout << "B before changing B.col(lvindex): " << B << std::endl;
+	//LOG( "x(lvindex)=tval: " << x );
+	//LOG( "B before changing B.col(lvindex): " << B );
 	//B.col(lvindex)=-B*arma::ones<arma::vec>(n,1);
 	B.col(lvindex) = arma::ones<arma::vec>(n,1);
-	//std::cout << "B after changing B.col(lvindex): " << B << std::endl;
+	//LOG( "B after changing B.col(lvindex): " << B );
 	arma::vec Be; Be.set_size(n,1); Be.zeros();
 	//Main iterations!
 	arma::uvec j;j.set_size(n);j.zeros(n);
@@ -237,19 +237,19 @@ void
 		if(leaving == t) break;
 		else if(leaving < n) //leaving <= n
 		{
-			// std::cout << "bas i loop: " << bas << std::endl;
-			//  std::cout << "leaving: " << leaving << std::endl;
-			// std::cout << "n: " << n << std::endl;
+			// LOG( "bas i loop: " << bas );
+			//  LOG( "leaving: " << leaving );
+			// LOG( "n: " << n );
 			entering = n+leaving;
 			Be.zeros();
 			Be(leaving) = -1.0;//sparse(leaving,1,-1.0,n,1);
-			//  std::cout << "Be: " << Be << std::endl;
+			//  LOG( "Be: " << Be );
 		}
 		else
 		{
 			entering = leaving-n;
 			if(entering >= n)
-				std::cout << "entering index out of bounds: " << entering << "n: " << n << std::endl;// LOG("entering index out of bounds: " << entering << "n: " << n);
+				LOG( "entering index out of bounds: " << entering << "n: " << n );// LOG("entering index out of bounds: " << entering << "n: " << n);
 			Be = M.col(entering);
 
 		}
@@ -258,19 +258,19 @@ void
 		d = arma::solve(B,Be);
 
 		/*
-		std::cout << "M: " << M << std::endl;
-		std::cout << "entering = leaving -n: " << entering << std::endl;
-		std::cout << "Be = M.col(entering): " << Be << std::endl;
-		std::cout << "B: " << B << std::endl;
-		std::cout << "d=solve(B,Be): " << d << std::endl;
+		LOG( "M: " << M );
+		LOG( "entering = leaving -n: " << entering );
+		LOG( "Be = M.col(entering): " << Be );
+		LOG( "B: " << B );
+		LOG( "d=solve(B,Be): " << d );
 		*/
 
 
 		//Find new leaving variable
-		//  std::cout << "d: " << d << std::endl;
-		//  std::cout << "tol: " << pivTol << std::endl;
+		//  LOG( "d: " << d );
+		//  LOG( "tol: " << pivTol );
 		j = arma::find(d>pivTol);
-		// std::cout << "j = arma::find(d>pivTol): " << j << std::endl;
+		// LOG( "j = arma::find(d>pivTol): " << j );
 		if(j.empty())
 		{
 			LOG("Inne i unbounded ray!");
@@ -294,25 +294,25 @@ void
 		double theta = arma::min((x.elem(j)+zErrorTol)/d.elem(j)); 
 #endif
 
-		//std::cout << "x.elem(j)" << x.elem(j) << std::endl;
-		//std::cout << "x.elem(j)+zErrorTol: " << x.elem(j)+zErrorTol << std::endl;
-		//std::cout << "d.elem(j)" << d.elem(j) << std::endl;
-		//std::cout << "(x.elem(j)+zErrorTol)/d.elem(j)" << (x.elem(j)+zErrorTol)/d.elem(j) << std::endl;
-		//std::cout << "min av ovan = theta: " << theta << std::endl;
+		//LOG( "x.elem(j)" << x.elem(j) );
+		//LOG( "x.elem(j)+zErrorTol: " << x.elem(j)+zErrorTol );
+		//LOG( "d.elem(j)" << d.elem(j) );
+		//LOG( "(x.elem(j)+zErrorTol)/d.elem(j)" << (x.elem(j)+zErrorTol)/d.elem(j) );
+		//LOG( "min av ovan = theta: " << theta );
 
 
 		arma::vec divVec = x.elem(j)/d.elem(j);
-		//std::cout << "divVex: " << divVec << std::endl;
+		//LOG( "divVex: " << divVec );
 		arma::uvec tmpInd = arma::find(divVec <=theta);
-		//std::cout << "tmpInd=arma::find(divVec <=theta): " << tmpInd << std::endl;
+		//LOG( "tmpInd=arma::find(divVec <=theta): " << tmpInd );
 		j=j.elem(tmpInd);
-		//std::cout << "j=j.elem(tmpInd): " << j << std::endl;
+		//LOG( "j=j.elem(tmpInd): " << j );
 
 		arma::uvec sbo = arma::find(bas.elem(j)==t);
 		if(!sbo.empty())
 			lvindex = sbo(0);
-		//std::cout << "sbo.size(): " << sbo.size() << std::endl;
-		//std::cout << "!sbo.empty(): " << !sbo.empty() << std::endl;
+		//LOG( "sbo.size(): " << sbo.size() );
+		//LOG( "!sbo.empty(): " << !sbo.empty() );
 		if(sbo.size()>1)
 		{
 			LOG("SBO.size() > 1");
@@ -324,50 +324,50 @@ void
 		else
 		{
 			theta = arma::max(d.elem(j));
-			//std::cout << "d.elem(j): " << d.elem(j) << std::endl;
+			//LOG( "d.elem(j): " << d.elem(j) );
 			arma::uvec index = arma::find(d.elem(j)==theta);
 			double ed = index.size();
 			arma::vec edd = arma::randu<arma::vec>(1);
 			double random = edd[0];
 			double random2 = ed*random;
 
-			//std::cout << "ed = index.size(): " << ed << std::endl;
-			//std::cout << "random: " << random << std::endl;
-			//std::cout << "random2= ed*random: " << random2 << std::endl;
-			arma::uword tmp = (arma::uword)ceil(random2)-1;
-			//std::cout << "ciel(random2): " << tmp << std::endl;
+			//LOG( "ed = index.size(): " << ed );
+			//LOG( "random: " << random );
+			//LOG( "random2= ed*random: " << random2 );
+			arma::uword tmp = (arma::uword)random2;
+			//LOG( "ciel(random2): " << tmp );
 			lvindex = j(tmp);
-			//std::cout << "lvindex = j(tmp): " << lvindex << std::endl;
+			//LOG( "lvindex = j(tmp): " << lvindex );
 		}
 		leaving = bas(lvindex);
-		//std::cout << "bas: " << bas << std::endl;
-		//std::cout << "leaving = bas(lvindex): " << leaving << std::endl;
+		//LOG( "bas: " << bas );
+		//LOG( "leaving = bas(lvindex): " << leaving );
 		//Perform pivot
 		double ratio = x(lvindex)/d(lvindex);
-		//std::cout << "x(lvindex): " << x(lvindex) << std::endl;
-		//std::cout << "d(lvindex): " << d(lvindex) << std::endl;
-		//std::cout << "ratio: " << ratio << std::endl;
-		//std::cout << "d: " << d << std::endl;
-		//std::cout << "x before: " << x << std::endl;
+		//LOG( "x(lvindex): " << x(lvindex) );
+		//LOG( "d(lvindex): " << d(lvindex) );
+		//LOG( "ratio: " << ratio );
+		//LOG( "d: " << d );
+		//LOG( "x before: " << x );
 		x = x - (ratio*d);
-		//std::cout << "x after: " << x << std::endl;
+		//LOG( "x after: " << x );
 
 
 		x(lvindex) = ratio;
-		//std::cout << "x(lvindex) = ratio, visar x: " << x << std::endl;
-		//std::cout << "B: " << B << std::endl;
-		//std::cout << "Be: " << Be << std::endl;
+		//LOG( "x(lvindex) = ratio, visar x: " << x );
+		//LOG( "B: " << B );
+		//LOG( "Be: " << Be );
 		B.col(lvindex) = Be;
-		// std::cout << "B after B.col(lvindex) =Be: " << B << std::endl;
+		// LOG( "B after B.col(lvindex) =Be: " << B );
 		bas(lvindex) = entering;
-		//std::cout << "bas after bas(lvindex) = entering: " << bas << std::endl;
+		//LOG( "bas after bas(lvindex) = entering: " << bas );
 	}
 	/*
-	std::cout << "After loop" << std::endl;
-	std::cout << "Bas: "<< bas << std::endl;
-	std::cout << "leaving: " << leaving << std::endl;
-	std::cout << "t: " << t << std::endl;
-	std::cout << "iter: " << iter << std::endl;
+	LOG( "After loop" );
+	LOG( "Bas: "<< bas );
+	LOG( "leaving: " << leaving );
+	LOG( "t: " << t );
+	LOG( "iter: " << iter );
 	*/
 	if(iter>=maxIter && leaving !=t)
 		err=1;
@@ -437,10 +437,10 @@ void
 	q.subvec(n,2*n-1) = b;
 	q.subvec(2*n,3*n-1) = c-b;
 	/*
-	std::cout << "b: " << b << std::endl;
-	std::cout << "c: " << c << std::endl;
-	std::cout << "M: " << M << std::endl;
-	std::cout << "q: " << q << std::endl;
+	LOG( "b: " << b );
+	LOG( "c: " << c );
+	LOG( "M: " << M );
+	LOG( "q: " << q );
 	*/
 	//Se Er1ks mobilbild också!
 
@@ -478,26 +478,26 @@ void
 	{
 		if(tmp(i) > c(i))
 		{
-			std::cout << "Af+b > c. Något fel i lemke? Af+b: " << tmp << "c: " << c << std::endl;
+			LOG( "Af+b > c. Något fel i lemke? Af+b: " << tmp << "c: " << c );
 			//abort();
 		}
 		else if(tmp(i) < 0.0)
 		{
-			std::cout << "Af+b < 0. Något fel i lemke? Af+b: " << tmp << std::endl;
+			LOG( "Af+b < 0. Något fel i lemke? Af+b: " << tmp );
 
 		}
 		else if(f(i) < 0.0)
 		{
-			std::cout << "f < 0.0. Något fel i lemke? f: " << f << std::endl;
+			LOG( "f < 0.0. Något fel i lemke? f: " << f );
 			abort();
 		}
 	}
 	//-------------------------------------------------------------------------
 	/*
-	std::cout << "w: " << w << std::endl;
-	std::cout << "z: " << z << std::endl;
-	std::cout << "w%z: " << w%z << std::endl;
-	std::cout << "f: " << f << std::endl;
+	LOG( "w: " << w );
+	LOG( "z: " << z );
+	LOG( "w%z: " << w%z );
+	LOG( "f: " << f );
 	*/
 	//---------------------------
 
@@ -512,7 +512,7 @@ void
 	for (unsigned int i = 0; i < contactArray.size(); ++i)
 	{
 		ci = contactArray.at(i);
-		impulse = f(i) * ci.N;
+		impulse = 0.7*f(i) * ci.N;
 		//Optimization: Add up all impulses to P and L in separate pass
 		//and then assign the new velocities?
 		//Parallelization: Find a way to skip +=
@@ -527,6 +527,7 @@ void
 
 		ci.A->W = ci.A->inv_inertia * ci.A->L;
 		ci.B->W = ci.B->inv_inertia * ci.B->L;
+
 		/*
 		if(f(i) > 0.0)
 		{
@@ -535,7 +536,8 @@ void
 		ci.B->P *= scale;
 		ci.A->L *= scale;
 		ci.B->L *= scale;
-		}*/
+		}
+		*/
 	}
 }
 

@@ -22,7 +22,7 @@ int main(void)
 	physicsInit();
 
 	OpenGl_initViewer(600, 600);
-	double t = 0, dt = 1.0/60.0;
+	double t = 0, dt = 1.0/100;
 
 	int frames = 1;
 	while(running) {
@@ -34,7 +34,7 @@ int main(void)
 		//if( (step || play) && frames >= 20)
 		if( step || play)
 		{
-			if(frames == 288)
+			if(frames == 212)
 				skip = false;
 			physicsTick(t,dt);	
 			t += dt;

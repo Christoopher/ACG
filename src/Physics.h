@@ -12,7 +12,7 @@
 #include <armadillo>
 #endif
 
-const int nrOfRigidBodies = 100;
+const int nrOfRigidBodies = 400;
 std::vector<RigidBody> rigidBodyArray;
 std::vector<arma::vec> cube;
 std::vector<Contact> contacts;
@@ -68,9 +68,9 @@ physicsSetState()
 	float m = 0.0;
 	for(int i = 0; i < nrOfRigidBodies-1; ++i)
 	{
-		rigidBodyArray[i].X(0) = 2*(rand()/(float)RAND_MAX - 0.5)*3; 
-		rigidBodyArray[i].X(2) = 2*(rand()/(float)RAND_MAX - 0.5)*3;
-		rigidBodyArray[i].X(1) = 5.0 + m;
+		rigidBodyArray[i].X(0) = 2*(rand()/(float)RAND_MAX - 0.5)*4; 
+		rigidBodyArray[i].X(2) = 2*(rand()/(float)RAND_MAX - 0.5)*4;
+		rigidBodyArray[i].X(1) = 3 + m;
 		m += 1.6;
 
 		double val = 1.0/sqrt(2.0);
@@ -90,8 +90,8 @@ physicsSetState()
 
 		rigidBodyArray[i].force_fun = &Force;
 		rigidBodyArray[i].torque_fun = &Torque;
-		rigidBodyArray[i].init(1.0,1.0,1.0);
 
+		rigidBodyArray[i].init(1.0,1.0,1.0);
 	}
 
 
